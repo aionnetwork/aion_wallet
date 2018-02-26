@@ -1,0 +1,16 @@
+{
+  "name": "custom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bundleDependencies": false,
+  "dependencies": {
+    "colors": "^1.1.2",
+    "repl": "^0.1.3"
+  }
+}
