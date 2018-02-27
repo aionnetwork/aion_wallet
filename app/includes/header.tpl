@@ -97,13 +97,13 @@
   <section class="container">
     @@if (site === 'mew' ) {
       <a class="brand" href="./index.html" aria-label="Go to homepage">
-        <img src="images/AionMove.gif"   height="64px" width="245px" alt="Aion Wallet" />
+        <img src="images/AionMove.gif"   height="64px" width="120px" alt="Aion Wallet" />
         <p class="small visible-xs">3.11.3.0</p>
       </a>
     }
-    @@if (site === 'cx'  ) {
+    @@if (site === 'cx' ) {
       <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">
-        <img src="images/logo-myetherwalletcx.svg" height="64px" width="245px" alt="MyEtherWallet" />
+        <img src="images/AionMove.gif" height="64px" width="120px" alt="MyEtherWallet" />
         <p class="small visible-xs">3.11.3.0</p>
       </a>
     }
@@ -178,7 +178,7 @@
          aria-label="change node. current node {{curNode.name}} node by {{curNode.service}}"
          class="dropdown-toggle  btn btn-white"
          ng-click="dropdownNode = !dropdownNode">
-         
+
            <span translate="X_Network">Network:</span>
            {{curNode.name}}
            <small>({{curNode.service}})</small>
