@@ -157,8 +157,10 @@ uiFuncs.generateTx = function($scope, txData, callback) {
         uiFuncs.isTxDataValid(txData);
         var genTxWithInfo = function(data) {
 
+console.log("nonce is "+aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString()));
+
             var rawTx = {
-                RLP_TX_NONCE: "0x00",
+                RLP_TX_NONCE: aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString()),
                 RLP_TX_TO: ethFuncs.sanitizeHex(txData.to),
                 RLP_TX_VALUE: txData.value,
                 RLP_TX_DATA: ethFuncs.sanitizeHex(txData.data),
@@ -167,9 +169,19 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 RLP_TX_NRGPRICE: data.gasprice,
                 RLP_TX_TYPE: "0x01"               
             };
+console.log("rawtx " +aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString())+" "+txData.to+ " "+txData.value+txData.data+" "+Date.now()*1000+" "+txData.gasLimit+" "+ txData.gasprice);
+            txData.gasprice =1; 
 
             //var rawTxArray= ["0x00", txData.to,txData.value, '0x'+txData.data, Date.now()*1000,  txData.gasLimit, 1, "0x01"];
-            var rawTxArray= ["0x00", txData.to, txData.value*Math.pow(10, 18), '0x'+txData.data, "0x000565bde881ffd9",  '0x'+txData.gasLimit.toString(16), data.gasprice, "0x01"];
+            var rawTxArray= [ethFuncs.sanitizeHex('0x'+aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString())), 
+                ethFuncs.sanitizeHex(txData.to), 
+                ethFuncs.sanitizeHex((txData.value*Math.pow(10, 18)).toString(16)), 
+                ethFuncs.sanitizeHex('0x'+txData.data), 
+                ethFuncs.sanitizeHex('0x'+(Date.now()*1000).toString(16)),  
+                ethFuncs.sanitizeHex('0x'+txData.gasLimit.toString(16)), 
+                ethFuncs.sanitizeHex('0x'+txData.gasprice.toString(16)), 
+                "0x01"];
+
             console.log(rawTxArray);
 
             if (ajaxReq.eip155) rawTx.chainId = ajaxReq.chainId;
@@ -380,4 +392,11 @@ uiFuncs.notifier = {
         }
     },
   }
+console.log(navigator.userAgent);
+uiFuncs.kernelRunning = true;
+if (navigator.userAgent.indexOf("Linux")==-1) {
+    alert("You are not running a linux machine, please note that you can only generate accounts on this wallet, for full functionality please log on a lunix machine and connect to an Aion node");
+    uiFuncs.kernelRunning = false;
+}
+
 module.exports = uiFuncs;

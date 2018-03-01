@@ -141,7 +141,7 @@
     <section class="container">
         <a class="brand" href="../index.html" aria-label="Go to homepage">
           <img src="../images/AionMove.gif"   height="64px" width="245px" alt="Aion Wallet" />
-        </a> 
+        </a>
     </section>
 </header>
 
@@ -166,28 +166,21 @@
     <main class="col-xs-12 page__main content">
       <br />
       <article class="block block__content clearfix" itemscope itemtype="http://schema.org/Article">
-          <h1 class="page__title" itemprop="headline">Differences between wallet types (e.g. private key vs keystore)</h1>
+          <h1 class="page__title" itemprop="headline">Differences between private key vs keystore</h1>
           <div class="content">
-            <p><em>What are the different types of private key formats that I can use to access my wallet?</em></p>
-<p>The Aion is stored on the blockchain, your private key or Keystore File or whatever piece of information you have proves ownership of that Aion, which allows you to move it.</p>
-<p>At the end of the day, you are always signing with your private key.</p>
-<p>However, for additional functionality (like protecting it with a password) there are formats &amp; ways of storing your private key:</p>
+            <p> To access your account on the Aion Network, you can prove ownership of the account using either the private key or the keystore file. The keystore file is for additional functionality such as protecting the private key with a password however all transactions are eventually signed with the private key of that address. </p>
 
 <h3 id="keystore-file-utc-json-">Keystore File (UTC / JSON)</h3>
 <ul>
-<li>This is encrypted by the password you chose.</li>
-<li>This is the recommended version to save.</li>
-<li>This Keystore file matches the format used by Mist so you can easily import it in the future.</li>
-<li>Make sure to have multiple backups.</li>
+<li>This is encrypted file that lets you access your account. To unlock your wallet using the keystore file the password used to create the account is required. We recommend using the keystore file to access your account and backing up copies of this file in different locations. </li>
 </ul>
-<p><img src="https://myetherwallet.github.io/knowledge-base/images/wallet-types/keystore-file.jpg" alt=""></p>
+<p><img src="../images/Keystore.jpg" alt=""></p>
 <h3 id="private-key-unencrypted-">Private Key (unencrypted)</h3>
 <ul>
-<li>This is the unencrypted text version of your private key, meaning no password is necessary.</li>
-<li>If someone were to find your unencrypted private key, they could access your wallet without a password.</li>
-<li>However, you should print the paper wallet or save this in an <strong>offline</strong> environment (like a piece of paper or USB drive). This ensures a lost password does not result in lost Aion, and acts as another backup.</li>
-</ul>
-<p><img src="https://myetherwallet.github.io/knowledge-base/images/wallet-types/private-key.jpg" alt=""></p>
+<li>This is the unencrypted text version of your private key, meaning no password is necessary. Anyone who has access to this unencrypted private key can access the corresponding wallet without a password. </li>
+<li>We reccommend keeping multiple physical copies of the private key in differnet locations and storing it in a USB drive. This ensures that you do not lose your private key and access to your Aion funds, private key if lost is not recoverable </li>
+
+<p><img src="../images/PrivateKey.jpg" alt=""></p>
 
 
           </div>
@@ -211,7 +204,7 @@
   <section class="page__meta">
     <a class="btn btn-primary btn-lg"
        href="mailto:Support@aion.network?Subject=Support%20Needed%20--%20Differences between wallet types (e.g. private key vs keystore)&Body=%0A%0AMy%20Address%3A%20%0A%0AMy%20Transaction%20Hash%3A%0A%0AFrom%20URL%3A%20https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html" target="_blank" rel="noopener noreferrer">
-      Need Help? Message Us
+      Need Support? Send us am email
     </a>
   </section>
 </main>
@@ -222,4 +215,3 @@
 </body>
 
 </html>
-

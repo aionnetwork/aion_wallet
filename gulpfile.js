@@ -177,24 +177,19 @@ let readMe = './README.md';
 
 gulp.task('copy', ['staticJS'], function() {
     gulp.src(imgSrcFolder)
-        .pipe(gulp.dest(dist + 'images'))
-        .pipe(gulp.dest(dist_CX + 'images'));
+        .pipe(gulp.dest(dist + 'images'));
 
     gulp.src(fontSrcFolder)
-        .pipe(gulp.dest(dist + 'fonts'))
-        .pipe(gulp.dest(dist_CX + 'fonts'));
+        .pipe(gulp.dest(dist + 'fonts'));
 
     gulp.src(staticJSSrcFile)
-        .pipe(gulp.dest(dist + 'js'))
-        .pipe(gulp.dest(dist_CX + 'js'));
+        .pipe(gulp.dest(dist + 'js'));
 
     gulp.src(jQueryFile)
-        .pipe(gulp.dest(dist + 'js'))
-        .pipe(gulp.dest(dist_CX + 'js'));
+        .pipe(gulp.dest(dist + 'js'));
 
     gulp.src(jsonFile)
-        .pipe(gulp.dest(dist))
-        .pipe(gulp.dest(dist_CX));
+        .pipe(gulp.dest(dist));
 
     gulp.src(readMe)
         .pipe(gulp.dest(dist));
@@ -214,10 +209,6 @@ gulp.task('copy', ['staticJS'], function() {
 // Clean files that get compiled but shouldn't
 gulp.task('clean', function() {
     return gulp.src([
-            dist_CX + 'images/fav/manifest.json',
-            dist_CX + 'embedded.html',
-            dist_CX + 'index.html',
-            dist_CX + 'signmsg.html',
             dist + 'cx-wallet.html',
             dist + 'images/icons',
             dist + 'manifest.json',
@@ -264,9 +255,7 @@ gulp.task('zip', ['getVersion'], function() {
         .pipe(notify(onSuccess('Zip Dist ' + versionNum)));
     return gulp.src(dist_CX + '**/**/*')
         .pipe(plumber({ errorHandler: onError }))
-        .pipe(zip('./chrome-extension-' + versionNum + '.zip'))
         .pipe(gulp.dest('./releases/'))
-        .pipe(notify(onSuccess('Zip CX ' + versionNum)))
 });
 
 

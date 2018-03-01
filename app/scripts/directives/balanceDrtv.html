@@ -3,7 +3,6 @@
 
 
 
-
   <!-- Account Address -->
   <div class="block">
     <h5 translate="sidebar_AccountAddr">Account Address</h5>
@@ -29,7 +28,7 @@
     <h5 translate="sidebar_AccountBal">Account Balance</h5>
     <ul class="account-info point">
       <li>
-        <span class="mono wrap">{{wallet.getBalance()}} </span> Aion
+        <span class="mono wrap">{{1==1? wallet.getBalance() + " Aions":  "You are not currently connected to a kernel"}} </span>
       </li>
     </ul>
     <h5 translate="sidebar_TransHistory"> Transaction History</h5>

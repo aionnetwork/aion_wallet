@@ -1,4 +1,8 @@
 'use strict';
+
+const AionWeb3 = require('../aionWeb3/index')
+var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider('http://127.0.0.1:8545'));
+
 var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
     $scope.tx = {};
     $scope.signedTx
@@ -226,6 +230,11 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
             txData.to = $scope.wallet.tokenObjs[$scope.tokenTx.id].getContractAddress();
             txData.data = $scope.wallet.tokenObjs[$scope.tokenTx.id].getData($scope.tokenTx.to, $scope.tokenTx.value).data;
             txData.value = '0x00';
+        }
+
+        if (txData.value > aionweb3.eth.getBalance('0x'+$scope.wallet.getPublicKeyString())){ 
+            $scope.notifier.danger("you do not have enough balance in your account!");
+            return;
         }
 
         uiFuncs.generateTx($scope, txData, function(rawTx) {

@@ -146,13 +146,13 @@
     <span class="dropdown dropdown-gas" ng-cloak>
       <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropdownGasPrice = !dropdownGasPrice">
         <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
-          {{gas.value}} Gwei
+          {{gas.value}} aPLAT
           <i class="caret"></i>
       </a>
       <ul class="dropdown-menu" ng-show="dropdownGasPrice">
         <div class="header--gas">
           <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
-          {{gas.value}} Gwei
+          {{gas.value}} aPLAT
           <input type="range" ng-model="gas.value" min="{{gas.min}}" max="{{gas.max}}" step="{{gas.step}}" ng-change="gasChanged()"/>
           <p class="small col-xs-4 text-left"> <!--translate="GAS_Price_1"-->
             Really, really slow
