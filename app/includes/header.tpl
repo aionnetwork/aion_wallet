@@ -26,6 +26,7 @@
 <link href="images/fav/manifest.json" rel="manifest">
 <link href="images/fav/safari-pinned-tab.svg" rel="mask-icon" color="#2f99b0">
 <link href="images/fav/favicon.ico" rel="shortcut icon">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 <meta name="apple-mobile-web-app-title" content="MyEtherWallet &middot; Your Key to Ethereum">
 <meta name="application-name" content="MyEtherWallet">
 <meta name="msapplication-config" content="images/fav/browserconfig.xml">
@@ -143,16 +144,54 @@
       </ul>
     </span>
 -->
+  <nav role="navigation" aria-label="main navigation" class="container nav-container overflowing" >
+    <a aria-hidden="true" ng-show="showLeftArrow" class="nav-arrow-left" ng-click="scrollLeft(100);" ng-mouseover="scrollHoverIn(true,2);" ng-mouseleave="scrollHoverOut()">&#171;</a>
+    <div class="nav-scroll">
+      <ul class="nav-inner">
+        @@if (site === 'mew' ) {
+        <li ng-repeat="tab in tabNames track by $index" \
+            class="nav-item {{tab.name}}" \
+            ng-class="{active: $index==gService.currentTab}"
+            ng-show="tab.mew"
+            ng-click="tabClick($index)">
+              <a tabindex="0" aria-label="nav item: {{tab.name | translate}}" translate="{{tab.name}}"></a>
+        </li>
+        }
+        @@if (site === 'cx' ) {
+        <li ng-repeat="tab in tabNames track by $index" \
+            class="nav-item {{tab.name}}" \
+            ng-class="{active: $index==gService.currentTab}"
+            ng-show="tab.cx"
+            ng-click="tabClick($index)">
+              <a tabindex="0" aria-label="nav item: {{tab.name | translate}}" translate="{{tab.name}}"></a>
+        </li>
+        }<!--
+        <li class="nav-item help">
+          <a href="https://myetherwallet.github.io/knowledge-base/" target="_blank" rel="noopener noreferrer">
+            <span translate="NAV_Help">
+              Help
+            </span>
+          </a>
+        </li>-->
+      </ul>
+    </div>
+    <a aria-hidden="true"
+       ng-show="showRightArrow"
+       class="nav-arrow-right"
+       ng-click="scrollRight(100);"
+       ng-mouseover="scrollHoverIn(false,2);"
+       ng-mouseleave="scrollHoverOut()">&#187;</a>
+  </nav>
     <span class="dropdown dropdown-gas" ng-cloak>
       <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropdownGasPrice = !dropdownGasPrice">
         <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
-          {{gas.value}} Gwei
+          {{gas.value}} Plat
           <i class="caret"></i>
       </a>
       <ul class="dropdown-menu" ng-show="dropdownGasPrice">
         <div class="header--gas">
           <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
-          {{gas.value}} Gwei
+          {{gas.value}} Plat
           <input type="range" ng-model="gas.value" min="{{gas.min}}" max="{{gas.max}}" step="{{gas.step}}" ng-change="gasChanged()"/>
           <p class="small col-xs-4 text-left"> <!--translate="GAS_Price_1"-->
             Really, really slow
@@ -210,44 +249,7 @@
   </section>
 </section>
 
-<nav role="navigation" aria-label="main navigation" class="container nav-container overflowing" >
-  <a aria-hidden="true" ng-show="showLeftArrow" class="nav-arrow-left" ng-click="scrollLeft(100);" ng-mouseover="scrollHoverIn(true,2);" ng-mouseleave="scrollHoverOut()">&#171;</a>
-  <div class="nav-scroll">
-    <ul class="nav-inner">
-      @@if (site === 'mew' ) {
-      <li ng-repeat="tab in tabNames track by $index" \
-          class="nav-item {{tab.name}}" \
-          ng-class="{active: $index==gService.currentTab}"
-          ng-show="tab.mew"
-          ng-click="tabClick($index)">
-            <a tabindex="0" aria-label="nav item: {{tab.name | translate}}" translate="{{tab.name}}"></a>
-      </li>
-      }
-      @@if (site === 'cx' ) {
-      <li ng-repeat="tab in tabNames track by $index" \
-          class="nav-item {{tab.name}}" \
-          ng-class="{active: $index==gService.currentTab}"
-          ng-show="tab.cx"
-          ng-click="tabClick($index)">
-            <a tabindex="0" aria-label="nav item: {{tab.name | translate}}" translate="{{tab.name}}"></a>
-      </li>
-      }<!--
-      <li class="nav-item help">
-        <a href="https://myetherwallet.github.io/knowledge-base/" target="_blank" rel="noopener noreferrer">
-          <span translate="NAV_Help">
-            Help
-          </span>
-        </a>
-      </li>-->
-    </ul>
-  </div>
-  <a aria-hidden="true"
-     ng-show="showRightArrow"
-     class="nav-arrow-right"
-     ng-click="scrollRight(100);"
-     ng-mouseover="scrollHoverIn(false,2);"
-     ng-mouseleave="scrollHoverOut()">&#187;</a>
-</nav>
+
 
 @@if (site === 'mew' ) { @@include( './header-node-modal.tpl', { "site": "mew" } ) }
 @@if (site === 'cx'  ) { @@include( './header-node-modal.tpl', { "site": "cx"  } ) }
