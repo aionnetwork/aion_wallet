@@ -54,6 +54,10 @@ window.ens                   = ens;
 var domainsale               = require('./domainsale');
 window.domainsale            = domainsale;
 var translate                = require('./translations/translate.js');
+
+const AionWeb3 = require('./aionWeb3/index')
+var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider('http://127.0.0.1:8545'));
+
 if (IS_CX) {
   var cxFuncs                = require('./cxFuncs');
   window.cxFuncs             = cxFuncs;

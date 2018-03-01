@@ -1,6 +1,5 @@
 'use strict'
 var globalService = function($http, $httpParamSerializerJQLike) {
-
   globalFuncs.checkAndRedirectHTTPS()
   ajaxReq.http = $http
   ajaxReq.postSerializer = $httpParamSerializerJQLike
@@ -98,6 +97,46 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     url: "bulk-generate",
     mew: false,
     cx: false
+  }
+}
+
+if (!uiFuncs.kernelRunning) {
+    tabs = {
+    generateWallet: {
+      id: 0,
+      name: "NAV_GenerateWallet_alt",
+      url: "generate-wallet",
+      mew: true,
+      cx: false
+    },
+    myWallet: {
+      id: 1,
+      name: "NAV_MyWallets",
+      url: "my-wallet",
+      mew: false,
+      cx: true
+    },
+    addWallet: {
+      id: 2,
+      name: "NAV_AddWallet",
+      url: "add-wallet",
+      mew: false,
+      cx: true
+    },
+    signMsg: {
+      id: 11,
+      name: "NAV_SignMsg",
+      url: "sign-message",
+      mew: false,
+      cx: false
+    },
+    bulkGenerate: {
+      id: 12,
+      name: "NAV_BulkGenerate",
+      url: "bulk-generate",
+      mew: false,
+      cx: false
+    }
   }
 }
 

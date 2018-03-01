@@ -215,6 +215,9 @@ Wallet.prototype.setBalance = function(callback) {
     this.balance = aionweb3.eth.getBalance('0x'+this.pubKey);
 }
 Wallet.prototype.getBalance = function() {
+
+    if (!uiFuncs.kernelRunning) return "You are not currently connected to a node for";
+
     return this.balance/Math.pow(10,18);
 }
 Wallet.prototype.getPath = function() {
@@ -278,17 +281,17 @@ Wallet.fromParityPhrase = function(phrase) {
     return new Wallet(hash);
 }
 Wallet.prototype.toV3 = function(password, opts) {
-    console.log("opts are "+opts);
-
-    opts = opts || {}
-    var salt = opts.salt || ethUtil.crypto.randomBytes(32)
-    var iv = opts.iv || ethUtil.crypto.randomBytes(16)
-    var derivedKey
-    var kdf = opts.kdf || 'scrypt'
+console.log(ethUtil);
+    opts = opts || {};
+    var salt = opts.salt || ethUtil.crypto.randomBytes(32);
+    var iv = opts.iv || ethUtil.crypto.randomBytes(16);
+    var derivedKey;
+    var kdf = opts.kdf || 'scrypt';
     var kdfparams = {
         dklen: opts.dklen || 32,
         salt: salt.toString('hex')
-    }
+    };
+    
     if (kdf === 'pbkdf2') {
         kdfparams.c = opts.c || 262144
         kdfparams.prf = 'hmac-sha256'
@@ -346,7 +349,7 @@ Wallet.prototype.toV3 = function(password, opts) {
         kdfparams.p.toString(), //10
         mac.toString('hex') //11       
     ]; 
-console.log (returnData);
+console.log ("return data is "+returnData);
     return hexToBinary(RLP.encode(returnData).toString('hex'));
 }
 

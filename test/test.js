@@ -1,7 +1,8 @@
 var assert = require('assert');
 
+var ethUtil = require('../app/scripts/main.js');
 var wallet = require ('../app/scripts/myetherwallet.js');
-var ethUtil = require('ethereumjs-util');
+
 
 describe('Array', function() {
   describe('generate keyStore', function() {
