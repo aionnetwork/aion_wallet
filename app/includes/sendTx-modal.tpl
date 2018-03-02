@@ -86,7 +86,7 @@
             </tr>
             <tr>
               <td class="small text-right">NRG Price:</td>
-              <td class="small text-left mono">1 aPLAT</small>
+              <td class="small text-left mono">1 PLAT</small>
               </td>
             </tr>
             <tr>

@@ -4,7 +4,7 @@
 
     <div class="col-xs-11">
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
           You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
         </p>
@@ -28,7 +28,7 @@
 
     <div class="col-xs-12" ng-show='showEnc'>
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
           This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
@@ -43,7 +43,7 @@
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrivKeyDesc">
           This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended.
         </p>
@@ -69,9 +69,9 @@
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrintDesc">
-          ProTip: If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!
+          If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!
         </p>
         <h5 translate="x_Print">
           Print Paper Wallet:

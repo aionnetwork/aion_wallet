@@ -102,7 +102,7 @@
       <br>
     </section>
 
-<!--    
+<!--
     <section class="block__help">
 
       <h2 translate="GEN_Help_0">
@@ -186,7 +186,7 @@
     </section>
 -->
   </article>
-  
+
 
   <article role="main" class="block__wrap gen__2" ng-show="wallet && !showPaperWallet" > <!-- -->
 
@@ -239,45 +239,51 @@
     </section>
 
     <section class="block__help">
-      <h2 translate="GEN_Help_8">
-        Not Downloading a File?
-      </h2>
-      <ul>
-        <li translate="GEN_Help_9">
-          Try using Google Chrome
-        </li>
-        <li translate="GEN_Help_10">
-          Right click &amp; save file as. Filename:
-        </li>
-        <input value="{{encFileName}}" class="form-control input-sm" />
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_8">
+          Not Downloading a File?
+        </h2>
+        <ul>
+          <li translate="GEN_Help_9">
+            Try using Google Chrome
+          </li>
+          <li translate="GEN_Help_10">
+            Right click &amp; save file as. Filename:
+          </li>
+          <input value="{{encFileName}}" class="form-control input-sm" />
+        </ul>
+      </div>
 
-      <h2 translate="GEN_Help_11">
-        Don't open this file on your computer
-      </h2>
-      <ul>
-        <li translate="GEN_Help_12">
-          Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity &amp; other wallet clients.)
-        </li>
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_11">
+          Don't open this file on your computer
+        </h2>
+        <ul>
+          <li translate="GEN_Help_12">
+            Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity &amp; other wallet clients.)
+          </li>
+        </ul>
+      </div>
 
-      <h2 translate="GEN_Help_4">Guides &amp; FAQ</h2>
-      <ul>
-        <li>
-          <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
-            <strong translate="GEN_Help_13">
-              How to Back Up Your Keystore File
-            </strong>
-          </a>
-        </li>
-        <li>
-          <a href="./helpPages/DifferenceBetweenWallets.html">
-            <strong translate="GEN_Help_14">
-              What are these Different Formats?
-            </strong>
-          </a>
-        </li>
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_4">Guides &amp; FAQ</h2>
+        <ul>
+          <li>
+            <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
+              <strong translate="GEN_Help_13">
+                How to Back Up Your Keystore File
+              </strong>
+            </a>
+          </li>
+          <li>
+            <a href="./helpPages/DifferenceBetweenWallets.html">
+              <strong translate="GEN_Help_14">
+                What are these Different Formats?
+              </strong>
+            </a>
+          </li>
+        </ul>
+      </div>
 
     </section>
 
@@ -331,36 +337,41 @@
     </section>
 
     <section class="block__help">
-      <h2 translate="GEN_Help_4">
-        Guides &amp; FAQ
-      </h2>
-      <ul>
-        <li><a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
-          <strong translate="HELP_2a_Title">
-            How to Save & Backup Your Wallet.
-          </strong>
-        </a></li>
-        <li><a href="./helpPages/ProtectingYourWallet.html" target="_blank" rel="noopener noreferrer">
-          <strong translate="GEN_Help_15">Preventing loss &amp; theft of your funds.</strong>
-        </a></li>
-        <li><a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" rel="noopener noreferrer">
-          <strong translate="GEN_Help_16">What are these Different Formats?</strong>
-        </a></li>
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_4">
+          Guides &amp; FAQ
+        </h2>
+        <ul>
+          <li><a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
+            <strong translate="HELP_2a_Title">
+              How to Save & Backup Your Wallet.
+            </strong>
+          </a></li>
+          <li><a href="./helpPages/ProtectingYourWallet.html" target="_blank" rel="noopener noreferrer">
+            <strong translate="GEN_Help_15">Preventing loss &amp; theft of your funds.</strong>
+          </a></li>
+          <li><a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" rel="noopener noreferrer">
+            <strong translate="GEN_Help_16">What are these Different Formats?</strong>
+          </a></li>
+        </ul>
+      </div>
 
-      <h2 translate="GEN_Help_17">
-        Why Should I?
-      </h2>
-      <ul>
-        <li translate="GEN_Help_18">
-          To have a secondary backup.
-        </li>
-        <li translate="GEN_Help_19">
-          In case you ever forget your password.
-        </li>
-      </ul>
-
-      <h2 translate="x_PrintDesc"></h2>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_17">
+          Why Should I?
+        </h2>
+        <ul>
+          <li translate="GEN_Help_18">
+            To have a secondary backup.
+          </li>
+          <li translate="GEN_Help_19">
+            In case you ever forget your password.
+          </li>
+        </ul>
+      </div>
+      <div class="help_sections">
+        <h2 class="proTip" translate="x_PrintDesc"></h2>
+      </div>
 
     </section>
 
@@ -389,7 +400,7 @@
 
     <div class="col-xs-11">
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
           You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
         </p>
@@ -413,7 +424,7 @@
 
     <div class="col-xs-12" ng-show='showEnc'>
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
           This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
@@ -428,7 +439,7 @@
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrivKeyDesc">
           This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended.
         </p>
@@ -454,9 +465,9 @@
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icon-help.svg" class="help-icon" />
+        <img src="images/icons/aion.svg" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrintDesc">
-          ProTip: If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!
+          If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!
         </p>
         <h5 translate="x_Print">
           Print Paper Wallet:
