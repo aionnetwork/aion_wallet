@@ -8,6 +8,7 @@ body {
   background-attachment: fixed, fixed;
   // font-family: 'Roboto', sans-serif !important;
 }
+
 .bg-gradient.header-branding {
   border-bottom: 1px solid #40bded!important;
   // box-shadow: 0 10px 10px lightgrey;
@@ -36,9 +37,15 @@ nav.container {
   border-top: none !important;
 }
 code {
-  background-color: rgba(17, 102, 152, 0.66);
+  background-color: rgba(17, 102, 152, 0.66) !important;
 }
-.block__main, .block__help, .block {
+.block {
+  code {
+    background-color: rgba(17, 102, 152, 0.66) !important;
+  }
+}
+.block__main, .block__help, .block {r
+
   a {
     color: #12364c;
   }
@@ -63,6 +70,9 @@ code {
   background: linear-gradient(to top left,rgba(31,203,255,.09),rgba(31,203,255,.2),rgba(31,203,255,.09))
   // background: linear-gradient(to top left,rgba(255, 255, 255, 0),rgba(31, 203, 255, 0.18));
 }
+.block__main.gen__2--inner{
+  padding-bottom: 40px;
+}
 // aion bullets
 .aion-help {
   max-width: 24px;
@@ -74,7 +84,7 @@ code {
 .address-identicon-container {
   margin-top: 25px;
 }
-// iffy columns
+// COLUMN LAYOUTS
 .col-sm-8 {
   padding: 0 !important;
 }
@@ -92,7 +102,7 @@ code {
     max-width: 430px;
   }
 }
-// layout
+// LAYOUT
 h1.ng-scope, .row.ng-scope, article.row{
   // max-width: 1337px;
   // max-width: 1357px;
@@ -102,7 +112,7 @@ h1.ng-scope, .row.ng-scope, article.row{
   margin-bottom: 25px;
 
 }
-// a - links
+// LINKS
 .help-sections, .block.decrypt-drtv.clearfix   {
   a.btn {
     color: white;
@@ -114,7 +124,7 @@ h1.ng-scope, .row.ng-scope, article.row{
 a:hover {
   text-decoration: underline;
 }
-
+// ACCORDION
 .collapse-container{
   // max-width: 1357px;
   max-width: 1300px;
@@ -130,7 +140,7 @@ a:hover {
     margin: 0 0 .5rem;
   }
 }
-// more layout
+// LAYOUT STUFF
 article.row{
   margin-top: 20px;
   margin-bottom: 65px;
@@ -147,7 +157,7 @@ article.row{
   }
 }
 
-// accordion icons
+// ACCORDION
 a.collapse-button {
   &:hover{
     text-decoration: none;
@@ -167,7 +177,7 @@ a.collapse-button {
     font-weight: normal;
   }
 }
-// create new wallet..etc
+// MAIN BLOCK SECTIONS
 .block__main {
   // background: #12364c;
   // background: #FFF;
@@ -190,7 +200,6 @@ a.collapse-button {
     color: white;
     background: transparent;
   }
-
   a {
     color: #12364c;
   }
@@ -234,7 +243,49 @@ a.btn-danger {
   }
 }
 
-
-.block.decrypt-drt {
-
+// HELP PAGES
+.single {
+  background: rgba(71, 208, 241, 0.05);
+  background-image: url(../images/background/bg-left.svg), url(../images/background/bg-right.svg);
+  background-position: left top, right bottom;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
+  .header-branding .container {
+    display: flex;
+    justify-content: center;
+  }
+  .block {
+    background: #12364c;
+    color: white;
+  }
+  a {
+    color: #40bded !important;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 35px;
+    li:before {
+      content: "\00BB \0020";
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-right: .5rem;
+      color: #40bded;
+    }
+  }
+  ol {
+    padding-left: 3.1rem;
+    li {
+      padding-left: .5rem;
+    }
+  }
+  code {
+    color: white !important;
+  }
+  .page__meta {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    a {
+      color: white !important;
+    }
+  }
 }
