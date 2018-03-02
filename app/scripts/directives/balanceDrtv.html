@@ -28,14 +28,14 @@
     <h5 translate="sidebar_AccountBal">Account Balance</h5>
     <ul class="account-info point">
       <li>
-        <span class="mono wrap">{{1==1? wallet.getBalance() + " Aions":  "You are not currently connected to a kernel"}} </span>
+        <span class="mono wrap">{{wallet.getBalance()}} </span> Aion
       </li>
     </ul>
     <h5 translate="sidebar_TransHistory"> Transaction History</h5>
     <ul class="account-info">
       <li ng-show="ajaxReq.type != 'CUS'">
         <a href="http://dashboard.aion.network/" target="_blank" rel="noopener noreferrer">
-          Aion Dashboard
+          <u>Aion Dashboard<u>
         </a>
       </li><!--
       <li ng-show="ajaxReq.type == 'ETH'">
