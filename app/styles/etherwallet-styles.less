@@ -1,0 +1,240 @@
+body {
+  // background: red;
+  // background: white;
+  background: rgba(71, 208, 241, 0.05);
+  background-image: url(../images/background/bg-left.svg), url(../images/background/bg-right.svg);
+  background-position: left top, right bottom;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
+  // font-family: 'Roboto', sans-serif !important;
+}
+.bg-gradient.header-branding {
+  border-bottom: 1px solid #40bded!important;
+  // box-shadow: 0 10px 10px lightgrey;
+}
+.tagline {
+  justify-content: space-between !important;
+}
+nav.container {
+  // background: white;
+  // display: none;
+  width: auto;
+  margin: 0;
+  a {
+    background: white;
+    &:focus {
+      outline: none
+    }
+  }
+}
+.modal-content{
+  min-width: 1000px;
+  transform: translateX(-7%);
+}
+// get rid of that ugly nav border
+.nav-container {
+  border-top: none !important;
+}
+code {
+  background-color: rgba(17, 102, 152, 0.66);
+}
+.block__main, .block__help, .block {
+  a {
+    color: #12364c;
+  }
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px 30px;
+  margin: 0 auto;
+  // box-shadow: 16px 16px 45px 2px rgba(0,0,0,.2);
+  box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
+
+  // background: linear-gradient(to top left, rgba(18, 54, 76, 0.6), rgba(136,213,236,0.82));
+  // background: linear-gradient(to top left, rgba(18, 54, 76, 0.6), rgba(52, 148, 177, 0.8));
+  // background: linear-gradient(to top left,rgb(0, 43, 70),rgba(52,148,177,.8));
+
+  // background: linear-gradient(to top left,rgba(64, 193, 240, 0.37),rgba(52, 148, 177, 0.61));
+  // background: linear-gradient(to top left, rgba(18, 54, 76, 0.6), rgba(18, 56, 68, 0.6));
+  // background: linear-gradient(to top left,rgba(15, 76, 113, 0.9),rgba(31, 203, 255, 0.6));
+
+  // background: linear-gradient(to top left,rgba(15, 76, 113, 0.3),rgba(31, 203, 255, 0.18));
+  // background: linear-gradient(to top left,rgba(31, 203, 255, 0.02),rgba(31, 203, 255, 0.18));
+
+  background: linear-gradient(to top left,rgba(31,203,255,.09),rgba(31,203,255,.2),rgba(31,203,255,.09))
+  // background: linear-gradient(to top left,rgba(255, 255, 255, 0),rgba(31, 203, 255, 0.18));
+}
+// aion bullets
+.aion-help {
+  max-width: 24px;
+  height: auto;
+  position: relative;
+  top: -2px;
+}
+// the barcode in the "your address" section
+.address-identicon-container {
+  margin-top: 25px;
+}
+// iffy columns
+.col-sm-8 {
+  padding: 0 !important;
+}
+.col-sm-4 {
+  padding: 0 !important;
+}
+@media (min-width: 51.2rem) {
+  .col-sm-8 {
+    padding-right: 1rem !important;
+    padding-left: 0 !important;
+  }
+  .col-sm-4 {
+    padding-left: 1rem !important;
+    padding-right: 0 !important;
+    max-width: 430px;
+  }
+}
+// layout
+h1.ng-scope, .row.ng-scope, article.row{
+  // max-width: 1337px;
+  // max-width: 1357px;
+  max-width: 1300px;
+  margin: auto;
+  // padding: 0 13px;
+  margin-bottom: 25px;
+
+}
+// a - links
+.help-sections, .block.decrypt-drtv.clearfix   {
+  a.btn {
+    color: white;
+  }
+  a {
+    color: #12364c;
+  }
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.collapse-container{
+  // max-width: 1357px;
+  max-width: 1300px;
+  margin: auto !important;
+  margin-top: 50px !important;
+
+  h1, p {
+    padding: 0px 10px;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+  p {
+    margin: 0 0 .5rem;
+  }
+}
+// more layout
+article.row{
+  margin-top: 20px;
+  margin-bottom: 65px;
+  padding: 0;
+  .block {
+    margin-top: 20px;
+    margin-bottom: 65px;
+  }
+}
+.row.ng-scope{
+  .block {
+    margin-top: 50px;
+    margin-bottom: 65px;
+  }
+}
+
+// accordion icons
+a.collapse-button {
+  &:hover{
+    text-decoration: none;
+  }
+  span{
+    position: relative;
+    left: -1px;
+    top: -47px;
+    font-size: 76px;
+    font-weight: lighter;
+    color: #12364c;
+  }
+  span:first-child {
+    font-size: 45px;
+    position: relative;
+    top: -20px;
+    font-weight: normal;
+  }
+}
+// create new wallet..etc
+.block__main {
+  // background: #12364c;
+  // background: #FFF;
+  // background: #12364cde;
+  margin-top: 70px !important;
+  max-width: 1300px;
+  padding: 20px 30px;
+  h1, h4, p {
+    // color: white !important;
+    // color: #12364c !important;
+    // color: #88d5ec !important;
+    // color: #40bded !important;
+  }
+  input:focus {
+    box-shadow: 0 0 15px white !important;
+    // border: 1px solid #88d5ec !important;
+  }
+  a.btn-primary {
+    background: #12364c !important;
+    color: white;
+    background: transparent;
+  }
+
+  a {
+    color: #12364c;
+  }
+}
+a.btn-danger {
+  color: white !important;
+}
+.alert-info.animated-show-hide {
+  background: #12364c !important;
+}
+/*
+.proTip:before {
+  content: "ProTip:";
+  padding: 2px 3px;
+  color: white;
+  background: rgba(17, 102, 152, 0.66);
+  font-family: Menlo,Monaco,Consolas,Courier New,monospace;
+}
+
+*/
+// print container for paper wallet
+.print-container {
+  background: #FFF !important;
+}
+// the help sections (3 columns w/ info)
+.block__help {
+  display: flex;
+  justify-content: space-between;
+  margin: 60px auto 70px;
+  padding: 20px 0;
+
+  .help_sections {
+    width: 30%;
+    background: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    h2 {
+      margin-top: 0;
+    }
+  }
+}
+
+
+.block.decrypt-drt {
+
+}

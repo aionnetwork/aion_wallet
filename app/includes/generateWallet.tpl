@@ -57,7 +57,7 @@
       <br>
     </section>
 
-<!--    
+<!--
     <section class="block__help">
 
       <h2 translate="GEN_Help_0">
@@ -141,7 +141,7 @@
     </section>
 -->
   </article>
-  
+
 
   <article role="main" class="block__wrap gen__2" ng-show="wallet && !showPaperWallet" > <!-- -->
 
@@ -194,45 +194,51 @@
     </section>
 
     <section class="block__help">
-      <h2 translate="GEN_Help_8">
-        Not Downloading a File?
-      </h2>
-      <ul>
-        <li translate="GEN_Help_9">
-          Try using Google Chrome
-        </li>
-        <li translate="GEN_Help_10">
-          Right click &amp; save file as. Filename:
-        </li>
-        <input value="{{encFileName}}" class="form-control input-sm" />
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_8">
+          Not Downloading a File?
+        </h2>
+        <ul>
+          <li translate="GEN_Help_9">
+            Try using Google Chrome
+          </li>
+          <li translate="GEN_Help_10">
+            Right click &amp; save file as. Filename:
+          </li>
+          <input value="{{encFileName}}" class="form-control input-sm" />
+        </ul>
+      </div>
 
-      <h2 translate="GEN_Help_11">
-        Don't open this file on your computer
-      </h2>
-      <ul>
-        <li translate="GEN_Help_12">
-          Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity &amp; other wallet clients.)
-        </li>
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_11">
+          Don't open this file on your computer
+        </h2>
+        <ul>
+          <li translate="GEN_Help_12">
+            Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity &amp; other wallet clients.)
+          </li>
+        </ul>
+      </div>
 
-      <h2 translate="GEN_Help_4">Guides &amp; FAQ</h2>
-      <ul>
-        <li>
-          <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
-            <strong translate="GEN_Help_13">
-              How to Back Up Your Keystore File
-            </strong>
-          </a>
-        </li>
-        <li>
-          <a href="./helpPages/DifferenceBetweenWallets.html">
-            <strong translate="GEN_Help_14">
-              What are these Different Formats?
-            </strong>
-          </a>
-        </li>
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_4">Guides &amp; FAQ</h2>
+        <ul>
+          <li>
+            <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
+              <strong translate="GEN_Help_13">
+                How to Back Up Your Keystore File
+              </strong>
+            </a>
+          </li>
+          <li>
+            <a href="./helpPages/DifferenceBetweenWallets.html">
+              <strong translate="GEN_Help_14">
+                What are these Different Formats?
+              </strong>
+            </a>
+          </li>
+        </ul>
+      </div>
 
     </section>
 
@@ -286,36 +292,41 @@
     </section>
 
     <section class="block__help">
-      <h2 translate="GEN_Help_4">
-        Guides &amp; FAQ
-      </h2>
-      <ul>
-        <li><a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
-          <strong translate="HELP_2a_Title">
-            How to Save & Backup Your Wallet.
-          </strong>
-        </a></li>
-        <li><a href="./helpPages/ProtectingYourWallet.html" target="_blank" rel="noopener noreferrer">
-          <strong translate="GEN_Help_15">Preventing loss &amp; theft of your funds.</strong>
-        </a></li>
-        <li><a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" rel="noopener noreferrer">
-          <strong translate="GEN_Help_16">What are these Different Formats?</strong>
-        </a></li>
-      </ul>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_4">
+          Guides &amp; FAQ
+        </h2>
+        <ul>
+          <li><a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
+            <strong translate="HELP_2a_Title">
+              How to Save & Backup Your Wallet.
+            </strong>
+          </a></li>
+          <li><a href="./helpPages/ProtectingYourWallet.html" target="_blank" rel="noopener noreferrer">
+            <strong translate="GEN_Help_15">Preventing loss &amp; theft of your funds.</strong>
+          </a></li>
+          <li><a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" rel="noopener noreferrer">
+            <strong translate="GEN_Help_16">What are these Different Formats?</strong>
+          </a></li>
+        </ul>
+      </div>
 
-      <h2 translate="GEN_Help_17">
-        Why Should I?
-      </h2>
-      <ul>
-        <li translate="GEN_Help_18">
-          To have a secondary backup.
-        </li>
-        <li translate="GEN_Help_19">
-          In case you ever forget your password.
-        </li>
-      </ul>
-
-      <h2 translate="x_PrintDesc"></h2>
+      <div class="help_sections">
+        <h2 translate="GEN_Help_17">
+          Why Should I?
+        </h2>
+        <ul>
+          <li translate="GEN_Help_18">
+            To have a secondary backup.
+          </li>
+          <li translate="GEN_Help_19">
+            In case you ever forget your password.
+          </li>
+        </ul>
+      </div>
+      <div class="help_sections">
+        <h2 class="proTip" translate="x_PrintDesc"></h2>
+      </div>
 
     </section>
 
