@@ -28,7 +28,28 @@
               class="input-group-addon eye"
               ng-click="showPass=!showPass">
         </span>
+
       </div>
+
+
+      <div class="input-group">
+        <input name="password-repeat"
+             class="form-control"
+             type="{{showPass && 'password' || 'text'}}"
+             placeholder="{{'GEN_Placeholder_2' | translate }}"
+             ng-model="retypePassword"
+             ng-class="isRetypeMatch(password, retypePassword) ? 'is-valid' : 'is-invalid'"
+             aria-label="{{'GEN_Label_1' | translate}}"/>
+        <span tabindex="0"
+              aria-label="make password visible"
+              role="button"
+              class="input-group-addon eye"
+              ng-click="showPass=!showPass">
+        </span>
+
+      </div>
+
+
       <a tabindex="0"
          role="button"
          class="btn btn-primary"
@@ -347,7 +368,7 @@
       </div>
     </div>
 
-    <div class="row" ng-show="wallet!=null" ng-controller='viewWalletCtrl'>
+    <div class="row" ng-show="wallet!=null" ng-controller='viewWalletCtrl' >
       @@if (site === 'cx' ) {  @@include( './viewWalletInfo-content.tpl', { "site": "cx" } )    }
       @@if (site === 'mew') {  @@include( './viewWalletInfo-content.tpl', { "site": "mew" } )   }
     </div>

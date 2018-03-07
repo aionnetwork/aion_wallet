@@ -2,10 +2,10 @@
 var nacl = require('./nacl.js');
 var blake2b = require('./blakejs/blake2b');
 var blake2bHex = blake2b.blake2bHex;
-const RLP = require('./RLPlib.js')
+const RLP = require('./RLPlib.js');
 
-const AionWeb3 = require('./aionWeb3/index')
-var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider('http://127.0.0.1:8545'));
+const AionWeb3 = require('./aionWeb3/index');
+var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
 
 var lookup = {
   '0': '0000',

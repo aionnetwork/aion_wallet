@@ -178,7 +178,7 @@
           <i class="caret"></i>
       </a>
       <ul class="dropdown-menu" ng-show="dropdownGasPrice">
-        <div class="header--gas">
+        
           <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
           {{gas.value}} PLAT
           <input type="range" ng-model="gas.value" min="{{gas.min}}" max="{{gas.max}}" step="{{gas.step}}" ng-change="gasChanged()"/>
@@ -198,6 +198,27 @@
 
     </span>
 
+    <span class="dropdown dropdown-gas" ng-cloak>
+      <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
+        <span >Kernel Connection</span>:{{currentNode}} 
+        <i class="caret"></i>
+      </a>
+    <ul class="dropdown-menu" ng-show="dropCon">
+    <div class="header--gas">
+      <label ng-click="changeCurNode('default')">Default: localhost:8545</label>
+      <label ng-click="changeCurNode('aion')">Aion Network</label></br>
+       <label ng-click="changeCurNode('other')">Other</label>
+      
+       <form id="addr">
+            IP: <input type="text" value="{{currentIP}}" ><br>
+          PORT: <input type="text" value="{{currentPort}}"><br>          
+        </form>
+        <button ng-click="changeCurNode('other', document.getElementById('addr').value,document.getElementById('addr')).value">OK</button>
+
+    </div>
+    </ul>
+
+    </span>
     <!-- Warning: The separators you see on the frontend are in styles/etherwallet-custom.less. If you add / change a node, you have to adjust these. Ping tayvano if you're not a CSS wizard -->
     <!--
     <span class="dropdown dropdown-node" ng-cloak>
@@ -360,7 +381,28 @@
               class="input-group-addon eye"
               ng-click="showPass=!showPass">
         </span>
+
       </div>
+
+
+      <div class="input-group">
+        <input name="password-repeat"
+             class="form-control"
+             type="{{showPass && 'password' || 'text'}}"
+             placeholder="{{'GEN_Placeholder_2' | translate }}"
+             ng-model="retypePassword"
+             ng-class="isRetypeMatch(password, retypePassword) ? 'is-valid' : 'is-invalid'"
+             aria-label="{{'GEN_Label_1' | translate}}"/>
+        <span tabindex="0"
+              aria-label="make password visible"
+              role="button"
+              class="input-group-addon eye"
+              ng-click="showPass=!showPass">
+        </span>
+
+      </div>
+
+
       <a tabindex="0"
          role="button"
          class="btn btn-primary"
@@ -679,7 +721,7 @@
       </div>
     </div>
 
-    <div class="row" ng-show="wallet!=null" ng-controller='viewWalletCtrl'>
+    <div class="row" ng-show="wallet!=null" ng-controller='viewWalletCtrl' >
       
         <article class="col-sm-8 view-wallet-content">
 

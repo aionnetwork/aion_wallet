@@ -71,7 +71,8 @@ globalFuncs.errorMsgs = [
     'Please enter valid TX hash', // 36
     'Please enter valid hex string. Hex only contains: 0x, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, a, b, c, d, e, f', // 37
     'Offer must have either price or reserve set to more than 0', // 38
-    'Bid must be more than the specified minimum' // 39
+    'Bid must be more than the specified minimum', // 39
+    'Your password and re-typed password do not match!' // 40
 ];
 
 // These are translated in the translation files
@@ -178,6 +179,10 @@ globalFuncs.checkAndRedirectHTTPS = function() {
 globalFuncs.isStrongPass = function(password) {
     return password.length > 8;
 };
+globalFuncs.isRetypeMatch = function(password, retype) {
+    return password == retype;
+};
+
 globalFuncs.hexToAscii = function(hex) {
     return hex.match(/.{1,2}/g).map(function(v) {
         return String.fromCharCode(parseInt(v, 16));
@@ -365,27 +370,28 @@ globalFuncs.removeTokenFromLocal = function(symbol, tokenObj) {
 
 
 globalFuncs.localStorage = {
-        isAvailable: function() {
-            // return typeof localStorage != "undefined";
-            // return globalFuncs.storageAvailable('localStorage');
+    isAvailable: function() {
+        // return typeof localStorage != "undefined";
+        // return globalFuncs.storageAvailable('localStorage');
 
-            // Polyfilled if not available/accessible
-            return true;
-        },
-        setItem: function(key, value) {
-            if (this.isAvailable()) {
-                localStorage.setItem(key, value);
-            } else {
-                // console.log("localStorage is available? " + this.isAvailable());
-            }
-        },
-        getItem: function(key, dValue = "") {
-            if (this.isAvailable()) {
-                return localStorage.getItem(key);
-            } else {
-                return dValue;
-            }
+        // Polyfilled if not available/accessible
+        return true;
+    },
+    setItem: function(key, value) {
+        if (this.isAvailable()) {
+            localStorage.setItem(key, value);
+        } else {
+            // console.log("localStorage is available? " + this.isAvailable());
+        }
+    },
+    getItem: function(key, dValue = "") {
+        if (this.isAvailable()) {
+            return localStorage.getItem(key);
+        } else {
+            return dValue;
         }
     }
+};
+
 
 module.exports = globalFuncs;

@@ -7,6 +7,10 @@ var angularTranslate         = require('angular-translate');
 var angularTranslateErrorLog = require('angular-translate-handler-log');
 var angularSanitize          = require('angular-sanitize');
 var angularAnimate           = require('angular-animate');
+
+window.web3addr = "http://127.0.0.1:8545";
+window.currentNode ="Default: localhost:8545";
+
 var bip39                    = require('bip39');
 var HDKey                    = require('hdkey');
 window.hd                    = { bip39: bip39, HDKey: HDKey };
@@ -54,9 +58,6 @@ window.ens                   = ens;
 var domainsale               = require('./domainsale');
 window.domainsale            = domainsale;
 var translate                = require('./translations/translate.js');
-
-const AionWeb3 = require('./aionWeb3/index')
-var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider('http://127.0.0.1:8545'));
 
 if (IS_CX) {
   var cxFuncs                = require('./cxFuncs');

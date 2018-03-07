@@ -161,7 +161,7 @@
           <i class="caret"></i>
       </a>
       <ul class="dropdown-menu" ng-show="dropdownGasPrice">
-        <div class="header--gas">
+        
           <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
           {{gas.value}} PLAT
           <input type="range" ng-model="gas.value" min="{{gas.min}}" max="{{gas.max}}" step="{{gas.step}}" ng-change="gasChanged()"/>
@@ -181,6 +181,27 @@
 
     </span>
 
+    <span class="dropdown dropdown-gas" ng-cloak>
+      <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
+        <span >Kernel Connection</span>:{{currentNode}} 
+        <i class="caret"></i>
+      </a>
+    <ul class="dropdown-menu" ng-show="dropCon">
+    <div class="header--gas">
+      <label ng-click="changeCurNode('default')">Default: localhost:8545</label>
+      <label ng-click="changeCurNode('aion')">Aion Network</label></br>
+       <label ng-click="changeCurNode('other')">Other</label>
+      
+       <form id="addr">
+            IP: <input type="text" value="{{currentIP}}" ><br>
+          PORT: <input type="text" value="{{currentPort}}"><br>          
+        </form>
+        <button ng-click="changeCurNode('other', document.getElementById('addr').value,document.getElementById('addr')).value">OK</button>
+
+    </div>
+    </ul>
+
+    </span>
     <!-- Warning: The separators you see on the frontend are in styles/etherwallet-custom.less. If you add / change a node, you have to adjust these. Ping tayvano if you're not a CSS wizard -->
     <!--
     <span class="dropdown dropdown-node" ng-cloak>

@@ -21,6 +21,30 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.nodeService = $scope.ajaxReq.service
     $scope.$watch('ajaxReq.type', function() { $scope.nodeType = $scope.ajaxReq.type })
     $scope.$watch('ajaxReq.service', function() { $scope.nodeService = $scope.ajaxReq.service })
+
+    $scope.currentNode= window.currentNode;
+    $scope.currentIP="127.0.0.1";
+    $scope.currentPort= "8545";
+
+    $scope.changeCurNode= function (node, ip, port){
+        if (node == "default"){
+            $scope.currentIP="127.0.0.1";
+            $scope.currentPort="8545";
+            $scope.currentNode = "Default: localhost:8545";
+        } else if (node == "aion"){
+            $scope.currentIP="52.174.121.57";
+            $scope.currentPort="46488";
+            $scope.currentNode = "Aion Network";
+        } else if (node == "other"){
+            if (ip) $scope.currentIP=ip;
+            if (port)$scope.currentPort=port;
+            $scope.currentNode = "Other";
+        }else {
+
+        }
+        window.web3addr="http://"+$scope.currentIP+":"+$scope.currentPort;
+    }
+
     $scope.setArrowVisibility = function() {
         setTimeout(function() {
             if (document.querySelectorAll('.nav-inner')[0] && document.querySelectorAll('.nav-scroll')[0]) {

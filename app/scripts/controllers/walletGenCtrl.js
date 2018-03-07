@@ -1,6 +1,7 @@
 'use strict';
 var walletGenCtrl = function($scope) {
     $scope.password = "";
+    $scope.retypePassword = "";
     $scope.wallet = null;
     $scope.showWallet = false;
     $scope.blob = $scope.blobEnc = "";
@@ -10,9 +11,12 @@ var walletGenCtrl = function($scope) {
     $scope.showPaperWallet = false;
     $scope.showGetAddress = false;
     $scope.genNewWallet = function() { 
-        if (!$scope.isStrongPass()) {
+        if (!$scope.isStrongPass() ) {
             $scope.notifier.danger(globalFuncs.errorMsgs[1]);
-        } else if ($scope.isDone) {
+        }else if (!$scope.isRetypeMatch()){
+            $scope.notifier.danger(globalFuncs.errorMsgs[40]);
+        }
+         else if ($scope.isDone) {
             $scope.wallet = $scope.blob = $scope.blobEnc = null;
             if (!$scope.$$phase) $scope.$apply();
             $scope.isDone = false;
@@ -43,6 +47,9 @@ var walletGenCtrl = function($scope) {
     }
     $scope.isStrongPass = function() {
         return globalFuncs.isStrongPass($scope.password);
+    }
+    $scope.isRetypeMatch = function() {
+        return globalFuncs.isRetypeMatch($scope.password, $scope.retypePassword);
     }
     $scope.downloaded = function() {
         $scope.fileDownloaded = true;

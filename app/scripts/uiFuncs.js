@@ -1,6 +1,6 @@
 'use strict';
 const AionWeb3 = require('./aionWeb3/index')
-var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider('http://127.0.0.1:8545'));
+var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
 
 var nacl = require('./nacl.js');
 var blake2b = require('./blakejs/blake2b');
