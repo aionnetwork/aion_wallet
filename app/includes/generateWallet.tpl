@@ -8,138 +8,64 @@
 
     <section class="block__main gen__1--inner">
       <br />
-      <h1 translate="NAV_GenerateWallet" aria-live="polite">
-        Create New Wallet
-      </h1>
-      <h4 translate="GEN_Label_1">
-        Enter password
-      </h4>
-      <div class="input-group">
-        <input name="password"
-             class="form-control"
-             type="{{showPass && 'password' || 'text'}}"
-             placeholder="{{'GEN_Placeholder_1' | translate }}"
-             ng-model="password"
-             ng-class="isStrongPass() ? 'is-valid' : 'is-invalid'"
-             aria-label="{{'GEN_Label_1' | translate}}"/>
-        <span tabindex="0"
-              aria-label="make password visible"
-              role="button"
-              class="input-group-addon eye"
-              ng-click="showPass=!showPass">
+      <div class="left">
+        <div class="stage">Stage</div>
+        <div class="stage">1</div>
+        <div class="stage">2</div>
+        <div class="stage">3</div>
+      </div>
+      <div class="right">
+        <h1 translate="NAV_GenerateWallet" aria-live="polite">
+          Create New Wallet
+        </h1>
+        <h4 translate="GEN_Label_1">
+          Enter password
+        </h4>
+        <div class="input-group">
+          <input name="password"
+          class="form-control"
+          type="{{showPass && 'password' || 'text'}}"
+          placeholder="{{'GEN_Placeholder_1' | translate }}"
+          ng-model="password"
+          ng-class="isStrongPass() ? 'is-valid' : 'is-invalid'"
+          aria-label="{{'GEN_Label_1' | translate}}"/>
+          <span tabindex="0"
+          aria-label="make password visible"
+          role="button"
+          class="input-group-addon eye"
+          ng-click="showPass=!showPass">
         </span>
       </div>
       <a tabindex="0"
-         role="button"
-         class="btn btn-primary"
-         ng-click="genNewWallet()"
-         translate="NAV_GenerateWallet">
-           Generate Wallet
+      role="button"
+      class="btn btn-primary"
+      ng-click="genNewWallet()"
+      translate="NAV_GenerateWallet">
+      Generate Wallet
+    </a>
+    <p translate="x_PasswordDesc"></p>
+    <div class="text-center">
+      <strong>
+        <a href="./helpPages/HowToCreateWallet.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        translate="GEN_Help_5">
+        How to Create a Wallet
       </a>
-      <p translate="x_PasswordDesc"></p>
-      <div class="text-center">
-        <strong>
-          <a href="./helpPages/HowToCreateWallet.html"
-             target="_blank"
-             rel="noopener noreferrer"
-             translate="GEN_Help_5">
-               How to Create a Wallet
-          </a>
-          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-          <a href="./helpPages/GettingStarted.html"
-             target="_blank"
-             rel="noopener noreferrer"
-             translate="GEN_Help_6">
-               Getting Started
-          </a>
-        </strong>
+      &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+      <a href="./helpPages/GettingStarted.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      translate="GEN_Help_6">
+      Getting Started
+    </a>
+  </strong>
+</div>
+
       </div>
       <br>
     </section>
 
-<!--
-    <section class="block__help">
-
-      <h2 translate="GEN_Help_0">
-        Already have a wallet somewhere?
-      </h2>
-
-      <ul>
-        <li>
-          <p>
-            <strong>
-              Ledger / TREZOR / Digital Bitbox
-            </strong>:
-            <span translate="GEN_Help_1">
-              Use your
-            </span>
-            <a ng-click="globalService.currentTab=globalService.tabs.sendTransaction.id">
-              hardware wallet
-            </a>.
-            <span translate="GEN_Help_3">
-              Your device * is * your wallet.
-            </span>
-          </p>
-        </li>
-      </ul>
-
-      <ul>
-        <li>
-          <p>
-            <strong>
-              MetaMask
-            </strong>
-            <span>
-              Connect via your
-            </span>
-            <a ng-click="globalService.currentTab=globalService.tabs.sendTransaction.id">
-              MetaMask Extension
-            </a>.
-            <span translate="GEN_Help_MetaMask">
-              So easy! Keys stay in MetaMask, not on a phishing site! Try it today.
-            </span>
-          </p>
-        </li>
-      </ul>
-
-      <ul>
-        <li>
-          <p>
-            <strong>
-              Jaxx / imToken
-            </strong>
-            <span translate="GEN_Help_1">Use your</span>
-            <a ng-click="globalService.currentTab=globalService.tabs.sendTransaction.id" translate="x_Mnemonic">
-              Mnemonic Phrase
-            </a>
-            <span translate="GEN_Help_2">
-              to access your account.
-            </span>
-        </p>
-        </li>
-      </ul>
-
-      <ul>
-        <li>
-          <p>
-            <strong>
-              Mist / Geth / Parity:
-            </strong>
-            <span translate="GEN_Help_1">
-              Use your
-            </span>
-            <a ng-click="globalService.currentTab=globalService.tabs.sendTransaction.id" translate="x_Keystore2">
-              Keystore File (UTC / JSON)
-            </a>
-            <span translate="GEN_Help_2">
-              to access your account.
-            </span>
-          </p>
-        </li>
-      </ul>
-
-    </section>
--->
   </article>
 
 
@@ -147,49 +73,57 @@
 
     <section class="block__main gen__2--inner">
       <br />
-      <h1 translate="GEN_Label_2">
-        Save your Keystore File (UTC / JSON)
-      </h1>
+      <div class="left">
+        <div class="stage">Stage</div>
+        <div class="stage">1</div>
+        <div class="stage">2</div>
+        <div class="stage">3</div>
+      </div>
+      <div class="right">
+        <h1 translate="GEN_Label_2">
+          Save your Keystore File (UTC / JSON)
+        </h1>
 
-      <a tabindex="0" role="button"
-         class="btn btn-primary"
-         href="{{blobEnc}}"
-         download="{{encFileName}}"
-         aria-label="{{'x_Download'|translate}} {{'x_Keystore'|translate}}"
-         aria-describedby="x_KeystoreDesc"
-         ng-click="downloaded()"
-         target="_blank" rel="noopener noreferrer">
-        <span translate="x_Download">
-          DOWNLOAD
-        </span>
-        <span translate="x_Keystore2">
-          Keystore File (UTC / JSON)
-        </span>
-      </a>
+        <a tabindex="0" role="button"
+           class="btn btn-primary"
+           href="{{blobEnc}}"
+           download="{{encFileName}}"
+           aria-label="{{'x_Download'|translate}} {{'x_Keystore'|translate}}"
+           aria-describedby="x_KeystoreDesc"
+           ng-click="downloaded()"
+           target="_blank" rel="noopener noreferrer">
+          <span translate="x_Download">
+            DOWNLOAD
+          </span>
+          <span translate="x_Keystore2">
+            Keystore File (UTC / JSON)
+          </span>
+        </a>
 
-      <div class="warn">
-        <p class="GEN_Warning_1">
-          **Do not lose it!** It cannot be recovered if you lose it.
-        </p>
-        <p class="GEN_Warning_2">
-          **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
-        </p>
-        <p class="GEN_Warning_3">
-          **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+        <div class="warn">
+          <p class="GEN_Warning_1">
+            **Do not lose it!** It cannot be recovered if you lose it.
+          </p>
+          <p class="GEN_Warning_2">
+            **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
+          </p>
+          <p class="GEN_Warning_3">
+            **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+          </p>
+        </div>
+
+        <p>
+          <a tabindex="0"
+             role="button"
+             class="btn btn-danger"
+             ng-class="fileDownloaded ? '' : 'disabled' "
+             ng-click="continueToPaper()">
+              <span translate="GET_ConfButton">
+                I understand. Continue.
+              </span>
+          </a>
         </p>
       </div>
-
-      <p>
-        <a tabindex="0"
-           role="button"
-           class="btn btn-danger"
-           ng-class="fileDownloaded ? '' : 'disabled' "
-           ng-click="continueToPaper()">
-            <span translate="GET_ConfButton">
-              I understand. Continue.
-            </span>
-        </a>
-      </p>
 
     </section>
 
