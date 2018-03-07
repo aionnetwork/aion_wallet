@@ -1,4 +1,3 @@
-
 body {
   // background: red;
   // background: white;
@@ -7,7 +6,8 @@ body {
   background-position: left top, right bottom;
   background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
-  // font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Open Sans', sans-serif !important;
   // background: white;
 }
 // @media (min-width: 1280px) {
@@ -20,7 +20,10 @@ body {
 //   }
 // }
 header {
-  margin-bottom: 0;;
+  margin-bottom: 0;
+}
+.mt-50 {
+  margin-top: 50px;
 }
 .bg-gradient.header-branding {
   // margin-bottom: -20px;
@@ -78,37 +81,139 @@ code {
     background-color: rgba(17, 102, 152, 0.66) !important;
   }
 }
-.block__main, .block__help, .block {r
+// .block {
+//
+// }
+.block__main, .block__help, .block{
   max-width: 1300px;
   margin: 0 auto;
   // padding: 20px 30px;
   margin: 0 auto;
   box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
-
-  background: linear-gradient(to top left,rgba(31, 203, 255, 0.02),rgba(31, 203, 255, 0.18));
-
+  padding: 0 !important;
+  // background: linear-gradient(to top left,rgba(31, 203, 255, 0.02),rgba(31, 203, 255, 0.18));
+  background: #12364c;
+  color: white;
+  min-height: 483px;
+  border: 1px solid #2bc0ec;
+  display: flex;
   .left {
     display: flex;
-    width: 20%;
+    width: 28%;
     flex-direction: column;
     background: #12364c;
-    color: white;
+    color: white ;
+    a {
+      color: inherit;
+    }
     .stage {
-      height: 33.3%
+      min-height: 155px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      border-top: 1px solid #2bc0ec;
+      border-right: 1px solid #2bc0ec;
+      padding: 20px 8px;
+      h5 {
+        margin: 0;
+        border: 1px solid lightslategrey;
+        width: 38px;
+        border-radius: 50%;
+        padding: 7px;
+        margin: 0px auto 8px;
+        color: lightslategrey;
+      }
+      p {
+        margin-bottom: 0;
+        font-weight: bold;
+        color: lightslategrey;
+      }
+      &.active {
+        h5 {
+          border: 1px solid white;
+          color: white;
+        }
+        p {
+          color: #2bc0ec;
+        }
+        justify-content: space-between;
+      }
+      &:first-child {
+        min-height: 50px;
+        border-top: none;
+        font-weight: bold;
+        font-size: 15px;
+        justify-content: center;;
+      }
+
+      .info {
+        text-align: left;
+        padding-left: 20px;
+        font-size: 13px;
+        list-style-type: none;
+        // padding-left: 35px;
+        li {
+          margin: 0;
+          &:before {
+            content: "\00BB \0020";
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-right: .5rem;
+            color: #40bded;
+          }
+        }
+      }
     }
   }
   .right {
     padding: 50px;
     width: 100%;
+    &.flex {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .info {
+      text-align: left;
+      h1 {
+        margin: 1rem auto 2rem;
+      }
+    }
+    .split {
+      display: flex;
+      justify-content: space-between;
+      .half {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: left;
+        a {
+          margin: auto;
+          padding: 30px;
+        }
+      }
+      .half-right {
+        width: 50%;
+
+      }
+      .mt-50 {
+        margin: auto;
+        margin-top: 50px;
+      }
+    }
   }
   a {
     color: #12364c;
   }
+  .btn-primary:hover {
+    // background: #12364c!important;
+    // color: #40bded;
+    color: white;
+    // border: 1px solid white;
+  }
 }
-.gen__1--inner, .gen__2--inner{
-  display: flex;
-  padding: 0;
-}
+
 // aion bullets
 .aion-help {
   max-width: 24px;
@@ -228,12 +333,12 @@ a.collapse-button {
     // color: #40bded !important;
   }
   input:focus {
-    box-shadow: 0 0 15px white !important;
+    box-shadow: 0 0 15px #88d5ec !important;
     // border: 1px solid #88d5ec !important;
   }
   a.btn-primary {
-    background: #12364c !important;
-    color: white;
+    background: #40bded !important;
+    color: #12364c;
     background: transparent;
   }
   a {

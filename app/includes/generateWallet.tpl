@@ -9,59 +9,75 @@
     <section class="block__main gen__1--inner">
       <br />
       <div class="left">
-        <div class="stage">Stage</div>
-        <div class="stage">1</div>
-        <div class="stage">2</div>
-        <div class="stage">3</div>
+        <div class="stage">Create an Aion Wallet</div>
+        <div class="stage active">
+          <h5>1</h5>
+          <p>Create Password</p>
+          <ul class="info">
+              <li>
+                <a href="./helpPages/HowToCreateWallet.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                translate="GEN_Help_5">
+                How to Create a Wallet
+              </a>
+              </li>
+              <li>
+                <a href="./helpPages/GettingStarted.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  translate="GEN_Help_6">
+                  Getting Started
+                </a>
+              </li>
+              <!-- &nbsp;&nbsp;&middot;&nbsp;&nbsp; -->
+              <!-- <br/> -->
+          </ul>
+        </div>
+        <div class="stage">
+          <h5>2</h5>
+          <p>Keystore Backup</p>
+        </div>
+        <div class="stage">
+          <h5>3</h5>
+          <p>Private Key</p>
+        </div>
       </div>
-      <div class="right">
-        <h1 translate="NAV_GenerateWallet" aria-live="polite">
-          Create New Wallet
-        </h1>
-        <h4 translate="GEN_Label_1">
-          Enter password
-        </h4>
-        <div class="input-group">
-          <input name="password"
-          class="form-control"
-          type="{{showPass && 'password' || 'text'}}"
-          placeholder="{{'GEN_Placeholder_1' | translate }}"
-          ng-model="password"
-          ng-class="isStrongPass() ? 'is-valid' : 'is-invalid'"
-          aria-label="{{'GEN_Label_1' | translate}}"/>
-          <span tabindex="0"
-          aria-label="make password visible"
-          role="button"
-          class="input-group-addon eye"
-          ng-click="showPass=!showPass">
-        </span>
+      <div class="right flex">
+        <div class="info">
+          <h1>
+            Create a Password
+          </h1>
+          <p translate="x_PasswordDesc"></p>
+        </div>
+        <div>
+          <h4 translate="GEN_Label_1" style="margin: 0">
+            Enter password
+          </h4>
+          <div class="input-group">
+            <input name="password"
+            class="form-control"
+            type="{{showPass && 'password' || 'text'}}"
+            placeholder="{{'GEN_Placeholder_1' | translate }}"
+            ng-model="password"
+            ng-class="isStrongPass() ? 'is-valid' : 'is-invalid'"
+            aria-label="{{'GEN_Label_1' | translate}}"/>
+            <span tabindex="0"
+            aria-label="make password visible"
+            role="button"
+            class="input-group-addon eye"
+            ng-click="showPass=!showPass">
+          </span>
+        </div>
       </div>
       <a tabindex="0"
-      role="button"
-      class="btn btn-primary"
-      ng-click="genNewWallet()"
-      translate="NAV_GenerateWallet">
-      Generate Wallet
-    </a>
-    <p translate="x_PasswordDesc"></p>
-    <div class="text-center">
-      <strong>
-        <a href="./helpPages/HowToCreateWallet.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        translate="GEN_Help_5">
-        How to Create a Wallet
+        role="button"
+        class="btn btn-primary"
+        ng-click="genNewWallet()"
+        translate="NAV_GenerateWallet"
+        style="margin:auto">
+        Generate Wallet
       </a>
-      &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-      <a href="./helpPages/GettingStarted.html"
-      target="_blank"
-      rel="noopener noreferrer"
-      translate="GEN_Help_6">
-      Getting Started
-    </a>
-  </strong>
-</div>
-
       </div>
       <br>
     </section>
@@ -74,51 +90,81 @@
     <section class="block__main gen__2--inner">
       <br />
       <div class="left">
-        <div class="stage">Stage</div>
-        <div class="stage">1</div>
-        <div class="stage">2</div>
-        <div class="stage">3</div>
+        <div class="stage">Create an Aion Wallet</div>
+        <div class="stage">
+          <h5>1</h5>
+          <p>Create Password</p>
+        </div>
+        <div class="stage active">
+          <h5>2</h5>
+          <p>Keystore Backup</p>
+          <ul class="info">
+            <li>
+              <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer" translate="GEN_Help_13">
+                How to Back Up Your Keystore File
+              </a>
+            </li>
+            <li>
+              <a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" translate="GEN_Help_14">
+                What are these Different Formats?
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="stage">
+          <h5>3</h5>
+          <p>Private Key</p>
+        </div>
       </div>
-      <div class="right">
-        <h1 translate="GEN_Label_2">
-          Save your Keystore File (UTC / JSON)
-        </h1>
+      <div class="right flex">
+        <div class="info">
+          <h1>
+            Backup your Keystore File!
+          </h1>
 
-        <a tabindex="0" role="button"
-           class="btn btn-primary"
-           href="{{blobEnc}}"
-           download="{{encFileName}}"
-           aria-label="{{'x_Download'|translate}} {{'x_Keystore'|translate}}"
-           aria-describedby="x_KeystoreDesc"
-           ng-click="downloaded()"
-           target="_blank" rel="noopener noreferrer">
-          <span translate="x_Download">
-            DOWNLOAD
-          </span>
-          <span translate="x_Keystore2">
-            Keystore File (UTC / JSON)
-          </span>
-        </a>
-
-        <div class="warn">
-          <p class="GEN_Warning_1">
-            **Do not lose it!** It cannot be recovered if you lose it.
-          </p>
-          <p class="GEN_Warning_2">
-            **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
-          </p>
-          <p class="GEN_Warning_3">
-            **Make a backup!** Secure it like the millions of dollars it may one day be worth.
-          </p>
+        </div>
+        <div class="split">
+          <div class="half">
+            <div>
+              <p class="GEN_Warning_1">
+                **Do not lose it!** It cannot be recovered if you lose it.
+              </p>
+              <p class="GEN_Warning_2">
+                **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
+              </p>
+              <p class="GEN_Warning_3">
+                **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+              </p>
+            </div>
+          </div>
+          <div class="half half-right">
+            <a tabindex="0" role="button"
+               class="btn btn-primary"
+               href="{{blobEnc}}"
+               download="{{encFileName}}"
+               aria-label="{{'x_Download'|translate}} {{'x_Keystore'|translate}}"
+               aria-describedby="x_KeystoreDesc"
+               ng-click="downloaded()"
+               target="_blank" rel="noopener noreferrer">
+              <!-- <span translate="x_Download"> -->
+              <span>
+                Click to Download
+              </span>
+              <br/>
+              <span translate="x_Keystore2">
+                Keystore File (UTC / JSON)
+              </span>
+            </a>
+          </div>
         </div>
 
-        <p>
+
+        <p class="mt-50">
           <a tabindex="0"
              role="button"
              class="btn btn-danger"
-             ng-class="fileDownloaded ? '' : 'disabled' "
              ng-click="continueToPaper()">
-              <span translate="GET_ConfButton">
+              <span>
                 I understand. Continue.
               </span>
           </a>
@@ -126,8 +172,7 @@
       </div>
 
     </section>
-
-    <section class="block__help">
+    <!-- <section class="block__help">
       <div class="help_sections">
         <h2 translate="GEN_Help_8">
           Not Downloading a File?
@@ -154,27 +199,8 @@
         </ul>
       </div>
 
-      <div class="help_sections">
-        <h2 translate="GEN_Help_4">Guides &amp; FAQ</h2>
-        <ul>
-          <li>
-            <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
-              <strong translate="GEN_Help_13">
-                How to Back Up Your Keystore File
-              </strong>
-            </a>
-          </li>
-          <li>
-            <a href="./helpPages/DifferenceBetweenWallets.html" target="_blank">
-              <strong translate="GEN_Help_14">
-                What are these Different Formats?
-              </strong>
-            </a>
-          </li>
-        </ul>
-      </div>
 
-    </section>
+    </section> -->
 
   </article>
 
@@ -182,88 +208,80 @@
   <article role="main" class="block__wrap gen__3" ng-show="showPaperWallet">
 
     <section class="block__main gen__3--inner">
-
       <br />
-
-      <h1 translate="GEN_Label_5"> Save your Private Key</h1>
-      <textarea aria-label="{{'x_PrivKey'|translate}}"
-             aria-describedby="{{'x_PrivKeyDesc'|translate}}"
-             class="form-control"
-             readonly="readonly"
-             rows="3"
-             style="max-width: 50rem;margin: auto;"
-      >{{wallet.getPrivateKeyString()}}</textarea>
-      <br />
-
-      <a tabindex="0"
-         aria-label="{{'x_Print'|translate}}"
-         aria-describedby="x_PrintDesc"
-         role="button"
-         class="btn btn-primary"
-         ng-click="printQRCode()"
-         translate="x_Print">
-          PRINT
-      </a>
-
-      <div class="warn">
-        <p>
-          **Do not lose it!** It cannot be recovered if you lose it.
-        </p>
-        <p>
-          **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
-        </p>
-        <p>
-          **Make a backup!** Secure it like the millions of dollars it may one day be worth.
-        </p>
+      <div class="left">
+        <div class="stage">Create an Aion Wallet</div>
+        <div class="stage">
+          <h5>1</h5>
+          <p>Create Password</p>
+        </div>
+        <div class="stage">
+          <h5>2</h5>
+          <p>Keystore Backup</p>
+        </div>
+        <div class="stage active">
+          <h5>3</h5>
+          <p>Private Key</p>
+          <ul class="info">
+            <li>
+              <a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer" translate="HELP_2a_Title">
+                How to Save & Backup Your Wallet.
+            </a>
+            </li>
+            <li>
+              <a href="./helpPages/ProtectingYourWallet.html" target="_blank" rel="noopener noreferrer" translate="GEN_Help_15">
+                Preventing loss &amp; theft of your funds.
+              </a>
+            </li>
+            <li>
+              <a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" rel="noopener noreferrer" translate="GEN_Help_16">
+                What are these Different Formats?
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
+      <div class="right flex">
+        <div class="info">
+          <h1> Save your Private Key & Paper Wallet!</h1>
+          <div>
+            <p>
+              **Do not lose it!** It cannot be recovered if you lose it.
+            </p>
+            <p>
+              **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
+            </p>
+            <p>
+              **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+            </p>
+          </div>
+        </div>
+        <textarea aria-label="{{'x_PrivKey'|translate}}"
+               aria-describedby="{{'x_PrivKeyDesc'|translate}}"
+               class="form-control"
+               readonly="readonly"
+               rows="3"
+               style="text-align: center;margin: 50px 0;">{{wallet.getPrivateKeyString()}}
+        </textarea>
 
-      <br />
+        <br />
+        <div class="buttons">
+          <a tabindex="0"
+          aria-label="{{'x_Print'|translate}}"
+          aria-describedby="x_PrintDesc"
+          role="button"
+          class="btn btn-primary"
+          ng-click="printQRCode()"
+          translate="x_Print">
+            PRINT
+          </a>
 
-      <a class="btn btn-default btn-sm" ng-click="getAddress()">
-        <span translate="GEN_Label_3"> Save your Address </span> →
-      </a>
-
+          <a class="btn btn-default" ng-click="getAddress()">
+            <span translate="GEN_Label_3"> Save your Address </span> →
+          </a>
+        </div>
+      </div>
     </section>
-
-    <section class="block__help">
-      <div class="help_sections">
-        <h2 translate="GEN_Help_4">
-          Guides &amp; FAQ
-        </h2>
-        <ul>
-          <li><a href="./helpPages/HowToBackUpYourKeystore.html" target="_blank" rel="noopener noreferrer">
-            <strong translate="HELP_2a_Title">
-              How to Save & Backup Your Wallet.
-            </strong>
-          </a></li>
-          <li><a href="./helpPages/ProtectingYourWallet.html" target="_blank" rel="noopener noreferrer">
-            <strong translate="GEN_Help_15">Preventing loss &amp; theft of your funds.</strong>
-          </a></li>
-          <li><a href="./helpPages/DifferenceBetweenWallets.html" target="_blank" rel="noopener noreferrer">
-            <strong translate="GEN_Help_16">What are these Different Formats?</strong>
-          </a></li>
-        </ul>
-      </div>
-
-      <div class="help_sections">
-        <h2 translate="GEN_Help_17">
-          Why Should I?
-        </h2>
-        <ul>
-          <li translate="GEN_Help_18">
-            To have a secondary backup.
-          </li>
-          <li translate="GEN_Help_19">
-            In case you ever forget your password.
-          </li>
-        </ul>
-      </div>
-      <div class="help_sections">
-        <h2 class="proTip" translate="x_PrintDesc"></h2>
-      </div>
-
-    </section>
-
   </article>
 
   <article class="text-left" ng-show="showGetAddress">
