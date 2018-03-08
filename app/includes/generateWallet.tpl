@@ -75,7 +75,7 @@
         class="btn btn-primary"
         ng-click="genNewWallet()"
         translate="NAV_GenerateWallet"
-        style="margin:auto">
+        style="margin: 0 auto">
         Generate Wallet
       </a>
       </div>
@@ -123,52 +123,51 @@
           </h1>
 
         </div>
-        <div class="split">
-          <div class="half">
-            <div>
-              <p class="GEN_Warning_1">
-                **Do not lose it!** It cannot be recovered if you lose it.
-              </p>
-              <p class="GEN_Warning_2">
-                **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
-              </p>
-              <p class="GEN_Warning_3">
-                **Make a backup!** Secure it like the millions of dollars it may one day be worth.
-              </p>
-            </div>
-          </div>
-          <div class="half half-right">
-            <a tabindex="0" role="button"
-               class="btn btn-primary"
-               href="{{blobEnc}}"
-               download="{{encFileName}}"
-               aria-label="{{'x_Download'|translate}} {{'x_Keystore'|translate}}"
-               aria-describedby="x_KeystoreDesc"
-               ng-click="downloaded()"
-               target="_blank" rel="noopener noreferrer">
-              <!-- <span translate="x_Download"> -->
-              <span>
-                Click to Download
-              </span>
-              <br/>
-              <span translate="x_Keystore2">
-                Keystore File (UTC / JSON)
-              </span>
-            </a>
+
+        <div class="half">
+          <div>
+            <p class="GEN_Warning_1">
+              **Do not lose it!** It cannot be recovered if you lose it.
+            </p>
+            <p class="GEN_Warning_2">
+              **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
+            </p>
+            <p class="GEN_Warning_3">
+              **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+            </p>
           </div>
         </div>
 
 
-        <p class="mt-50">
-          <a tabindex="0"
-             role="button"
-             class="btn btn-danger"
-             ng-click="continueToPaper()">
-              <span>
-                I understand. Continue.
-              </span>
+        <div class="buttons">
+          <a tabindex="0" role="button"
+             class="btn btn-primary"
+             href="{{blobEnc}}"
+             download="{{encFileName}}"
+             aria-label="{{'x_Download'|translate}} {{'x_Keystore'|translate}}"
+             aria-describedby="x_KeystoreDesc"
+             ng-click="downloaded()"
+             target="_blank" rel="noopener noreferrer">
+            <!-- <span translate="x_Download"> -->
+            <!-- <span>
+              Click to Download
+            </span>
+            <br/> -->
+            <span translate="x_Keystore2">
+              Download: Keystore File (UTC / JSON)
+            </span>
           </a>
-        </p>
+
+          <a tabindex="0"
+          role="button"
+          class="btn btn-danger"
+          ng-click="continueToPaper()">
+          <span>
+            I understand. Continue.
+          </span>
+        </a>
+        </div>
+
       </div>
 
     </section>
@@ -261,7 +260,7 @@
                class="form-control"
                readonly="readonly"
                rows="3"
-               style="text-align: center;margin: 50px 0;">{{wallet.getPrivateKeyString()}}
+               style="text-align: left; margin: 50px 0;">{{wallet.getPrivateKeyString()}}
         </textarea>
 
         <br />

@@ -81,10 +81,22 @@ code {
     background-color: rgba(17, 102, 152, 0.66) !important;
   }
 }
-// .block {
-//
-// }
-.block__main, .block__help, .block{
+section.block, .decrypt-drtv {
+  max-width: 1300px;
+  margin: 0 auto;
+  box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
+  background: #12364c;
+  color: white;
+  min-height: 483px;
+  border: 2px solid #2bc0ec;
+
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px !important;
+  margin-bottom: 100px;
+}
+
+.block__main, .block__help {
   max-width: 1300px;
   margin: 0 auto;
   // padding: 20px 30px;
@@ -95,7 +107,7 @@ code {
   background: #12364c;
   color: white;
   min-height: 483px;
-  border: 1px solid #2bc0ec;
+  border: 2px solid #2bc0ec;
   display: flex;
   .left {
     display: flex;
@@ -254,12 +266,42 @@ h1.ng-scope, .row.ng-scope, article.row{
 
 }
 // LINKS
-.help-sections, .block.decrypt-drtv.clearfix   {
-  a.btn {
-    color: white;
+article.decrypt-drtv  {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px !important;
+  margin-bottom: 100px;
+  section {
+    width: 100% !important;
+    &:nth-child(2){
+      border-top: 1px solid #2bc0ec;
+      margin-top: 30px;
+      padding-top: 30px;
+    }
+    li {
+      font-size: 13px;
+      list-style-type: none;
+      margin: 0;
+      color: white;
+      padding-left: 20px;
+      margin-bottom: 16px;
+      &:before {
+        content: "\00BB \0020";
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-right: .5rem;
+        color: #40bded;
+      }
+    }
+    ul {
+      padding: 0;
+    }
   }
   a {
-    color: #12364c;
+    color: white;
+  }
+  a.btn-file {
+    color: black !important;
   }
 }
 a:hover {
@@ -324,6 +366,7 @@ a.collapse-button {
   // background: #FFF;
   // background: #12364cde;
   margin-top: 70px !important;
+  margin-bottom: 100px !important;
   max-width: 1300px;
   // padding: 20px 30px;
   h1, h4, p {
