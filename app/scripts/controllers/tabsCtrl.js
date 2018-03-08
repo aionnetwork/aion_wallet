@@ -30,19 +30,20 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
         if (node == "default"){
             $scope.currentIP="127.0.0.1";
             $scope.currentPort="8545";
-            $scope.currentNode = "Default: localhost:8545";
+            $scope.currentNode = "Default";
         } else if (node == "aion"){
-            $scope.currentIP="52.174.121.57";
-            $scope.currentPort="46488";
+            $scope.currentIP="52.233.40.169";
+            $scope.currentPort="10443";
             $scope.currentNode = "Aion Network";
         } else if (node == "other"){
             if (ip) $scope.currentIP=ip;
             if (port)$scope.currentPort=port;
-            $scope.currentNode = "Other";
+            $scope.currentNode = "Other: "+ip+":"+port;
         }else {
 
         }
-        window.web3addr="http://"+$scope.currentIP+":"+$scope.currentPort;
+        window.web3addr="https://"+$scope.currentIP+":"+$scope.currentPort;
+        console.log(window.web3addr);
     }
 
     $scope.setArrowVisibility = function() {

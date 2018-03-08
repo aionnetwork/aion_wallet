@@ -211,21 +211,20 @@
 
     <span class="dropdown dropdown-gas" ng-cloak>
       <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
-        <span >Kernel Connection</span>:{{currentNode}} 
+        <span >Connection</span>:{{currentNode}} 
         <i class="caret"></i>
       </a>
     <ul class="dropdown-menu" ng-show="dropCon">
     <div class="header--gas">
-      <label ng-click="changeCurNode('default')">Default: localhost:8545</label>
-      <label ng-click="changeCurNode('aion')">Aion Network</label></br>
+      <label ng-click="changeCurNode('default'); dropCon= false">Default: localhost:8545</label>
+      <label ng-click="changeCurNode('aion'); dropCon= false">Aion Network</label></br>
        <label ng-click="changeCurNode('other')">Other</label>
       
        <form id="addr">
-            IP: <input type="text" value="{{currentIP}}" ><br>
-          PORT: <input type="text" value="{{currentPort}}"><br>          
+            IP: <input type="text" ng-model="currentIP" ><br>
+          PORT: <input type="text" ng-model="currentPort"><br>          
         </form>
-        <button ng-click="changeCurNode('other', document.getElementById('addr').value,document.getElementById('addr')).value">OK</button>
-
+        <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">OK</button>
     </div>
     </ul>
 

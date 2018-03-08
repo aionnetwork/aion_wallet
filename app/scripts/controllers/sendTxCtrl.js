@@ -1,8 +1,5 @@
 'use strict';
 
-const AionWeb3 = require('../aionWeb3/index')
-var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-
 var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
     $scope.tx = {};
     $scope.signedTx
@@ -231,6 +228,16 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
             txData.data = $scope.wallet.tokenObjs[$scope.tokenTx.id].getData($scope.tokenTx.to, $scope.tokenTx.value).data;
             txData.value = '0x00';
         }
+
+
+        try {   
+            const AionWeb3 = require('../aionWeb3/index');
+            var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
+            
+        } catch (err) {
+            console.log("not connected");
+            uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+        } 
 
         if (txData.value > aionweb3.eth.getBalance('0x'+$scope.wallet.getPublicKeyString())){ 
             $scope.notifier.danger("you do not have enough balance in your account!");

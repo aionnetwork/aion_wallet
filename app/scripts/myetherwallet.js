@@ -4,9 +4,6 @@ var blake2b = require('./blakejs/blake2b');
 var blake2bHex = blake2b.blake2bHex;
 const RLP = require('./RLPlib.js');
 
-const AionWeb3 = require('./aionWeb3/index');
-var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-
 var lookup = {
   '0': '0000',
   '1': '0001',
@@ -211,8 +208,15 @@ Wallet.prototype.setBalance = function(callback) {
             });
         }
     });*/
-
-    this.balance = aionweb3.eth.getBalance('0x'+this.pubKey);
+    try {   
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        const AionWeb3 = require('./aionWeb3/lib/web3.js');
+        var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
+        this.balance = aionweb3.eth.getBalance('0x'+this.pubKey);
+    } catch (err) {
+        console.log("not connected");
+        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+    } 
 }
 Wallet.prototype.getBalance = function() {
 
@@ -281,7 +285,7 @@ Wallet.fromParityPhrase = function(phrase) {
     return new Wallet(hash);
 }
 Wallet.prototype.toV3 = function(password, opts) {
-console.log(ethUtil);
+
     opts = opts || {};
     var salt = opts.salt || ethUtil.crypto.randomBytes(32);
     var iv = opts.iv || ethUtil.crypto.randomBytes(16);
@@ -349,18 +353,23 @@ console.log(ethUtil);
         kdfparams.p.toString(), //10
         mac.toString('hex') //11       
     ]; 
-console.log ("return data is "+returnData);
-    return hexToBinary(RLP.encode(returnData).toString('hex'));
+    console.log ("return data is "+returnData);
+    //return hexToBinary(RLP.encode(returnData).toString('hex'));
+    return RLP.encode(returnData);
 }
 
 Wallet.fromV3 = function(input, password, nonStrict) {
+    //var hexx =bin2hex(input);
+    //var keyStoreContents = RLP.decode(new Buffer(hexx,'hex')).toString().split(',');
 
-    var hexx =bin2hex(input);
-    var keyStoreContents = RLP.decode(new Buffer(hexx,'hex')).toString().split(',');
+    console.log("input is: "+input);
+    var keyStoreContents = RLP.decode(input);
+    console.log("decoded: "+RLP.decode(input));
+
 
     var keyStoreContent =[];
     for(var i = 0; i < keyStoreContents.length; i++){
-        keyStoreContent[i] = keyStoreContents[i];
+        keyStoreContent[i] = keyStoreContents[i].toString();
     }
     console.log(keyStoreContent);
 

@@ -1,7 +1,4 @@
 'use strict';
-const AionWeb3 = require('./aionWeb3/index')
-var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-
 var nacl = require('./nacl.js');
 var blake2b = require('./blakejs/blake2b');
 var blake2bHex = blake2b.blake2bHex;
@@ -149,6 +146,16 @@ uiFuncs.trezorUnlockCallback = function(txData, callback) {
     });
 }
 uiFuncs.generateTx = function($scope, txData, callback) { 
+
+    try {   
+        const AionWeb3 = require('./aionWeb3/index');
+        var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
+        
+    } catch (err) {
+        console.log("not connected");
+        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+    } 
+
     if ((typeof txData.hwType != "undefined") && (txData.hwType == "trezor") && !txData.trezorUnlocked) {
         uiFuncs.trezorUnlockCallback(txData, callback);
         return;
@@ -157,7 +164,7 @@ uiFuncs.generateTx = function($scope, txData, callback) {
         uiFuncs.isTxDataValid(txData);
         var genTxWithInfo = function(data) {
 
-console.log("nonce is "+aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString()));
+
 
             var rawTx = {
                 RLP_TX_NONCE: aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString()),
@@ -169,7 +176,7 @@ console.log("nonce is "+aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getP
                 RLP_TX_NRGPRICE: data.gasprice,
                 RLP_TX_TYPE: "0x01"               
             };
-console.log("rawtx " +aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString())+" "+txData.to+ " "+txData.value+txData.data+" "+Date.now()*1000+" "+txData.gasLimit+" "+ txData.gasprice);
+
             txData.gasprice =1; 
 
             //var rawTxArray= ["0x00", txData.to,txData.value, '0x'+txData.data, Date.now()*1000,  txData.gasLimit, 1, "0x01"];
@@ -274,45 +281,17 @@ console.log("rawtx " +aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPub
         });
     }
 }
-uiFuncs.sendTx = function(signedTx, callback) {/*
-  // check for web3 late signed tx
-    if (signedTx.slice(0,2) !== '0x') {
-      var txParams = JSON.parse(signedTx)
-      window.web3.eth.sendTransaction(txParams, function(err, txHash){
-        if (err) {
-          return callback({
-            isError: true,
-            error: err.stack,
-          })
-        }
-        callback({ data: txHash })
-      });
-      return
-    }
+uiFuncs.sendTx = function(signedTx, callback) {
 
-    ajaxReq.sendRawTx(signedTx, function(data) {
-        var resp = {};
-        if (data.error) {
-            resp = {
-                isError: true,
-                error: data.msg
-            };
-        } else {
-            resp = {
-                isError: false,
-                data: data.data
-            };
-        }
-        if (callback !== undefined) callback(resp);
-    });*/
+    try {   
+        const AionWeb3 = require('./aionWeb3/index');
+        var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
+        
+    } catch (err) {
+        console.log("not connected");
+        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+    } 
 
-    
-    // if (signedTx.slice(0,2) !== '0x') {
-    //   var txParam = signedTx.toString('hex');
-    //   params.push(txParam)
-    // }
-    //var txParam = '0x' + signedTx.toString('hex');
-    
     aionweb3.eth.sendRawTransaction('0x'+signedTx, function(err, txHash) {
         var resp = {};
         if (err) {
@@ -329,6 +308,7 @@ uiFuncs.sendTx = function(signedTx, callback) {/*
         if (callback !== undefined) callback(resp);
     })
 }
+
 uiFuncs.transferAllBalance = function(fromAdd, gasLimit, callback) {
     try {
         ajaxReq.getTransactionData(fromAdd, function(data) {
