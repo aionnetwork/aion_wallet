@@ -184,7 +184,7 @@
   </nav>
   <!-- @@if (site === 'cx' ) {
     <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">
-      <img src="images/AionMove.gif" height="64px" width="120px" alt="MyEtherWallet" />
+      <img src="images/aion-logo.svg" height="64px" width="120px" alt="MyEtherWallet" />
       <p class="small visible-xs">3.11.3.0</p>
     </a> -->
   }

@@ -50,15 +50,42 @@ header {
     }
   }
 }
+.nav-container .nav-scroll .nav-inner .nav-item a {
+  min-height: 2.75rem !important;
+  font-family: Roboto, sans-serif;
+}
+.nav-container .nav-scroll .nav-inner .nav-item a:after {
+  display: none;
+}
 nav.container {
   // background: white;
   // display: none;
   width: auto;
   margin: 0;
+  li.active {
+    // text-decoration: underline;
+    position: relative;
+    a::before {
+      content: "";
+      border-bottom: 2px solid white;
+      position: absolute;
+      width: 100%;
+      top: 35px;
+      left: 2px;
+    }
+  }
   a {
     background: white;
     &:focus {
-      outline: none
+      outline: none;
+    }
+    &:before {
+      content: "";
+      border-bottom: 2px solid transparent;
+      position: absolute;
+      width: 100%;
+      top: 35px;
+      left: 2px;
     }
   }
   .nav-scroll {
@@ -68,35 +95,27 @@ nav.container {
 .modal-content{
   min-width: 1000px;
   transform: translateX(-7%);
+  background: #12364c;
+  color: #fff;
+  border: 2px solid #2bc0ec;
 }
 // get rid of that ugly nav border
 .nav-container {
   border-top: none !important;
 }
 code {
-  background-color: rgba(17, 102, 152, 0.66) !important;
+  // background-color: rgba(17, 102, 152, 0.66) !important;
+  background-color: #2bc0ec !important;
 }
 .block {
   code {
-    background-color: rgba(17, 102, 152, 0.66) !important;
+    // background-color: rgba(17, 102, 152, 0.66) !important;
+    background-color: #2bc0ec !important;
   }
 }
-section.block, .decrypt-drtv {
-  max-width: 1300px;
-  margin: 0 auto;
-  box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
-  background: #12364c;
-  color: white;
-  min-height: 483px;
-  border: 2px solid #2bc0ec;
 
-  display: flex;
-  flex-direction: column;
-  padding: 40px 30px !important;
-  margin-bottom: 100px;
-}
 
-.block__main, .block__help {
+.block__main, .block__help,  {
   max-width: 1300px;
   margin: 0 auto;
   // padding: 20px 30px;
@@ -225,6 +244,27 @@ section.block, .decrypt-drtv {
     // border: 1px solid white;
   }
 }
+// UNLOCKING WALLET layout
+.decrypt-drtv {
+  max-width: 1300px;
+  margin: 0 auto;
+  box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
+  background: #12364c;
+  color: white;
+  min-height: 483px;
+  border: 2px solid #2bc0ec;
+
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px !important;
+  margin-bottom: 50px;
+}
+.row.ng-scope .block {
+  background: #12364c;
+  color: white;
+  padding-bottom: 40px;
+  border: 2px solid #2bc0ec;
+}
 
 // aion bullets
 .aion-help {
@@ -246,15 +286,40 @@ section.block, .decrypt-drtv {
 }
 @media (min-width: 51.2rem) {
   .col-sm-8 {
-    padding-right: 1rem !important;
-    padding-left: 0 !important;
-  }
-  .col-sm-4 {
     padding-left: 1rem !important;
     padding-right: 0 !important;
+  }
+  .col-sm-4 {
+    padding-right: 1rem !important;
+    padding-left: 0 !important;
     max-width: 430px;
   }
 }
+wallet-balance-drtv {
+  aside {
+    .block {
+      background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;
+    }
+  }
+  .block {
+    min-height: 328px;
+  }
+  ul.account-info {
+    padding: 0;
+  }
+  span.mono.wrap {
+    display: block;
+  }
+}
+h1.wallet-details {
+  background: #12364c;
+  color: white;
+  padding: 20px;
+  border: 2px solid #2bc0ec;
+}
+
 // LAYOUT
 h1.ng-scope, .row.ng-scope, article.row{
   // max-width: 1337px;
@@ -270,7 +335,6 @@ article.decrypt-drtv  {
   display: flex;
   flex-direction: column;
   padding: 40px 30px !important;
-  margin-bottom: 100px;
   section {
     width: 100% !important;
     &:nth-child(2){
@@ -279,7 +343,7 @@ article.decrypt-drtv  {
       padding-top: 30px;
     }
     li {
-      font-size: 13px;
+      // font-size: 13px;
       list-style-type: none;
       margin: 0;
       color: white;
@@ -308,12 +372,11 @@ a:hover {
   text-decoration: underline;
 }
 // ACCORDION
-.collapse-container{
+.collapse-container {
   // max-width: 1357px;
   max-width: 1300px;
   margin: auto !important;
   margin-top: 50px !important;
-
   h1, p {
     padding: 0px 10px;
     margin: auto;
@@ -323,6 +386,14 @@ a:hover {
     margin: 0 0 .5rem;
   }
 }
+div.collapse-heading {
+  background: #12364c;
+  color: white;
+  padding-bottom: 40px;
+  border: 2px solid #2bc0ec;
+  margin-bottom: 20px;
+  padding: 20px;
+}
 // LAYOUT STUFF
 article.row{
   margin-top: 20px;
@@ -330,12 +401,6 @@ article.row{
   padding: 0;
   .block {
     margin-top: 20px;
-    margin-bottom: 65px;
-  }
-}
-.row.ng-scope{
-  .block {
-    margin-top: 50px;
     margin-bottom: 65px;
   }
 }
@@ -375,6 +440,7 @@ a.collapse-button {
     // color: #88d5ec !important;
     // color: #40bded !important;
   }
+
   input:focus {
     box-shadow: 0 0 15px #88d5ec !important;
     // border: 1px solid #88d5ec !important;

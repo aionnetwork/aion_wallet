@@ -599,9 +599,13 @@
   <article class="text-left" ng-show="showGetAddress">
     <div class="clearfix collapse-container">
 
-      <div ng-click="wd = !wd">
-        <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a>
-        <h1 traslate="GEN_Unlock">Unlock your wallet to see your address</h1>
+      <div class="collapse-heading" ng-click="wd = !wd">
+        <!-- <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a> -->
+        <h1 traslate="GEN_Unlock">
+          <img src="images/icons/small-logo.png" style="
+    width: 50px;"/>
+          Unlock your wallet to see your address
+        </h1>
         <p translate="x_AddessDesc" ></p>
       </div>
 
@@ -613,13 +617,21 @@
 
     <div class="row" ng-show="wallet!=null" ng-controller='viewWalletCtrl'>
       
-        <article class="col-sm-8 view-wallet-content">
+        <h1 class="wallet-details">
+  <img src="images/icons/small-logo.png"/>
+  Wallet Details
+</h1>
+<article class="col-sm-4">
+  <wallet-balance-drtv></wallet-balance-drtv>
+</article>
+
+<article class="col-sm-8 view-wallet-content">
 
   <section class="block">
 
     <div class="col-xs-11">
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
           You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
         </p>
@@ -643,7 +655,7 @@
 
     <div class="col-xs-12" ng-show='showEnc'>
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
           This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
@@ -658,7 +670,7 @@
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrivKeyDesc">
           This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended.
         </p>
@@ -684,7 +696,7 @@
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrintDesc">
           If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!
         </p>
@@ -740,10 +752,6 @@
 
 
 </article>
-
-<article class="col-sm-4">
-  <wallet-balance-drtv></wallet-balance-drtv>
-</article>
    
     </div>
 
@@ -766,11 +774,13 @@
 
 
   <!-- Unlock Wallet -->
-  <article class="collapse-container">
-    <div ng-click="wd = !wd">
-      <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a>
-      <h1 translate="NAV_SendEther">
-        Send Ether &amp; Tokens
+  <article class="collapse-container" >
+    <div class="collapse-heading" ng-click="wd = !wd" sty>
+      <!-- <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a> -->
+      <!-- <h1 translate="NAV_SendEther" style="margin-bottom: 0"> -->
+      <h1 style="margin-bottom: 0">
+        <img src="images/icons/small-logo.png" style="width: 50px;"/>
+        Wallet Details
       </h1>
     </div>
     <div ng-show="!wd">
@@ -782,12 +792,46 @@
 
   <!-- Send Tx Content -->
   <article class="row" ng-show="wallet!=null">
-     <!-- Content -->
-<div class="col-sm-8">
+     <!-- Sidebar -->
+<section class="col-sm-4">
+
+  <div class="block block--danger"
+       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
+       style="background: #12364c;
+           color: #fff;
+           border: 2px solid #2bc0ec;">
+
+    <h5 translate="SWAP_Warning_1">
+      Warning! You do not have enough funds to complete this swap.
+    </h5>
+
+    <p translate="SWAP_Warning_2">
+      Please add more funds to your wallet or access a different wallet.
+    </p>
+
+  </div>
+
+  <wallet-balance-drtv></wallet-balance-drtv>
+
+  <div ng-show="checkTxPage"
+       ng-click="checkTxReadOnly=!checkTxReadOnly"
+       class="small text-right text-gray-lighter">
+        <small translate="X_Advanced">
+          Advanced Users Only.
+        </small>
+  </div>
+
+</section>
+<!-- / Sidebar -->
+
+<!-- Content -->
+<div class="col-sm-8" >
 
 
   <!-- If unlocked with address only -->
-  <article class="block" ng-show="wallet.type=='addressOnly'">
+  <article class="block" ng-show="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
     <div class="row form-group">
       <h4 translate="SEND_ViewOnly">
         You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.
@@ -835,7 +879,9 @@
 
 
   <!-- If unlocked with PK -->
-  <article class="block" ng-hide="wallet.type=='addressOnly'">
+  <article class="block" ng-hide="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
 
 
     <!-- To Address -->
@@ -1057,39 +1103,6 @@
 
 </div>
 <!-- / Content -->
-
-
-
-
-
-<!-- Sidebar -->
-<section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
-  <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
-</section>
-<!-- / Sidebar -->
  
     
 
@@ -1490,12 +1503,46 @@
     </div>
 
     <section class="row" ng-show="wallet!=null" ng-controller='sendTxCtrl'>
-       <!-- Content -->
-<div class="col-sm-8">
+       <!-- Sidebar -->
+<section class="col-sm-4">
+
+  <div class="block block--danger"
+       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
+       style="background: #12364c;
+           color: #fff;
+           border: 2px solid #2bc0ec;">
+
+    <h5 translate="SWAP_Warning_1">
+      Warning! You do not have enough funds to complete this swap.
+    </h5>
+
+    <p translate="SWAP_Warning_2">
+      Please add more funds to your wallet or access a different wallet.
+    </p>
+
+  </div>
+
+  <wallet-balance-drtv></wallet-balance-drtv>
+
+  <div ng-show="checkTxPage"
+       ng-click="checkTxReadOnly=!checkTxReadOnly"
+       class="small text-right text-gray-lighter">
+        <small translate="X_Advanced">
+          Advanced Users Only.
+        </small>
+  </div>
+
+</section>
+<!-- / Sidebar -->
+
+<!-- Content -->
+<div class="col-sm-8" >
 
 
   <!-- If unlocked with address only -->
-  <article class="block" ng-show="wallet.type=='addressOnly'">
+  <article class="block" ng-show="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
     <div class="row form-group">
       <h4 translate="SEND_ViewOnly">
         You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.
@@ -1543,7 +1590,9 @@
 
 
   <!-- If unlocked with PK -->
-  <article class="block" ng-hide="wallet.type=='addressOnly'">
+  <article class="block" ng-hide="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
 
 
     <!-- To Address -->
@@ -1765,39 +1814,6 @@
 
 </div>
 <!-- / Content -->
-
-
-
-
-
-<!-- Sidebar -->
-<section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
-  <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
-</section>
-<!-- / Sidebar -->
  
       
 
@@ -4906,7 +4922,7 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
 
     <div ng-click="wd = !wd">
       <a class="collapse-button">
-        <span ng-show="wd">+</span><span ng-show="!wd">-</span>
+        <!-- <span ng-show="wd">+</span><span ng-show="!wd">-</span> -->
       </a>
       <h1 translate="NAV_ViewWallet">
         View Wallet Details
@@ -4925,13 +4941,21 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
   <article class="row" ng-show="wallet!=null">
 
     
-      <article class="col-sm-8 view-wallet-content">
+      <h1 class="wallet-details">
+  <img src="images/icons/small-logo.png"/>
+  Wallet Details
+</h1>
+<article class="col-sm-4">
+  <wallet-balance-drtv></wallet-balance-drtv>
+</article>
+
+<article class="col-sm-8 view-wallet-content">
 
   <section class="block">
 
     <div class="col-xs-11">
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
           You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
         </p>
@@ -4955,7 +4979,7 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
 
     <div class="col-xs-12" ng-show='showEnc'>
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
           This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
@@ -4970,7 +4994,7 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrivKeyDesc">
           This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended.
         </p>
@@ -4996,7 +5020,7 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">
       <div class="account-help-icon">
-        <img src="images/icons/aion.svg" class="help-icon aion-help" />
+        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_PrintDesc">
           If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!
         </p>
@@ -5051,10 +5075,6 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
   </section>
 
 
-</article>
-
-<article class="col-sm-4">
-  <wallet-balance-drtv></wallet-balance-drtv>
 </article>
    
 
@@ -5293,12 +5313,46 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
   <!-- Send Tx Content -->
  <section class="row" ng-show="wallet!=null" ng-controller='sendTxCtrl'>
     <div ng-show="wallet.getChecksumAddressString() == txInfo.from">
-       <!-- Content -->
-<div class="col-sm-8">
+       <!-- Sidebar -->
+<section class="col-sm-4">
+
+  <div class="block block--danger"
+       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
+       style="background: #12364c;
+           color: #fff;
+           border: 2px solid #2bc0ec;">
+
+    <h5 translate="SWAP_Warning_1">
+      Warning! You do not have enough funds to complete this swap.
+    </h5>
+
+    <p translate="SWAP_Warning_2">
+      Please add more funds to your wallet or access a different wallet.
+    </p>
+
+  </div>
+
+  <wallet-balance-drtv></wallet-balance-drtv>
+
+  <div ng-show="checkTxPage"
+       ng-click="checkTxReadOnly=!checkTxReadOnly"
+       class="small text-right text-gray-lighter">
+        <small translate="X_Advanced">
+          Advanced Users Only.
+        </small>
+  </div>
+
+</section>
+<!-- / Sidebar -->
+
+<!-- Content -->
+<div class="col-sm-8" >
 
 
   <!-- If unlocked with address only -->
-  <article class="block" ng-show="wallet.type=='addressOnly'">
+  <article class="block" ng-show="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
     <div class="row form-group">
       <h4 translate="SEND_ViewOnly">
         You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.
@@ -5346,7 +5400,9 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
 
 
   <!-- If unlocked with PK -->
-  <article class="block" ng-hide="wallet.type=='addressOnly'">
+  <article class="block" ng-hide="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
 
 
     <!-- To Address -->
@@ -5568,39 +5624,6 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
 
 </div>
 <!-- / Content -->
-
-
-
-
-
-<!-- Sidebar -->
-<section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
-  <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
-</section>
-<!-- / Sidebar -->
  
       
 

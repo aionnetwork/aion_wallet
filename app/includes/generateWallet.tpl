@@ -286,9 +286,13 @@
   <article class="text-left" ng-show="showGetAddress">
     <div class="clearfix collapse-container">
 
-      <div ng-click="wd = !wd">
-        <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a>
-        <h1 traslate="GEN_Unlock">Unlock your wallet to see your address</h1>
+      <div class="collapse-heading" ng-click="wd = !wd">
+        <!-- <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a> -->
+        <h1 traslate="GEN_Unlock">
+          <img src="images/icons/small-logo.png" style="
+    width: 50px;"/>
+          Unlock your wallet to see your address
+        </h1>
         <p translate="x_AddessDesc" ></p>
       </div>
 

@@ -1,9 +1,43 @@
+<!-- Sidebar -->
+<section class="col-sm-4">
+
+  <div class="block block--danger"
+       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
+       style="background: #12364c;
+           color: #fff;
+           border: 2px solid #2bc0ec;">
+
+    <h5 translate="SWAP_Warning_1">
+      Warning! You do not have enough funds to complete this swap.
+    </h5>
+
+    <p translate="SWAP_Warning_2">
+      Please add more funds to your wallet or access a different wallet.
+    </p>
+
+  </div>
+
+  <wallet-balance-drtv></wallet-balance-drtv>
+
+  <div ng-show="checkTxPage"
+       ng-click="checkTxReadOnly=!checkTxReadOnly"
+       class="small text-right text-gray-lighter">
+        <small translate="X_Advanced">
+          Advanced Users Only.
+        </small>
+  </div>
+
+</section>
+<!-- / Sidebar -->
+
 <!-- Content -->
-<div class="col-sm-8">
+<div class="col-sm-8" >
 
 
   <!-- If unlocked with address only -->
-  <article class="block" ng-show="wallet.type=='addressOnly'">
+  <article class="block" ng-show="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
     <div class="row form-group">
       <h4 translate="SEND_ViewOnly">
         You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.
@@ -51,7 +85,9 @@
 
 
   <!-- If unlocked with PK -->
-  <article class="block" ng-hide="wallet.type=='addressOnly'">
+  <article class="block" ng-hide="wallet.type=='addressOnly'" style="background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;">
 
 
     <!-- To Address -->
@@ -273,36 +309,3 @@
 
 </div>
 <!-- / Content -->
-
-
-
-
-
-<!-- Sidebar -->
-<section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
-  <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
-</section>
-<!-- / Sidebar -->
