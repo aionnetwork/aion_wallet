@@ -140,7 +140,7 @@
     </a>
   
 
-  <nav>
+  <nav class="nav-2">
     <span class="dropdown dropdown-gas" ng-cloak>
       <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
         <span >Connection</span>: {{currentNode}}
@@ -148,11 +148,11 @@
       </a>
       <ul class="dropdown-menu" ng-show="dropCon">
         <div class="header--gas">
-          <button>
-            <label class="default" ng-click="changeCurNode('default'); dropCon= false">Default</label>
+          <button ng-click="changeCurNode('default'); dropCon= false">
+            <label class="default" >Default</label>
           </button>
-          <button>
-            <label ng-click="changeCurNode('aion'); dropCon= false">Aion Network</label></br>
+          <button ng-click="changeCurNode('aion'); dropCon= false">
+            <label >Aion Network</label></br>
           </button>
 
           <div class="input">
