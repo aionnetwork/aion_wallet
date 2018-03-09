@@ -6,73 +6,267 @@ body {
   background-position: left top, right bottom;
   background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
-  // font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Open Sans', sans-serif !important;
+  // background: white;
+}
+// @media (min-width: 1280px) {
+//   .bg-gradient.header-branding {
+//     width: 125px;
+//     .container {
+//       width: 125px !important;
+//       padding: 0;
+//     }
+//   }
+// }
+header {
+  margin-bottom: 0;
+}
+.mt-50 {
+  margin-top: 50px;
+}
+.bg-gradient.header-branding {
+  // margin-bottom: -20px;
+  border-bottom: 1px solid #40bded!important;
+  a.brand {
+    padding: 5px 0;
+  }
+  .nav-inner {
+    margin-bottom: 0;
+    padding: 0;
+    li, li.active {
+      a {
+        background: #12364c;
+        // color: #3591b8;
+        color: white  !important;
+      }
+    }
+  }
+  .tagline {
+    // flex-direction: column;
+    justify-content: space-between;
+    nav {
+      width: 400px;
+    }
+  }
 }
 
-.bg-gradient.header-branding {
-  border-bottom: 1px solid #40bded!important;
-  // box-shadow: 0 10px 10px lightgrey;
+.nav-container .nav-scroll .nav-inner .nav-item a {
+  min-height: 2.75rem !important;
+  font-family: Roboto, sans-serif;
 }
-.tagline {
-  justify-content: space-between !important;
+.nav-container .nav-scroll .nav-inner .nav-item a:after {
+  display: none;
 }
 nav.container {
   // background: white;
   // display: none;
   width: auto;
   margin: 0;
+  li.active {
+    // text-decoration: underline;
+    position: relative;
+    a::before {
+      content: "";
+      border-bottom: 2px solid white;
+      position: absolute;
+      width: 100%;
+      top: 35px;
+      left: 2px;
+    }
+  }
   a {
     background: white;
     &:focus {
-      outline: none
+      outline: none;
     }
+    &:before {
+      content: "";
+      border-bottom: 2px solid transparent;
+      position: absolute;
+      width: 100%;
+      top: 35px;
+      left: 2px;
+    }
+  }
+  .nav-scroll {
+    overflow-x: auto;
   }
 }
 .modal-content{
   min-width: 1000px;
   transform: translateX(-7%);
+  background: #12364c;
+  color: #fff;
+  border: 2px solid #2bc0ec;
 }
 // get rid of that ugly nav border
 .nav-container {
   border-top: none !important;
 }
 code {
-  background-color: rgba(17, 102, 152, 0.66) !important;
+  // background-color: rgba(17, 102, 152, 0.66) !important;
+  background-color: #2bc0ec !important;
 }
 .block {
   code {
-    background-color: rgba(17, 102, 152, 0.66) !important;
+    // background-color: rgba(17, 102, 152, 0.66) !important;
+    background-color: #2bc0ec !important;
   }
 }
-.block__main, .block__help, .block {r
 
+
+.block__main, .block__help,  {
+  max-width: 1300px;
+  margin: 0 auto;
+  // padding: 20px 30px;
+  margin: 0 auto;
+  box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
+  padding: 0 !important;
+  // background: linear-gradient(to top left,rgba(31, 203, 255, 0.02),rgba(31, 203, 255, 0.18));
+  background: #12364c;
+  color: white;
+  min-height: 483px;
+  border: 2px solid #2bc0ec;
+  display: flex;
+  .left {
+    display: flex;
+    width: 28%;
+    flex-direction: column;
+    background: #12364c;
+    color: white ;
+    a {
+      color: inherit;
+    }
+    .stage {
+      min-height: 155px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      border-top: 1px solid #2bc0ec;
+      border-right: 1px solid #2bc0ec;
+      padding: 20px 8px;
+      h5 {
+        margin: 0;
+        border: 1px solid lightslategrey;
+        width: 38px;
+        border-radius: 50%;
+        padding: 7px;
+        margin: 0px auto 8px;
+        color: lightslategrey;
+      }
+      p {
+        margin-bottom: 0;
+        font-weight: bold;
+        color: lightslategrey;
+      }
+      &.active {
+        h5 {
+          border: 1px solid white;
+          color: white;
+        }
+        p {
+          color: #2bc0ec;
+        }
+        justify-content: space-between;
+      }
+      &:first-child {
+        min-height: 50px;
+        border-top: none;
+        font-weight: bold;
+        font-size: 15px;
+        justify-content: center;;
+      }
+
+      .info {
+        text-align: left;
+        padding-left: 20px;
+        font-size: 13px;
+        list-style-type: none;
+        // padding-left: 35px;
+        li {
+          margin: 0;
+          &:before {
+            content: "\00BB \0020";
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-right: .5rem;
+            color: #40bded;
+          }
+        }
+      }
+    }
+  }
+  .right {
+    padding: 50px;
+    width: 100%;
+    &.flex {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .info {
+      text-align: left;
+      h1 {
+        margin: 1rem auto 2rem;
+      }
+    }
+    .split {
+      display: flex;
+      justify-content: space-between;
+      .half {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: left;
+        a {
+          margin: auto;
+          padding: 30px;
+        }
+      }
+      .half-right {
+        width: 50%;
+
+      }
+      .mt-50 {
+        margin: auto;
+        margin-top: 50px;
+      }
+    }
+  }
   a {
     color: #12364c;
   }
+  .btn-primary:hover {
+    // background: #12364c!important;
+    // color: #40bded;
+    color: white;
+    // border: 1px solid white;
+  }
+}
+// UNLOCKING WALLET layout
+.decrypt-drtv {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 20px 30px;
-  margin: 0 auto;
-  // box-shadow: 16px 16px 45px 2px rgba(0,0,0,.2);
   box-shadow: 16px 16px 47px 2px rgba(0,0,0,.07);
+  background: #12364c;
+  color: white;
+  min-height: 483px;
+  border: 2px solid #2bc0ec;
 
-  // background: linear-gradient(to top left, rgba(18, 54, 76, 0.6), rgba(136,213,236,0.82));
-  // background: linear-gradient(to top left, rgba(18, 54, 76, 0.6), rgba(52, 148, 177, 0.8));
-  // background: linear-gradient(to top left,rgb(0, 43, 70),rgba(52,148,177,.8));
-
-  // background: linear-gradient(to top left,rgba(64, 193, 240, 0.37),rgba(52, 148, 177, 0.61));
-  // background: linear-gradient(to top left, rgba(18, 54, 76, 0.6), rgba(18, 56, 68, 0.6));
-  // background: linear-gradient(to top left,rgba(15, 76, 113, 0.9),rgba(31, 203, 255, 0.6));
-
-  // background: linear-gradient(to top left,rgba(15, 76, 113, 0.3),rgba(31, 203, 255, 0.18));
-  // background: linear-gradient(to top left,rgba(31, 203, 255, 0.02),rgba(31, 203, 255, 0.18));
-
-  background: linear-gradient(to top left,rgba(31,203,255,.09),rgba(31,203,255,.2),rgba(31,203,255,.09))
-  // background: linear-gradient(to top left,rgba(255, 255, 255, 0),rgba(31, 203, 255, 0.18));
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px !important;
+  margin-bottom: 50px;
 }
-.block__main.gen__2--inner{
+.row.ng-scope .block {
+  background: #12364c;
+  color: white;
   padding-bottom: 40px;
+  border: 2px solid #2bc0ec;
 }
+
 // aion bullets
 .aion-help {
   max-width: 24px;
@@ -93,15 +287,40 @@ code {
 }
 @media (min-width: 51.2rem) {
   .col-sm-8 {
-    padding-right: 1rem !important;
-    padding-left: 0 !important;
-  }
-  .col-sm-4 {
     padding-left: 1rem !important;
     padding-right: 0 !important;
+  }
+  .col-sm-4 {
+    padding-right: 1rem !important;
+    padding-left: 0 !important;
     max-width: 430px;
   }
 }
+wallet-balance-drtv {
+  aside {
+    .block {
+      background: #12364c;
+      color: #fff;
+      border: 2px solid #2bc0ec;
+    }
+  }
+  .block {
+    min-height: 328px;
+  }
+  ul.account-info {
+    padding: 0;
+  }
+  span.mono.wrap {
+    display: block;
+  }
+}
+h1.wallet-details {
+  background: #12364c;
+  color: white;
+  padding: 20px;
+  border: 2px solid #2bc0ec;
+}
+
 // LAYOUT
 h1.ng-scope, .row.ng-scope, article.row{
   // max-width: 1337px;
@@ -113,24 +332,52 @@ h1.ng-scope, .row.ng-scope, article.row{
 
 }
 // LINKS
-.help-sections, .block.decrypt-drtv.clearfix   {
-  a.btn {
-    color: white;
+article.decrypt-drtv  {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px !important;
+  section {
+    width: 100% !important;
+    &:nth-child(2){
+      border-top: 1px solid #2bc0ec;
+      margin-top: 30px;
+      padding-top: 30px;
+    }
+    li {
+      // font-size: 13px;
+      list-style-type: none;
+      margin: 0;
+      color: white;
+      padding-left: 20px;
+      margin-bottom: 16px;
+      &:before {
+        content: "\00BB \0020";
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-right: .5rem;
+        color: #40bded;
+      }
+    }
+    ul {
+      padding: 0;
+    }
   }
   a {
-    color: #12364c;
+    color: white;
+  }
+  a.btn-file {
+    color: black !important;
   }
 }
 a:hover {
   text-decoration: underline;
 }
 // ACCORDION
-.collapse-container{
+.collapse-container {
   // max-width: 1357px;
   max-width: 1300px;
   margin: auto !important;
   margin-top: 50px !important;
-
   h1, p {
     padding: 0px 10px;
     margin: auto;
@@ -140,6 +387,14 @@ a:hover {
     margin: 0 0 .5rem;
   }
 }
+div.collapse-heading {
+  background: #12364c;
+  color: white;
+  padding-bottom: 40px;
+  border: 2px solid #2bc0ec;
+  margin-bottom: 20px;
+  padding: 20px;
+}
 // LAYOUT STUFF
 article.row{
   margin-top: 20px;
@@ -147,12 +402,6 @@ article.row{
   padding: 0;
   .block {
     margin-top: 20px;
-    margin-bottom: 65px;
-  }
-}
-.row.ng-scope{
-  .block {
-    margin-top: 50px;
     margin-bottom: 65px;
   }
 }
@@ -183,21 +432,23 @@ a.collapse-button {
   // background: #FFF;
   // background: #12364cde;
   margin-top: 70px !important;
+  margin-bottom: 100px !important;
   max-width: 1300px;
-  padding: 20px 30px;
+  // padding: 20px 30px;
   h1, h4, p {
     // color: white !important;
     // color: #12364c !important;
     // color: #88d5ec !important;
     // color: #40bded !important;
   }
+
   input:focus {
-    box-shadow: 0 0 15px white !important;
+    box-shadow: 0 0 15px #88d5ec !important;
     // border: 1px solid #88d5ec !important;
   }
   a.btn-primary {
-    background: #12364c !important;
-    color: white;
+    background: #40bded !important;
+    color: #12364c;
     background: transparent;
   }
   a {

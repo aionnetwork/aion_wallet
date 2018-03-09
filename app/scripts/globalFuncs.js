@@ -16,6 +16,8 @@ globalFuncs.printPaperWallets = function(strJson) {
     win.document.write("<script>generateWallets();</script>");
 };
 globalFuncs.getBlob = function(mime, str) {    
+    console.log("getBlob: ", mime);
+    console.log("getBlob: ", str);
     //var str = (typeof str === 'object') ? JSON.stringify(str) : str;
     if (str == null) return '';
     var blob = new Blob([str], {

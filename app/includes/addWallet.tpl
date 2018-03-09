@@ -286,7 +286,9 @@
     <hr />
 
     <!-- Sidebar -->
-    <section class="col-sm-4">
+    <section class="col-sm-4" style="background: #12364c;
+        color: #fff;
+        border: 2px solid #2bc0ec;">
 
       <h5 translate="sidebar_AccountAddr">
         Account Address:
@@ -368,7 +370,9 @@
 
 
     <!-- Content -->
-    <div class="col-sm-8">
+    <div class="col-sm-8" style="background: #12364c;
+        color: #fff;
+        border: 2px solid #2bc0ec;">
 
       <h4 translate="NAV_AddWallet"> Add Wallet </h4>
 

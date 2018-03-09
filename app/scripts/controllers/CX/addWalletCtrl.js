@@ -105,6 +105,7 @@ var addWalletCtrl = function($scope, $sce) {
             $scope.requireFPass = Wallet.walletRequirePass($fileContent);
             $scope.showBtnUnlock = !$scope.requireFPass;
             $scope.fileContent = $fileContent;
+            console.log("$fileContent: ", $fileContent);
         } catch (e) {
             $scope.notifier.danger(e);
         }

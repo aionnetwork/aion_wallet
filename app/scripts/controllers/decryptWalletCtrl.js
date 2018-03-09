@@ -238,7 +238,8 @@ var decryptWalletCtrl = function($scope, $sce, walletService) {
                 $scope.wallet = new Wallet(temp, temp.substring(64,temp.length));
                 walletService.password = '';
             } else if ($scope.showFDecrypt) {
-                //$scope.wallet = Wallet.getWalletFromPrivKeyFile($scope.fileContent, $scope.filePassword);
+                //$scope.wallet = Wallet.getWalletFromPrivKeyFile($scope.fileContent, $scope.filePassword);\
+                console.log("$scope.fileContent: ", $scope.fileContent);
                 $scope.wallet = Wallet.fromV3($scope.fileContent, $scope.filePassword, true);
                 walletService.password = $scope.filePassword;
             } else if ($scope.showMDecrypt) {

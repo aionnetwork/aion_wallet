@@ -32,8 +32,8 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
             $scope.currentPort="8545";
             $scope.currentNode = "Default";
         } else if (node == "aion"){
-            $scope.currentIP="52.233.40.169";
-            $scope.currentPort="10443";
+            $scope.currentIP="web3.aion.network";
+            $scope.currentPort="443";
             $scope.currentNode = "Aion Network";
         } else if (node == "other"){
             if (ip) $scope.currentIP=ip;

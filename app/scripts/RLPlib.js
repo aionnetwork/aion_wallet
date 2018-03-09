@@ -13,6 +13,7 @@ exports.encode = function (input) {
       output.push(exports.encode(input[i]))
     }
     var buf = Buffer.concat(output)
+  console.log("input legnth is "+ Buffer.concat([encodeLength(buf.length, 192), buf]).length);
     return Buffer.concat([encodeLength(buf.length, 192), buf])
   } else {
     input = toBuffer(input)
@@ -49,6 +50,7 @@ function encodeLength (len, offset) {
  * @returns {Array} - returns decode Array of Buffers containg the original message
  **/
 exports.decode = function (input, stream) {
+  console.log("input legnth is "+ input.length);
   if (!input || input.length === 0) {
     return new Buffer([])
   }
@@ -89,10 +91,11 @@ exports.getLength = function (input) {
 }
 
 function _decode (input) {
+  console.log("decode input: ", input);
   var length, llength, data, innerRemainder, d
   var decoded = []
   var firstByte = input[0]
-
+console.log("first byte is "+firstByte);
   if (firstByte <= 0x7f) {
     // a single byte whose value is in the [0x00, 0x7f] range, that byte is its own RLP encoding.
     return {
@@ -203,6 +206,8 @@ function intToBuffer (i) {
 }
 
 function toBuffer (v) {
+  console.log("toBuffer: ", v);
+  console.log("Buffer.isBuffer(v): ", Buffer.isBuffer(v))
   if (!Buffer.isBuffer(v)) {
     if (typeof v === 'string') {
       if (isHexPrefixed(v)) {
@@ -218,7 +223,11 @@ function toBuffer (v) {
       }
     } else if (v === null || v === undefined) {
       v = new Buffer([])
+    } else if (Array.isArray(v)) {
+      console.log("yay, is Array");
+      v = new Buffer(v);
     } else if (v.toArray) {
+      onsole.log("is BN");
       // converts a BN to a Buffer
       v = new Buffer(v.toArray())
     } else {

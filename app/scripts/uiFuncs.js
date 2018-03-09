@@ -373,11 +373,6 @@ uiFuncs.notifier = {
     },
   }
   
-console.log(navigator.userAgent);
 uiFuncs.kernelRunning = true;
-if (navigator.userAgent.indexOf("Linux")==-1) {
-    alert("You are not running a linux machine, please note that you can only generate accounts on this wallet, for full functionality please log on to a lunix machine and connect to an Aion node");
-    uiFuncs.kernelRunning = false;
-}
 
 module.exports = uiFuncs;

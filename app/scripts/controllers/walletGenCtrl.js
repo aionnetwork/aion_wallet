@@ -22,12 +22,15 @@ var walletGenCtrl = function($scope) {
             $scope.isDone = false;
             $scope.wallet = Wallet.generate(false);
             $scope.showWallet = true;console.log($scope.wallet.toJSON());
-            $scope.blob = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toJSON());
+            //$scope.blob = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toJSON());
 
-            $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toV3($scope.password, {
+            var encodedFile = $scope.wallet.toV3($scope.password, {
                 kdf: globalFuncs.kdf,
                 n: globalFuncs.scrypt.n
-            }));
+            });
+            console.log(encodedFile)
+
+            $scope.blobEnc = globalFuncs.getBlob("application/octet-stream", encodedFile);
 
             $scope.encFileName = $scope.wallet.getV3Filename();
             if (parent != null)

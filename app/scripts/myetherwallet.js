@@ -353,19 +353,19 @@ Wallet.prototype.toV3 = function(password, opts) {
         kdfparams.p.toString(), //10
         mac.toString('hex') //11       
     ]; 
-    console.log ("return data is "+returnData);
+    console.log ("return data is "+hexToBinary(RLP.encode(returnData).toString('hex')));
     //return hexToBinary(RLP.encode(returnData).toString('hex'));
     return RLP.encode(returnData);
 }
 
 Wallet.fromV3 = function(input, password, nonStrict) {
+   
     //var hexx =bin2hex(input);
     //var keyStoreContents = RLP.decode(new Buffer(hexx,'hex')).toString().split(',');
 
-    console.log("input is: "+input);
+    console.log("input is: "+hexToBinary(input));
     var keyStoreContents = RLP.decode(input);
     console.log("decoded: "+RLP.decode(input));
-
 
     var keyStoreContent =[];
     for(var i = 0; i < keyStoreContents.length; i++){

@@ -12,11 +12,13 @@
 
 
   <!-- Unlock Wallet -->
-  <article class="collapse-container">
-    <div ng-click="wd = !wd">
-      <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a>
-      <h1 translate="NAV_SendEther">
-        Send Ether &amp; Tokens
+  <article class="collapse-container" >
+    <div class="collapse-heading" ng-click="wd = !wd" sty>
+      <!-- <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a> -->
+      <!-- <h1 translate="NAV_SendEther" style="margin-bottom: 0"> -->
+      <h1 style="margin-bottom: 0">
+        <img src="images/icons/small-logo.png" style="width: 50px;"/>
+        Use Wallet
       </h1>
     </div>
     <div ng-show="!wd">
