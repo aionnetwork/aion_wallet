@@ -27,6 +27,15 @@ header {
 }
 .bg-gradient.header-branding {
   // margin-bottom: -20px;
+  section.container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1300px;
+    padding: 0;
+    &:before, &:after {
+      display: none;
+    }
+  }
   border-bottom: 1px solid #40bded!important;
   a.brand {
     padding: 5px 0;
@@ -42,6 +51,9 @@ header {
       }
     }
   }
+  nav {
+    min-width: 310px;
+  }
   .tagline {
     // flex-direction: column;
     justify-content: space-between;
@@ -50,13 +62,20 @@ header {
     }
   }
 }
-
+.nav-inner {
+  li:first-child {
+    margin-right: 50px;
+  }
+}
 .nav-container .nav-scroll .nav-inner .nav-item a {
   min-height: 2.75rem !important;
   font-family: Roboto, sans-serif;
 }
 .nav-container .nav-scroll .nav-inner .nav-item a:after {
   display: none;
+}
+.container.nav-container.overflowing {
+  padding-left: 0;
 }
 nav.container {
   // background: white;
@@ -72,7 +91,7 @@ nav.container {
       position: absolute;
       width: 100%;
       top: 35px;
-      left: 2px;
+      left: 0;
     }
   }
   a {

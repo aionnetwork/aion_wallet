@@ -136,9 +136,9 @@
        class="nav-arrow-right"
        ng-click="scrollRight(100);"
        ng-mouseover="scrollHoverIn(false,2);"
-       ng-mouseleave="scrollHoverOut()">&#187;</a> 
+       ng-mouseleave="scrollHoverOut()">&#187;</a>
   </nav>
-    
+
   @@if (site === 'mew' ) {
     <a class="brand" href="./index.html" aria-label="Go to homepage">
       <img src="images/aion-logo.svg"   height="64px" width="150" alt="Aion Wallet" />
@@ -146,53 +146,28 @@
     </a>
   }
 
+  <nav>
     <span class="dropdown dropdown-gas" ng-cloak>
-      <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropdownGasPrice = !dropdownGasPrice">
-        <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
-          {{gas.value}} PLAT
-          <i class="caret"></i>
+      <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
+        <span >Connection</span>:{{currentNode}}
+        <i class="caret"></i>
       </a>
-      <ul class="dropdown-menu" ng-show="dropdownGasPrice">
-        
-          <span translate="OFFLINE_Step2_Label_3">Gas Price</span>:
-          {{gas.value}} PLAT
-          <input type="range" ng-model="gas.value" min="{{gas.min}}" max="{{gas.max}}" step="{{gas.step}}" ng-change="gasChanged()"/>
-          <p class="small col-xs-4 text-left"> <!--translate="GAS_Price_1"-->
-            Really, really slow
-          </p>
-          <p class="small col-xs-4 text-center"> <!--translate="GAS_Price_2"-->
-            Maybe Fast?
-          </p>
-          <p class="small col-xs-4 text-right"> <!--translate="GAS_Price_3"-->
-            Fast
-          </p>
-          <br />
-          <p class="small" style="white-space:normal;font-weight:300;margin: 2rem 0 0;" translate="GAS_PRICE_Desc"></p>
+      <ul class="dropdown-menu" ng-show="dropCon">
+        <div class="header--gas">
+          <label ng-click="changeCurNode('default'); dropCon= false">Default: localhost:8545</label>
+          <label ng-click="changeCurNode('aion'); dropCon= false">Aion Network</label></br>
+          <label ng-click="changeCurNode('other')">Other</label>
+
+          <form id="addr">
+            IP: <input type="text" ng-model="currentIP" ><br>
+            PORT: <input type="text" ng-model="currentPort"><br>
+          </form>
+          <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">OK</button>
         </div>
       </ul>
 
     </span>
-
-    <span class="dropdown dropdown-gas" ng-cloak>
-      <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
-        <span >Connection</span>:{{currentNode}} 
-        <i class="caret"></i>
-      </a>
-    <ul class="dropdown-menu" ng-show="dropCon">
-    <div class="header--gas">
-      <label ng-click="changeCurNode('default'); dropCon= false">Default: localhost:8545</label>
-      <label ng-click="changeCurNode('aion'); dropCon= false">Aion Network</label></br>
-       <label ng-click="changeCurNode('other')">Other</label>
-      
-       <form id="addr">
-            IP: <input type="text" ng-model="currentIP" ><br>
-          PORT: <input type="text" ng-model="currentPort"><br>          
-        </form>
-        <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">OK</button>
-    </div>
-    </ul>
-
-    </span>
+  </nav>
 
   <!-- @@if (site === 'cx' ) {
     <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">
