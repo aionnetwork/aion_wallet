@@ -141,7 +141,7 @@
 
   @@if (site === 'mew' ) {
     <a class="brand" href="./index.html" aria-label="Go to homepage">
-      <img src="images/aion-logo.svg"   height="64px" width="150" alt="Aion Wallet" />
+      <img src="images/aion-logo.svg"   height="64px" width="150" style="margin: auto;" alt="Aion Wallet" />
       <!-- <p class="small visible-xs">3.11.3.0</p> -->
     </a>
   }
@@ -149,20 +149,32 @@
   <nav>
     <span class="dropdown dropdown-gas" ng-cloak>
       <a tabindex="0" aria-haspopup="true" aria-label="adjust gas price" class="dropdown-toggle  btn btn-white" ng-click="dropCon = !dropCon">
-        <span >Connection</span>:{{currentNode}}
+        <span >Connection</span>: {{currentNode}}
         <i class="caret"></i>
       </a>
       <ul class="dropdown-menu" ng-show="dropCon">
         <div class="header--gas">
-          <label ng-click="changeCurNode('default'); dropCon= false">Default: localhost:8545</label>
-          <label ng-click="changeCurNode('aion'); dropCon= false">Aion Network</label></br>
-          <label ng-click="changeCurNode('other')">Other</label>
+          <button>
+            <label class="default" ng-click="changeCurNode('default'); dropCon= false">Default <span> (localhost: 8545)</span></label>
+          </button>
+          <button>
+            <label ng-click="changeCurNode('aion'); dropCon= false">Aion Network</label></br>
+          </button>
 
-          <form id="addr">
-            IP: <input type="text" ng-model="currentIP" ><br>
-            PORT: <input type="text" ng-model="currentPort"><br>
-          </form>
-          <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">OK</button>
+          <div class="input">
+            <label ng-click="changeCurNode('other')">Custom</label>
+
+            <form id="addr">
+              <div>
+                <span class="dark">IP:</span> <input type="text" ng-model="currentIP" ><br>
+              </div>
+              <div>
+                <span class="dark">PORT:</span> <input type="text" ng-model="currentPort"><br>
+              </div>
+            </form>
+            <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">Submit</button>
+          </div>
+
         </div>
       </ul>
 

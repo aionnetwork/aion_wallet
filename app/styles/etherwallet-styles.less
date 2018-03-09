@@ -19,6 +19,7 @@ body {
 //     }
 //   }
 // }
+
 header {
   margin-bottom: 0;
 }
@@ -39,6 +40,7 @@ header {
   border-bottom: 1px solid #40bded!important;
   a.brand {
     padding: 5px 0;
+    margin: auto;
   }
   .nav-inner {
     margin-bottom: 0;
@@ -91,7 +93,7 @@ nav.container {
       position: absolute;
       width: 100%;
       top: 35px;
-      left: 0;
+      left: 2px;
     }
   }
   a {
@@ -110,6 +112,74 @@ nav.container {
   }
   .nav-scroll {
     overflow-x: auto;
+  }
+}
+// DROPDOWN STYLING
+ul.dropdown-menu {
+  min-width: 300px;
+  overflow: hidden;
+  left: 3px !important;
+  height: 300px;
+  padding: 15px 20px !important;
+  .header--gas {
+    color: #40bded;
+    color: #2D7586;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  label:hover {
+    cursor: pointer;
+  }
+  .default {
+    span {
+      font-size: 12px;
+      font-style: italic;
+      color: #12364b;
+      position: relative;
+      bottom: 3px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px
+    }
+  }
+  .input {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: 1px solid;
+    height: 150px
+  }
+  form {
+    height: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .dark {
+    min-width: 55px;
+    display: inline-block;
+  }
+  // button {
+  //   position: absolute;
+  //   right: 25px;
+  //   width: 85%;
+  //   bottom: 20px;
+  // }
+  button {
+    font-size: 19px;
+    font-family: 'Pacifico';
+    font-weight: bold;
+    overflow: visible;
+    border-radius: 3px;
+    position: relative;
+    // padding-right: 30px;
+    background-color: rgba(0, 184, 255, 0.29);
+    border: 2px solid #A6E0EE;
+    color: #2D7586;
+    display: block;
+    cursor: pointer;
   }
 }
 .modal-content{
