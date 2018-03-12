@@ -157,3 +157,38 @@ if (IS_CX) {
   app.controller('quickSendCtrl', ['$scope', '$sce', quickSendCtrl]);
   app.controller('cxDecryptWalletCtrl', ['$scope', '$sce', 'walletService', cxDecryptWalletCtrl]);
 }
+
+function setCookie(exdays) {
+    var d = new Date();
+    var expires = "expires=" + d.getTime();
+    document.cookie =expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie() {
+    var exp=getCookie("expires");
+    var d = new Date();
+
+    if (exp == "") {
+     alert ("This is a test version of the Wallet");
+     setCookie(30);
+    } 
+    //insert expiry date function
+}
+
+checkCookie();

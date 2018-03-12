@@ -22,6 +22,23 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.$watch('ajaxReq.type', function() { $scope.nodeType = $scope.ajaxReq.type })
     $scope.$watch('ajaxReq.service', function() { $scope.nodeService = $scope.ajaxReq.service })
 
+    const AionWeb3 = require('../aionWeb3/lib/web3.js');
+    var aionWeb3= new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));;
+    
+    var checkCount= 0;
+    $scope.connectStatus=true;  
+    $scope.checkConnect = function() {
+        if (checkCount++ == 10) {
+            $scope.connectStatus = aionWeb3.isConnected() 
+        }
+        else if (checkCount>10){
+            checkCount =0;
+        } 
+        return $scope.connectStatus;
+    }
+   // setInterval($scope.checkConnect, 100);
+
+
     $scope.currentNode= window.currentNode;
     $scope.currentIP="127.0.0.1";
     $scope.currentPort= "8545";
@@ -43,7 +60,6 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
 
         }
         window.web3addr="https://"+$scope.currentIP+":"+$scope.currentPort;
-        console.log(window.web3addr);
     }
 
     $scope.setArrowVisibility = function() {

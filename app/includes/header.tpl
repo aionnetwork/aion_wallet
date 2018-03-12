@@ -181,6 +181,9 @@
     </span>
   </nav>
 
+  <button type="button" class="btn btn-success" ng-show="checkConnect()">Connected</button>
+  <button type="button" class="btn btn-danger" ng-show="!checkConnect()">No Connection</button>
+
   <!-- @@if (site === 'cx' ) {
     <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">
       <img src="images/aion-logo.svg" height="64px" width="120px" alt="MyEtherWallet" />

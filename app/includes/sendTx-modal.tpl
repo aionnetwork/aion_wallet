@@ -74,7 +74,7 @@
             </tr>
             <tr>
               <td class="small text-right">Amount to Send:</td>
-              <td class="small text-left mono">{{parsedSignedTx.value}} Aion</td>
+              <td class="small text-left mono">{{parsedSignedTx.value}} AION</td>
             </tr>
             <tr>
               <td class="small text-right">Account Balance:</td>

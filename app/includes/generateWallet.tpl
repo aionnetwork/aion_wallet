@@ -175,7 +175,7 @@
             </span>
             <br/> -->
             <span translate="x_Keystore2">
-              Download: Keystore File (UTC / JSON)
+              Download: Keystore File
             </span>
           </a>
 
