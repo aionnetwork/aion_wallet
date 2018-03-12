@@ -141,7 +141,7 @@
 
   @@if (site === 'mew' ) {
     <a class="brand" href="./index.html" aria-label="Go to homepage">
-      <img src="images/aion-logo.svg"   height="64px" width="150" style="margin: auto;" alt="Aion Wallet" />
+      <img src="images/aion-logo.svg"   height="64px" width="150" style="margin: auto;" alt="Aion Wallet" /><span>TEST</span>
       <!-- <p class="small visible-xs">3.11.3.0</p> -->
     </a>
   }
