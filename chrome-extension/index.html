@@ -171,12 +171,13 @@
 
         </div>
       </ul>
-
     </span>
+    <!-- <span class="pt-navbar-divider"></span> -->
+    <!-- <button type="button" class="btn btn-success" ng-show="checkConnect()">Connected</button> -->
+    <div class="status complete fade" ng-show="checkConnect()"></div>
+    <!-- <button type="button" class="btn btn-danger" ng-show="!checkConnect()">No Connection</button> -->
+    <div class="status lost fade" ng-show="!checkConnect()"></div>
   </nav>
-
-  <button type="button" class="btn btn-success" ng-show="checkConnect()">Connected</button>
-  <button type="button" class="btn btn-danger" ng-show="!checkConnect()">No Connection</button>
 
   <!-- @@if (site === 'cx' ) {
     <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">
