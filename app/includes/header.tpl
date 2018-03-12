@@ -181,8 +181,8 @@
     </span>
   </nav>
 
-  <button type="button" class="btn btn-success" ng-show="checkConnect()">Connected</button>
-  <button type="button" class="btn btn-danger" ng-show="!checkConnect()">No Connection</button>
+  <button type="button" class="btn btn-success" ng-show="connectStatus">Connected</button>
+  <button type="button" class="btn btn-danger" ng-show="!connectStatus">No Connection</button>
 
   <!-- @@if (site === 'cx' ) {
     <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">

@@ -1,4 +1,5 @@
 'use strict';
+
 var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.gService = globalService;
     $scope.tabNames = $scope.gService.tabs;
@@ -23,20 +24,25 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.$watch('ajaxReq.service', function() { $scope.nodeService = $scope.ajaxReq.service })
 
     const AionWeb3 = require('../aionWeb3/lib/web3.js');
-    var aionWeb3= new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));;
     
-    var checkCount= 0;
-    $scope.connectStatus=true;  
+    
+    $scope.connectStatus=false;  
     $scope.checkConnect = function() {
-        if (checkCount++ == 10) {
-            $scope.connectStatus = aionWeb3.isConnected() 
-        }
-        else if (checkCount>10){
-            checkCount =0;
-        } 
-        return $scope.connectStatus;
+        var aionWeb3= new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
+        $scope.connectStatus = aionWeb3.isConnected();
+        console.log("connect status "+$scope.connectStatus);
     }
-   // setInterval($scope.checkConnect, 100);
+
+    $scope.checkConnect2= function (){
+        $.post("127.0.0.1:8545",
+        {"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":83},
+        function(data,status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
+    }
+
+
+    setInterval($scope.checkConnect2, 1000);
 
 
     $scope.currentNode= window.currentNode;
