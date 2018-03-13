@@ -121,7 +121,7 @@
             <button style="min-width: 170px"
                class="btn btn-default">
                 <strong>
-                  Aion
+                  AION
                 </strong>
             </button>
 

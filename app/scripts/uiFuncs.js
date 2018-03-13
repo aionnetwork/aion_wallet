@@ -145,17 +145,11 @@ uiFuncs.trezorUnlockCallback = function(txData, callback) {
         }
     });
 }
-uiFuncs.generateTx = function($scope, txData, callback) { 
+uiFuncs.generateTx = function($scope, txData, callback) {     
 
-    try {   
-        const AionWeb3 = require('./aionWeb3/index');
-        var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-        
-    } catch (err) {
-        console.log("not connected");
-        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
-    } 
-
+    const AionWeb3 = require('./aionWeb3/index');
+    var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
+    
     if ((typeof txData.hwType != "undefined") && (txData.hwType == "trezor") && !txData.trezorUnlocked) {
         uiFuncs.trezorUnlockCallback(txData, callback);
         return;
@@ -163,8 +157,6 @@ uiFuncs.generateTx = function($scope, txData, callback) {
     try {
         uiFuncs.isTxDataValid(txData);
         var genTxWithInfo = function(data) {
-
-
 
             var rawTx = {
                 RLP_TX_NONCE: aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString()),

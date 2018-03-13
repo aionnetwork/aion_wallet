@@ -132,7 +132,7 @@ app.directive('onReadFile', fileReaderDrtv);
 app.directive('walletBalanceDrtv', balanceDrtv);
 app.directive('walletDecryptDrtv', walletDecryptDrtv);
 app.directive('cxWalletDecryptDrtv', cxWalletDecryptDrtv);
-app.controller('tabsCtrl', ['$scope', 'globalService', '$translate', '$sce', tabsCtrl]);
+app.controller('tabsCtrl', ['$scope', 'globalService', '$translate', '$sce', '$http', tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$sce', viewCtrl]);
 app.controller('walletGenCtrl', ['$scope', walletGenCtrl]);
 app.controller('bulkGenCtrl', ['$scope', bulkGenCtrl]);
@@ -179,16 +179,3 @@ function getCookie(cname) {
     }
     return "";
 }
-
-function checkCookie() {
-    var exp=getCookie("expires");
-    var d = new Date();
-
-    if (exp == "") {
-     alert ("This is a test version of the Wallet");
-     setCookie(30);
-    } 
-    //insert expiry date function
-}
-
-checkCookie();

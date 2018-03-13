@@ -1,6 +1,6 @@
 'use strict';
 
-var tabsCtrl = function($scope, globalService, $translate, $sce) {
+var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
     $scope.gService = globalService;
     $scope.tabNames = $scope.gService.tabs;
     $scope.curLang = 'English';
@@ -24,25 +24,61 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.$watch('ajaxReq.service', function() { $scope.nodeService = $scope.ajaxReq.service })
 
     const AionWeb3 = require('../aionWeb3/lib/web3.js');
-    
-    
-    $scope.connectStatus=false;  
+      
+    $scope.connectStatus=true;  /*
     $scope.checkConnect = function() {
         var aionWeb3= new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
         $scope.connectStatus = aionWeb3.isConnected();
         console.log("connect status "+$scope.connectStatus);
+        return $scope.connectStatus;
+    }*/
+/*
+    $scope.checkConnect = function() {
+    	var data = {
+		  "id":83,
+		  "jsonrpc": "2.0",
+		  "result": "0x4b7" // 1207
+		};
+
+    	//$http.post(window.web3addr, JSON.stringify(data)).then(function (response){console.log(response); $scope.connectStatus = true;}, function (response){c});
+        try {
+    	$http({
+		  method: 'POST',
+		  url: window.web3addr
+		}).then(function successCallback(response) {
+		    console.log("response is "+response); 
+		    $scope.connectStatus = true;
+		  }, function errorCallback(response) {
+		    console.log("error");
+		    $scope.connectStatus = false;
+		});
+	} catch(err){console.log("error");}
+
+        console.log("connect status "+$scope.connectStatus);
+        return $scope.connectStatus;
     }
+*/
+	var connect = function(){
 
-    $scope.checkConnect2= function (){
-        $.post("127.0.0.1:8545",
-        {"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":83},
-        function(data,status){
-            alert("Data: " + data + "\nStatus: " + status);
-        });
-    }
+	    var data = {
+	    	"jsonrpc":"2.0",
+	    	"method":"eth_blockNumber",
+	    	"params":[],
+	    	"id":83};
+
+		$http.post(window.web3addr, data).then(
+			function (response){
+				console.log("data "+response); 
+				$scope.connectStatus = true;}, 
+			function (response){
+				console.log("error "+response);
+				$scope.connectStatus = false;
+			});
+	}
+	connect();
+	setInterval(connect, 4000);
 
 
-    setInterval($scope.checkConnect2, 1000);
 
 
     $scope.currentNode= window.currentNode;
@@ -61,7 +97,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
         } else if (node == "other"){
             if (ip) $scope.currentIP=ip;
             if (port)$scope.currentPort=port;
-            $scope.currentNode = "Other: "+ip+":"+port;
+            $scope.currentNode = ip+":"+port;
         }else {
 
         }
@@ -368,6 +404,42 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
 
     angular.element(document.querySelectorAll('.nav-scroll')[0]).bind('scroll', $scope.setOnScrollArrows);
     globalFuncs.changeHash = $scope.setHash;
+
+
+	function setCookie(exdays) {
+	    var d = new Date();
+	    var expires = "expires=" + d.getTime();
+	    document.cookie =expires;
+	}
+
+	function getCookie(cname) {
+	    var name = cname + "=";
+	    var decodedCookie = decodeURIComponent(document.cookie);
+	    var ca = decodedCookie.split(';');
+	    for(var i = 0; i < ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0) == ' ') {
+	            c = c.substring(1);
+	        }
+	        if (c.indexOf(name) == 0) {
+	            return c.substring(name.length, c.length);
+	        }
+	    }
+	    return "";
+	}
+
+	function checkCookie() {
+	    var exp=getCookie("expires");
+	    var d = new Date();
+
+	    if (exp == "") {
+	     alert ("Thank you for using the Aion Test Wallet. This wallet is currently for testing purposes only.");
+	     setCookie(30);
+	    } 
+	    //insert expiry date function
+	}
+
+	checkCookie();
 
 };
 module.exports = tabsCtrl;

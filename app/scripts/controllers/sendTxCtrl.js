@@ -204,6 +204,12 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
 
     $scope.generateTx = function() {
 
+        if (!$scope.connectStatus){
+            console.log("status "+$scope.connectStatus);
+            uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu"); 
+            return;
+        } 
+
         if (!$scope.Validator.isValidAddress($scope.tx.to)) {
             $scope.notifier.danger(globalFuncs.errorMsgs[5]);
             return;

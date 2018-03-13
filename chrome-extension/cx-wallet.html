@@ -130,7 +130,7 @@
             <label class="default" >Default</label>
           </button>
           <button ng-click="changeCurNode('aion'); dropCon= false">
-            <label >Aion Network</label></br>
+            <label >Aion Test Net</label></br>
           </button>
 
           <div class="input">
@@ -144,17 +144,22 @@
                 <span class="dark">PORT:</span> <input type="text" ng-model="currentPort"><br>
               </div>
             </form>
-            <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">Submit</button>
+            <button ng-click="changeCurNode('other', currentIP, currentPort); dropCon=false">
+              <label>
+                Submit
+              </label>
+            </button>
           </div>
 
         </div>
       </ul>
-
     </span>
+    <!-- <span class="pt-navbar-divider"></span> -->
+    <!-- <button type="button" class="btn btn-success" ng-show="checkConnect()">Connected</button> -->
+    <div class="status complete fade" ng-show="connectStatus"></div>
+    <!-- <button type="button" class="btn btn-danger" ng-show="!checkConnect()">No Connection</button> -->
+    <div class="status lost fade" ng-show="!connectStatus"></div>
   </nav>
-
-  <button type="button" class="btn btn-success" ng-show="connectStatus">Connected</button>
-  <button type="button" class="btn btn-danger" ng-show="!connectStatus">No Connection</button>
 
   <!-- @@if (site === 'cx' ) {
     <a class="brand" href="/cx-wallet.html" aria-label="Go to homepage">
@@ -1569,7 +1574,7 @@
             <button style="min-width: 170px"
                class="btn btn-default">
                 <strong>
-                  Aion
+                  AION
                 </strong>
             </button>
 
@@ -2281,7 +2286,7 @@
             <button style="min-width: 170px"
                class="btn btn-default">
                 <strong>
-                  Aion
+                  AION
                 </strong>
             </button>
 
@@ -5923,7 +5928,7 @@ Rate: {{swapOrder.swapRate}} {{swapOrder.swapPair}}</textarea>
             <button style="min-width: 170px"
                class="btn btn-default">
                 <strong>
-                  Aion
+                  AION
                 </strong>
             </button>
 

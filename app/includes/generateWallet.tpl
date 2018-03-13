@@ -182,6 +182,7 @@
           <a tabindex="0"
           role="button"
           class="btn btn-danger"
+          ng-class="fileDownloaded ? '' : 'disabled' "
           ng-click="continueToPaper()">
           <span>
             I understand. Continue.

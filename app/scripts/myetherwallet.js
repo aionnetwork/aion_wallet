@@ -220,7 +220,7 @@ Wallet.prototype.setBalance = function(callback) {
 }
 Wallet.prototype.getBalance = function() {
 
-    if (!uiFuncs.kernelRunning) return "You are not currently connected to a node for";
+    if (!$scope.connectStatus) return "You are not currently connected to a node for";
 
     return this.balance/Math.pow(10,18);
 }

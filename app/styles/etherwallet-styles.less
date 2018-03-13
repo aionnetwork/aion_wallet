@@ -1,3 +1,5 @@
+//@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
 body {
   // background: red;
   // background: white;
@@ -6,7 +8,7 @@ body {
   background-position: left top, right bottom;
   background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
-  font-family: 'Roboto', sans-serif !important;
+  // font-family: 'Roboto', sans-serif !important;
   font-family: 'Open Sans', sans-serif !important;
   // background: white;
 }
@@ -26,6 +28,8 @@ header {
 .mt-50 {
   margin-top: 50px;
 }
+
+
 .bg-gradient.header-branding {
   // margin-bottom: -20px;
   section.container {
@@ -64,7 +68,7 @@ header {
     }
   }
   nav {
-    min-width: 310px;
+    min-width: 380px;
   }
   .tagline {
     // flex-direction: column;
@@ -132,14 +136,16 @@ nav.container {
 }
 .header-branding .dropdown-gas .dropdown-toggle {
   font-size: 16px;
-  font-family: 'Pacifico';
-  font-weight: bold;
+  // font-family: 'Pacifico';
+  font-family: 'Open Sans';
+  // font-weight: bold;
   overflow: visible;
   border-radius: 3px;
   position: relative;
   // padding-right: 30px;
-  background-color: lightslategrey;
-  border: 2px solid #A6E0EE;
+  // background-color: lightslategrey;
+  background: white;;
+  border: 2px solid #40bded;
   color: #40bded;
   display: block;
   cursor: pointer;
@@ -158,6 +164,14 @@ ul.dropdown-menu {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    label {
+      display: inline-block;
+      margin-top: .3rem;
+      margin-bottom: .3rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #12364b;
+    }
   }
 
   label:hover {
@@ -190,6 +204,7 @@ ul.dropdown-menu {
   .dark {
     min-width: 55px;
     display: inline-block;
+    color: #12364b;
   }
   // button {
   //   position: absolute;
@@ -199,15 +214,21 @@ ul.dropdown-menu {
   // }
   button {
     font-size: 19px;
-    font-family: 'Pacifico';
-    font-weight: bold;
+    // font-family: 'Pacifico';
+    font-family: 'Open Sans';
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: .3rem;
+    margin-bottom: .3rem;
+    // font-weight: bold;
     overflow: visible;
     border-radius: 3px;
     position: relative;
     // padding-right: 30px;
     background-color: rgba(0, 184, 255, 0.29);
     border: 2px solid #A6E0EE;
-    color: #2D7586;
+    // color: #2D7586;
+    color: #12364b;
     display: block;
     cursor: pointer;
   }
@@ -658,4 +679,100 @@ a.btn-danger {
       color: white !important;
     }
   }
+}
+
+// CONNECTION STATUS
+.pt-navbar-divider {
+    margin-right: 5px;
+    margin-left: 10px;
+}
+.fade {
+  backface-visibility: none;
+  perspective: 1000;
+  transform: translate3d(0,0,0);
+
+  &:before {
+    animation-duration: 2s;
+    // animation-iteration-count: 2;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count:infinite;
+  }
+}
+.fade:hover:before {
+  animation-name: fade;
+}
+.status {
+  font-size: 18px;
+  display: inline-block;
+  margin: 4px;
+  margin-top: 11.8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 18px/2;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  position: relative;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', arial, sans-serif;
+  cursor: pointer;
+  &:before {
+    // animation-name: fade;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+  &.lost {
+    color: #f04848;
+    border-color: #f04848;
+    font-family: arial, sans-serif;
+
+    &:before {
+      animation-name: fade;
+      line-height: 100%;
+      font-size: 20px;
+      height: 100%;
+      width: 100%;
+      margin-top: -10px;
+      margin-left: -5.5px;
+      content: '×';
+      font-weight: bold;
+      color: #f04848;
+    }
+  }
+
+  &.complete {
+    color: #3cb87e;//#43B581;
+    border-color: #3cb87e;
+
+    &:before {
+      animation-name: fade;
+      font-size: 22px;
+      content: '✓';
+      color: white;
+      display: block;
+      width: 16px;
+      height: 16px;
+      margin-top: -16px/2;
+      margin-left: -16px/2;
+      text-indent: 1px;
+      background: #3cb87e;
+      font-weight: bold;
+      line-height: 12px;
+      text-shadow:
+        2px 0px 1px #3cb87e,
+        -2px 0px 1px #3cb87e,
+        0 -2px 1px #3cb87e,
+        0 2px 1px #3cb87e;
+      border-radius: 16px/2;
+    }
+  }
+
+}
+@keyframes fade {
+  0% { opacity: 1; }
+  50% { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+
+.table-hover>tbody>tr:hover {
+    background-color: #7bdfff82;
 }
