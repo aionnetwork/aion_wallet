@@ -1,5 +1,4 @@
-//@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
-
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 body {
   // background: red;
   // background: white;
@@ -8,7 +7,7 @@ body {
   background-position: left top, right bottom;
   background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
-  // font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-family: 'Open Sans', sans-serif !important;
   // background: white;
 }
@@ -134,6 +133,9 @@ nav.container {
   display: flex;
   justify-content: flex-end;
 }
+.header-branding .dropdown-gas .dropdown-menu {
+  left: 35px;
+}
 .header-branding .dropdown-gas .dropdown-toggle {
   font-size: 16px;
   // font-family: 'Pacifico';
@@ -154,7 +156,7 @@ ul.dropdown-menu {
   min-width: 303px !important;
   width: 303px !important;
   overflow: hidden;
-  left: 3px !important;
+  // left: 3px !important;
   height: 300px;
   padding: 15px 20px !important;
   .header--gas {
@@ -771,8 +773,4 @@ a.btn-danger {
   0% { opacity: 1; }
   50% { opacity: 0.1; }
   100% { opacity: 1; }
-}
-
-.table-hover>tbody>tr:hover {
-    background-color: #7bdfff82;
 }
