@@ -24,7 +24,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
     $scope.$watch('ajaxReq.service', function() { $scope.nodeService = $scope.ajaxReq.service })
 
     const AionWeb3 = require('../aionWeb3/lib/web3.js');
-      
+
     $scope.connectStatus=true;  /*
     $scope.checkConnect = function() {
         var aionWeb3= new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
@@ -46,7 +46,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
 		  method: 'POST',
 		  url: window.web3addr
 		}).then(function successCallback(response) {
-		    console.log("response is "+response); 
+		    console.log("response is "+response);
 		    $scope.connectStatus = true;
 		  }, function errorCallback(response) {
 		    console.log("error");
@@ -68,8 +68,8 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
 
 		$http.post(window.web3addr, data).then(
 			function (response){
-				console.log("data "+response); 
-				$scope.connectStatus = true;}, 
+				console.log("data "+response);
+				$scope.connectStatus = true;},
 			function (response){
 				console.log("error "+response);
 				$scope.connectStatus = false;
@@ -191,7 +191,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
             } else {
                 window.location.reload();
             }
-            
+
         }, 250)
     }
     $scope.checkNodeUrl = function(nodeUrl) {
@@ -207,7 +207,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
         if (requestedNetwork && nodes.nodeList.hasOwnProperty(requestedNetwork)) {
             node = JSON.stringify({ "key": requestedNetwork });
         }
-        
+
         if (node == null) {
             $scope.changeNode($scope.defaultNodeKey);
         } else {
@@ -435,7 +435,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
 	    if (exp == "") {
 	     alert ("Thank you for using the Aion Test Wallet. This wallet is currently for testing purposes only.");
 	     setCookie(30);
-	    } 
+	    }
 	    //insert expiry date function
 	}
 
