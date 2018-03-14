@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="mewApp">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,8 +13,6 @@
 <meta content="https://www.myetherwallet.com" property="og:url">
 <meta content="https://www.myetherwallet.com" name="twitter:url">
 <link rel="stylesheet" href="css/etherwallet-master.min.css">
-<script type="text/javascript" src="js/etherwallet-static.min.js"></script>
-<script type="text/javascript" src="js/etherwallet-master.js"></script>
 <meta name="description" content="MyEtherWallet (MEW) is a free, open-source, client-side interface for generating Ethereum wallets & more. Interact with the Ethereum blockchain easily & securely.">
 <meta property="og:description"  content="Free, open-source, client-side Ethereum wallet. Enabling you to interact with the blockchain easily & securely.">
 <meta name="twitter:description" content="Free, open-source, client-side Ethereum wallet. Enabling you to interact with the blockchain easily & securely.">
@@ -74,6 +73,12 @@
 </script>
 </head>
 <body>
+
+<div id="mySpinner">  
+  <img src="../images/aionspin.gif"  />
+</div>
+
+<div id="appMain" style="display : none">
 
 <header class="{{curNode.name}} {{curNode.service}} {{curNode.service}} nav-index-{{gService.currentTab}}" aria-label="header" ng-controller='tabsCtrl' >
 <!--
