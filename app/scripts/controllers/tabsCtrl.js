@@ -61,7 +61,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
         } else if (node == "aion"){
             $scope.currentIP="web3.aion.network";
             $scope.currentPort="443";
-            $scope.currentNode = "Aion Network";
+            $scope.currentNode = "Aion Test Net";
         } else if (node == "other"){
             if (ip) $scope.currentIP=ip;
             if (port)$scope.currentPort=port;
