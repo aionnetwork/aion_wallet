@@ -2,6 +2,71 @@
 <html lang="en" ng-app="mewApp">
 
 <head>
+<!--Load only the styles for the spinner to show while the app is loading-->
+<style type="text/css">
+  @charset "UTF-8";
+
+  .pt-text-muted {
+    color: #5c7080;
+  }
+
+  @-webkit-keyframes pt-spinner-animation {
+    from {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg); }
+    to {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg); } }
+  @keyframes pt-spinner-animation {
+    from {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg); }
+    to {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg); } }
+
+  .pt-spinner:not(.pt-svg-spinner) {
+    width: 50px; }
+    .pt-spinner:not(.pt-svg-spinner) .pt-spinner-svg-container {
+      -webkit-animation-duration: 400ms;
+              animation-duration: 400ms; }
+
+  .pt-spinner path {
+    stroke-width: 5; }
+
+  .pt-spinner path {
+    fill-opacity: 0; }
+
+  .pt-spinner .pt-spinner-head {
+    transition: stroke-dashoffset 200ms cubic-bezier(0.4, 1, 0.75, 0.9);
+    stroke: rgba(92, 112, 128, 0.8);
+    stroke-linecap: round; }
+
+  .pt-spinner .pt-spinner-track {
+    stroke: rgba(92, 112, 128, 0.2); }
+
+  .pt-spinner:not(.pt-svg-spinner) {
+    display: inline-block;
+  }
+  .pt-spinner:not(.pt-svg-spinner) .pt-spinner-svg-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding: 0;
+    padding-bottom: 100%;
+    -webkit-animation: pt-spinner-animation 400ms linear infinite;
+            animation: pt-spinner-animation 400ms linear infinite;
+  }
+  .pt-spinner:not(.pt-svg-spinner) svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .pt-spinner.pt-intent-primary .pt-spinner-head {
+    stroke: #40bded; }
+</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Aion Wallet</title>
@@ -74,9 +139,20 @@
 </head>
 <body>
 
-<div id="mySpinner">  
-  <img src="../images/aionspin.gif"  />
-</div>
+  <div id="mySpinner" style="display: block;background: white;height: 100%;width: 100%;margin: 0;padding: 0;border: 0;">
+    <div style="padding-top: 140px; text-align: center;">
+      <div class="pt-spinner pt-intent-primary" style="display: inline-block;">
+        <div class="pt-spinner-svg-container">
+          <svg viewBox="0 0 100 100">
+            <path class="pt-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
+            <path class="pt-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
+          </svg>
+        </div>
+      </div>
+      <span class="pt-text-muted" style="display: block; margin-top: 20px; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 300;">Loading Aion Wallet</span>
+
+    </div>
+  </div>
 
 <div id="appMain" style="display : none">
 
