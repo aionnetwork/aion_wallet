@@ -131,27 +131,6 @@
 
       </div>
 
-      <!-- Amount to Send - Load Token Balances
-      <a class="col-sm-1 send__load-tokens"
-         title="Load Token Balances"
-         ng-click="wallet.setTokens(); globalService.tokensLoaded=true"
-         ng-hide="globalService.tokensLoaded">
-          <img src="images/icon-load-tokens.svg" width="16" height="16" />
-          <p translate="SEND_LoadTokens">
-            Load Tokens
-          </p>
-      </a>
-      -->
-
-      <!-- Amount to Send - Transfer Entire Balance -->
-      <p class="col-xs-12" ng-hide="tx.readOnly">
-        <a ng-click="transferAllBalance()">
-          <span class="strong" translate="SEND_TransferTotal">
-            Send Entire Balance
-          </span>
-        </a>
-      </p>
-
     </section>
 
 

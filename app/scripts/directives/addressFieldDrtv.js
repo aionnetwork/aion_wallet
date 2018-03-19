@@ -32,7 +32,7 @@ var addressFieldDrtv = function($compile) {
                    <div class=\"addressIdenticon\" title=\"Address Indenticon\" blockie-address=\"{{' + varName + '}}\" watch-var=\"' + varName + '\"></div>\n \
                 </div>');
 
-
+/*
             scope.$watch('addressDrtv.ensAddressField', function() { console.log("varName is "+varName+" addressDrtv is "+scope.addressDrtv.ensAddressField);
                 var _ens = new ens();
                 if (Validator.isValidAddress(scope.addressDrtv.ensAddressField)) {
@@ -58,7 +58,7 @@ var addressFieldDrtv = function($compile) {
                     setValue('');
                     scope.addressDrtv.showDerivedAddress = false;
                 }
-            });
+            });*/
             $compile(element.contents())(scope);
         }
     };

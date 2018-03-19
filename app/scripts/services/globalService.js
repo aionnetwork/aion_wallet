@@ -1,10 +1,8 @@
 'use strict'
 var globalService = function($http, $httpParamSerializerJQLike) {
   globalFuncs.checkAndRedirectHTTPS()
-  ajaxReq.http = $http
-  ajaxReq.postSerializer = $httpParamSerializerJQLike
-  ajaxReq.getETHvalue = nodes.ethPrice.getETHvalue
-  ajaxReq.getRates = nodes.ethPrice.getRates
+  //ajaxReq.http = $http
+  //ajaxReq.postSerializer = $httpParamSerializerJQLike
 
   var tabs = {
   generateWallet: {

@@ -1,6 +1,6 @@
 'use strict';
 var walletBalanceCtrl = function($scope, $sce, $rootScope) {
-    $scope.ajaxReq = ajaxReq;
+   // $scope.ajaxReq = ajaxReq;
     $scope.tokensLoaded = false;
     $scope.showAllTokens = false;
     $scope.localToken = {
@@ -24,7 +24,7 @@ var walletBalanceCtrl = function($scope, $sce, $rootScope) {
                     decimals: "",
                     type: "custom"
                 };
-                $scope.wallet.setTokens();
+               // $scope.wallet.setTokens();
                 $scope.validateLocalToken = $sce.trustAsHtml('');
                 $scope.customTokenField = false;
             } else {

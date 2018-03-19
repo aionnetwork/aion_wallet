@@ -79,12 +79,12 @@ uiFuncs.signTxTrezor = function(rawTx, txData, callback) {
         ethFuncs.getNakedAddress(rawTx.to),
         ethFuncs.getNakedAddress(rawTx.value),
         ethFuncs.getNakedAddress(rawTx.data),
-        rawTx.chainId,
+        //rawTx.chainId,
         localCallback
     );
 }
 uiFuncs.signTxLedger = function(app, eTx, rawTx, txData, old, callback) {
-    eTx.raw[6] = Buffer.from([rawTx.chainId]);
+   // eTx.raw[6] = Buffer.from([rawTx.chainId]);
     eTx.raw[7] = eTx.raw[8] = 0;
     var toHash = old ? eTx.raw.slice(0, 6) : eTx.raw;
     var txToSign = ethUtil.rlp.encode(toHash);
@@ -183,7 +183,7 @@ uiFuncs.generateTx = function($scope, txData, callback) {
 
             console.log(rawTxArray);
 
-            if (ajaxReq.eip155) rawTx.chainId = ajaxReq.chainId;
+            //if (ajaxReq.eip155) rawTx.chainId = ajaxReq.chainId;
             //var eTx = new ethUtil.Tx(rawTx);
             /*
             if ((typeof txData.hwType != "undefined") && (txData.hwType == "ledger")) {
@@ -300,14 +300,14 @@ uiFuncs.sendTx = function(signedTx, callback) {
         if (callback !== undefined) callback(resp);
     })
 }
-
+/*
 uiFuncs.transferAllBalance = function(fromAdd, gasLimit, callback) {
     try {
         ajaxReq.getTransactionData(fromAdd, function(data) {
             if (data.error) throw data.msg;
             data = data.data;
-            var gasPrice = new BigNumber(ethFuncs.sanitizeHex(ethFuncs.addTinyMoreToGas(data.gasprice))).times(gasLimit);
-            var maxVal = new BigNumber(data.balance).minus(gasPrice);
+            //var gasPrice = new BigNumber(ethFuncs.sanitizeHex(ethFuncs.addTinyMoreToGas(data.gasprice))).times(gasLimit);
+            var maxVal = new BigNumber(data.balance)//.minus(gasPrice);
             maxVal = etherUnits.toEther(maxVal, 'wei') < 0 ? 0 : etherUnits.toEther(maxVal, 'wei');
             if (callback !== undefined) callback({
                 isError: false,
@@ -322,6 +322,7 @@ uiFuncs.transferAllBalance = function(fromAdd, gasLimit, callback) {
         });
     }
 }
+*/
 uiFuncs.notifier = {
     alerts: {},
     warning: function(msg, duration = 5000) {

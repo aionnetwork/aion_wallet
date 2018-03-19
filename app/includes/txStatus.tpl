@@ -166,26 +166,6 @@
               </small>
             </td>
           </tr>
-        <!--
-          <tr>
-            <td>
-              <a class="account-help-icon"
-                 href="https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html"
-                 target="_blank"
-                 rel="noopener noreferrer">
-                   <img src="images/icon-help.svg" class="help-icon" />
-                   <p class="account-help-text" translate="TXFEE_Desc"></p>
-              </a>
-              <span translate="x_TXFee">
-                TX Fee
-              </span>
-            </td>
-            <td>
-              ({{ txFee.eth }} ETH)
-              <small>({{ txFee.usd }} USD)</small>
-            </td>
-          </tr>
-        -->
           <tr>
             <td translate="OFFLINE_Step2_Label_6">
               Data
@@ -218,8 +198,7 @@
         </h4>
       </div>
       <div ng-show="!wd">
-          @@if (site === 'mew' ) {  <wallet-decrypt-drtv></wallet-decrypt-drtv>         }
-          @@if (site === 'cx' )  {  <cx-wallet-decrypt-drtv></cx-wallet-decrypt-drtv>   }
+         <wallet-decrypt-drtv></wallet-decrypt-drtv>         
       </div>
     </section>
   </section>
@@ -228,11 +207,10 @@
   <!-- Send Tx Content -->
  <section class="row" ng-show="wallet!=null" ng-controller='sendTxCtrl'>
     <div ng-show="wallet.getChecksumAddressString() == txInfo.from">
-      @@if (site === 'mew' ) { @@include( './sendTx-content.tpl', { "site": "mew" } ) }
-      @@if (site === 'cx'  ) { @@include( './sendTx-content.tpl', { "site": "cx"  } ) }
+       @@include( './sendTx-content.tpl') 
 
-      @@if (site === 'mew' ) { @@include( './sendTx-modal.tpl',   { "site": "mew" } ) }
-      @@if (site === 'cx'  ) { @@include( './sendTx-modal.tpl',   { "site": "cx"  } ) }
+      @@include( './sendTx-modal.tpl') 
+
     </div>
     <div class="col-xs-12 block block--danger" ng-show="wallet.getChecksumAddressString()!=txInfo.from">
       <h5 translate="ENS_WrongAddress_2">

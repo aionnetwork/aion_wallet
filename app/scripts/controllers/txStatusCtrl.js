@@ -25,12 +25,14 @@ var txStatusCtrl = function($scope) {
     var applyScope = function() {
         if (!$scope.$$phase) $scope.$apply();
     }
+    /*
     var setUSDvalues = function() {
         ajaxReq.getETHvalue(function(data) {
             $scope.txInfo.gasPrice.usd = new BigNumber(data.usd).mul(new BigNumber($scope.txInfo.gasPrice.eth)).toString();
             applyScope();
         });
-    }
+    }*/
+    /*
     var txToObject = function(tx) {
         var txStatus = $scope.txStatus;
         if (tx) {
@@ -72,7 +74,7 @@ var txStatusCtrl = function($scope) {
         } else {
             $scope.txInfo.status = txStatus.notFound;
         }
-    }
+    }*/
     $scope.checkTxStatus = function() {
         var txInfo = $scope.txInfo;
         try {

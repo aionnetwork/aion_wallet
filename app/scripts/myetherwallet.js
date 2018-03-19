@@ -92,7 +92,7 @@ Wallet.generate = function(icapDirect) {
         return new Wallet(keys.secretKey, keys.publicKey);
    // }
 }
-
+/*
 Wallet.prototype.setTokens = function () {
     this.tokenObjs = [];
     var defaultTokensAndNetworkType = globalFuncs.getDefaultTokensAndNetworkType();
@@ -140,7 +140,7 @@ Wallet.prototype.setTokens = function () {
         this.tokenObjs[this.tokenObjs.length - 1].setBalance();
     }
     removeAllTokenConflicts(conflictWithDefaultTokens, storedTokens)
-};
+};*/
 
 function saveToLocalStorage(key, value) {
   globalFuncs.localStorage.setItem(key, JSON.stringify(value))

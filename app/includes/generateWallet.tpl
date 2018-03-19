@@ -193,35 +193,6 @@
       </div>
 
     </section>
-    <!-- <section class="block__help">
-      <div class="help_sections">
-        <h2 translate="GEN_Help_8">
-          Not Downloading a File?
-        </h2>
-        <ul>
-          <li translate="GEN_Help_9">
-            Try using Google Chrome
-          </li>
-          <li translate="GEN_Help_10">
-            Right click &amp; save file as. Filename:
-          </li>
-          <input value="{{encFileName}}" class="form-control input-sm" />
-        </ul>
-      </div>
-
-      <div class="help_sections">
-        <h2 translate="GEN_Help_11">
-          Don't open this file on your computer
-        </h2>
-        <ul>
-          <li translate="GEN_Help_12">
-            Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity &amp; other wallet clients.)
-          </li>
-        </ul>
-      </div>
-
-
-    </section> -->
 
   </article>
 
@@ -319,14 +290,12 @@
       </div>
 
       <div ng-show="!wd">
-          @@if (site === 'mew' ) {  <wallet-decrypt-drtv></wallet-decrypt-drtv>         }
-          @@if (site === 'cx' )  {  <cx-wallet-decrypt-drtv></cx-wallet-decrypt-drtv>   }
+        <wallet-decrypt-drtv></wallet-decrypt-drtv> 
       </div>
     </div>
 
     <div class="row" ng-show="wallet!=null" ng-controller='viewWalletCtrl' >
-      @@if (site === 'cx' ) {  @@include( './viewWalletInfo-content.tpl', { "site": "cx" } )    }
-      @@if (site === 'mew') {  @@include( './viewWalletInfo-content.tpl', { "site": "mew" } )   }
+            @@include( './viewWalletInfo-content.tpl') 
     </div>
 
   </article>

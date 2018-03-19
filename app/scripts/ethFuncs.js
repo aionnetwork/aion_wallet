@@ -33,10 +33,12 @@ ethFuncs.padLeftEven = function(hex) {
     hex = hex.length % 2 != 0 ? '0' + hex : hex;
     return hex;
 }
+/*
 ethFuncs.addTinyMoreToGas = function(hex) {
     hex = this.sanitizeHex(hex);
     return new BigNumber(ethFuncs.gasAdjustment * etherUnits.getValueOfUnit('gwei')).toString(16);
 }
+*/
 ethFuncs.decimalToHex = function(dec) {
     return new BigNumber(dec).toString(16);
 }
@@ -75,6 +77,7 @@ ethFuncs.getDataObj = function(to, func, arrVals) {
 ethFuncs.getFunctionSignature = function(name) {
     return ethUtil.sha3(name).toString('hex').slice(0, 8);
 };
+/*
 ethFuncs.estimateGas = function(dataObj, callback) {
     var adjustGas = function(gasLimit) {
         if (gasLimit == "0x5209") return "21000";
@@ -94,4 +97,5 @@ ethFuncs.estimateGas = function(dataObj, callback) {
         }
     });
 }
+*/
 module.exports = ethFuncs;

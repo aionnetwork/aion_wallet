@@ -65,7 +65,6 @@ gulp.task('html', function(done) {
         .pipe(plumber({ errorHandler: onError }))
         .pipe(fileinclude({ prefix: '@@', basepath: '@file' }))
         .pipe(gulp.dest(dist))
-        .pipe(gulp.dest(dist_CX))
         .pipe(notify(onSuccess('HTML')))
 });
 
@@ -310,60 +309,6 @@ gulp.task('travisZip', ['getVersion'], function() {
 });
 
 
-// add all
-gulp.task('add', function() {
-    return gulp.src('*.js', { read: false })
-        .pipe(shell([
-            'git add -A'
-        ]))
-        //.pipe( notify ( onSuccess('Git Add' ) ))
-});
-
-// commit with current v# in manifest
-gulp.task('commit', ['getVersion'], function() {
-    return gulp.src('*.js', { read: false })
-        .pipe(shell([
-            'git commit -m "Rebuilt and cleaned everything. Done for now."'
-        ]))
-        .pipe(notify(onSuccess('Commit')))
-});
-
-// commit with current v# in manifest
-gulp.task('commitV', ['getVersion'], function() {
-    return gulp.src('*.js', { read: false })
-        .pipe(shell([
-            'git commit -m " ' + versionMsg + ' "'
-        ]))
-        .pipe(notify(onSuccess('Commit w ' + versionMsg)))
-});
-
-// tag with current v# in manifest
-gulp.task('tag', ['getVersion'], function() {
-    return gulp.src('*.js', { read: false })
-        .pipe(shell([
-            'git tag -a ' + versionNum + ' -m " ' + versionMsg + '"'
-        ]))
-        .pipe(notify(onSuccess('Tagged Commit' + versionMsg)))
-});
-
-// Push Release to Mercury
-gulp.task('push', ['getVersion'], function() {
-    return gulp.src('*.js', { read: false })
-        .pipe(shell([
-            'git push origin mercury ' + versionNum
-        ]))
-        .pipe(notify(onSuccess('Push')))
-});
-
-// Push Live
-// Pushes dist folder to gh-pages branch
-gulp.task('pushlive', ['getVersion'], function() {
-    return gulp.src('*.js', { read: false })
-        .pipe(shell([
-            'git subtree push --prefix dist origin gh-pages'
-        ]))
-        .pipe(notify(onSuccess('Push Live')))
-});
 
 // Prep & Release
 // gulp prep

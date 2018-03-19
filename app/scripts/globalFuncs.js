@@ -208,7 +208,7 @@ function getFromLS(key, errorMsg) {
         return JSON.parse(localStorageItemString)
     }
 }
-
+/*
 globalFuncs.getDefaultTokensAndNetworkType =  function getDefaultTokensAndNetworkType() {
     var defaultNodes = require('./nodes').nodeList;
 
@@ -267,7 +267,7 @@ globalFuncs.getDefaultTokensAndNetworkType =  function getDefaultTokensAndNetwor
       networkType: isCustomNode ? firstCustomNodeWithMatchingNetwork.options : defaultNode.name.toLowerCase(),
       isCustomNode: isCustomNode
     }
-};
+};*/
 
 function isDuplicateTokenAddress(tokenOne, tokenTwo, currentNetwork) {
   var hasNetwork = tokenTwo.network;
