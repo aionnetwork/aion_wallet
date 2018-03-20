@@ -10,7 +10,6 @@ var decryptWalletCtrl = function($scope, $sce, walletService) {
     $scope.showContent = function($fileContent) {
         $scope.notifier.info(globalFuncs.successMsgs[4] + document.getElementById('fselector').files[0].name);
         try {
-            //$scope.requireFPass = Wallet.walletRequirePass($fileContent);
             $scope.requireFPass = true;
             $scope.showFDecrypt = !$scope.requireFPass;
             $scope.fileContent = $fileContent;
@@ -90,7 +89,6 @@ var decryptWalletCtrl = function($scope, $sce, walletService) {
                     return ethUtil.toChecksumAddress(this.getAddressString());
                 },
                 setBalance: tempWallet.setBalance,
-                //setTokens: tempWallet.setTokens
             }
             $scope.notifier.info(globalFuncs.successMsgs[1]);
             walletService.wallet = $scope.wallet;

@@ -156,6 +156,9 @@ uiFuncs.generateTx = function($scope, txData, callback) {
     }
     try {
         uiFuncs.isTxDataValid(txData);
+        
+        txData.gasprice =1; 
+        
         var genTxWithInfo = function(data) {
 
             var rawTx = {
@@ -171,7 +174,6 @@ uiFuncs.generateTx = function($scope, txData, callback) {
 
             txData.gasprice =1; 
 
-            //var rawTxArray= ["0x00", txData.to,txData.value, '0x'+txData.data, Date.now()*1000,  txData.gasLimit, 1, "0x01"];
             var rawTxArray= [ethFuncs.sanitizeHex('0x'+aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString())), 
                 ethFuncs.sanitizeHex(txData.to), 
                 ethFuncs.sanitizeHex((txData.value*Math.pow(10, 18)).toString(16)), 
@@ -181,70 +183,23 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 ethFuncs.sanitizeHex('0x'+txData.gasprice.toString(16)), 
                 "0x01"];
 
-            console.log(rawTxArray);
+            var RAWTX = RLP.encode(rawTxArray); 
+			console.log("transactionRaw serialized "+ RAWTX.toString('hex'));
 
-            //if (ajaxReq.eip155) rawTx.chainId = ajaxReq.chainId;
-            //var eTx = new ethUtil.Tx(rawTx);
-            /*
-            if ((typeof txData.hwType != "undefined") && (txData.hwType == "ledger")) {
-                var app = new ledgerEth(txData.hwTransport);
-                var EIP155Supported = false;
-                var localCallback = function(result, error) {
-                    if (typeof error != "undefined") {
-                        if (callback !== undefined) callback({
-                            isError: true,
-                            error: error
-                        });
-                        return;
-                    }
-                    var splitVersion = result['version'].split('.');
-                    if (parseInt(splitVersion[0]) > 1) {
-                        EIP155Supported = true;
-                    } else
-                    if (parseInt(splitVersion[1]) > 0) {
-                        EIP155Supported = true;
-                    } else
-                    if (parseInt(splitVersion[2]) > 2) {
-                        EIP155Supported = true;
-                    }
-                    uiFuncs.signTxLedger(app, eTx, rawTx, txData, !EIP155Supported, callback);
-                }
-                app.getAppConfiguration(localCallback);
-            } else if ((typeof txData.hwType != "undefined") && (txData.hwType == "trezor")) {
-                uiFuncs.signTxTrezor(rawTx, txData, callback);
-            } else if ((typeof txData.hwType != "undefined") && (txData.hwType == "web3")) { 
-              // for web3, we dont actually sign it here
-              // instead we put the final params in the "signedTx" field and
-              // wait for the confirmation dialogue / sendTx method
-              var txParams = Object.assign({ from: txData.from }, rawTx)
-              rawTx.rawTx = JSON.stringify(rawTx);
-              rawTx.signedTx = JSON.stringify(txParams);
-              rawTx.isError = false;
-              callback(rawTx)
-            } else if ((typeof txData.hwType != "undefined") && (txData.hwType == "digitalBitbox")) {
-                uiFuncs.signTxDigitalBitbox(eTx, rawTx, txData, callback);
-            } else {
-              //  eTx.sign(new Buffer(txData.privKey, 'hex'));
-               // rawTx.rawTx = JSON.stringify(rawTx);
-               // rawTx.signedTx = '0x' + eTx.serialize().toString('hex');
+            var SIG = Buffer.concat ([new Buffer (hexStringToByte($scope.wallet.getPublicKeyString())),
+                new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString())))]);
 
-*/              var RAWTX = RLP.encode(rawTxArray); 
-				console.log("transactionRaw serialized "+ RAWTX.toString('hex'));
-
-                var SIG = Buffer.concat ([new Buffer (hexStringToByte($scope.wallet.getPublicKeyString())),
-                    new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString())))]);
-
-                console.log("public key length: "+ new Buffer (hexStringToByte($scope.wallet.getPublicKeyString())).length+" length of back: "+new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString()))).length);
+            console.log("public key length: "+ new Buffer (hexStringToByte($scope.wallet.getPublicKeyString())).length+" length of back: "+new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString()))).length);
 
 
-                console.log("signiture "+ SIG.toString('hex'));
-                rawTx.signedTx = RLP.encode(rawTxArray.concat(SIG)).toString('hex'); 
-                console.log("transaction with signiture "+ rawTx.signedTx);
-                rawTx.rawTx = JSON.stringify(rawTx);
-                rawTx.isError = false;
-                if (callback !== undefined) callback(rawTx);
-           // }
+            console.log("signiture "+ SIG.toString('hex'));
+            rawTx.signedTx = RLP.encode(rawTxArray.concat(SIG)).toString('hex'); 
+            console.log("transaction with signiture "+ rawTx.signedTx);
+            rawTx.rawTx = JSON.stringify(rawTx);
+            rawTx.isError = false;
+            if (callback !== undefined) callback(rawTx);
         }
+
         if (txData.nonce || txData.gasPrice) { 
             var data = {
                 nonce: txData.nonce,
@@ -253,18 +208,8 @@ uiFuncs.generateTx = function($scope, txData, callback) {
             data.isOffline = txData.isOffline ? txData.isOffline : false;
             genTxWithInfo(data);
         } else { 
-            ajaxReq.getTransactionData(txData.from, function(data) {
-                /*if (data.error && callback !== undefined) {
-                    callback({
-                        isError: true,
-                        error: es
-                    });
-                } else */{
-                    data = data.data;
-                   // data.isOffline = txData.isOffline ? txData.isOffline : false;
-                    genTxWithInfo(data);
-                }
-            });
+
+            genTxWithInfo(data);
         }
     } catch (e) {
         if (callback !== undefined) callback({
@@ -281,7 +226,7 @@ uiFuncs.sendTx = function(signedTx, callback) {
         
     } catch (err) {
         console.log("not connected");
-        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+        uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
     } 
 
     aionweb3.eth.sendRawTransaction('0x'+signedTx, function(err, txHash) {
@@ -300,29 +245,7 @@ uiFuncs.sendTx = function(signedTx, callback) {
         if (callback !== undefined) callback(resp);
     })
 }
-/*
-uiFuncs.transferAllBalance = function(fromAdd, gasLimit, callback) {
-    try {
-        ajaxReq.getTransactionData(fromAdd, function(data) {
-            if (data.error) throw data.msg;
-            data = data.data;
-            //var gasPrice = new BigNumber(ethFuncs.sanitizeHex(ethFuncs.addTinyMoreToGas(data.gasprice))).times(gasLimit);
-            var maxVal = new BigNumber(data.balance)//.minus(gasPrice);
-            maxVal = etherUnits.toEther(maxVal, 'wei') < 0 ? 0 : etherUnits.toEther(maxVal, 'wei');
-            if (callback !== undefined) callback({
-                isError: false,
-                unit: "ether",
-                value: maxVal
-            });
-        });
-    } catch (e) {
-        if (callback !== undefined) callback({
-            isError: true,
-            error: e
-        });
-    }
-}
-*/
+
 uiFuncs.notifier = {
     alerts: {},
     warning: function(msg, duration = 5000) {
@@ -334,7 +257,6 @@ uiFuncs.notifier = {
     danger: function(msg, duration = 7000) {
         msg = msg.message ? msg.message : msg;
         // Danger messages can be translated based on the type of node
-        msg = globalFuncs.getEthNodeMsg(msg);
         this.addAlert("danger", msg, duration);
     },
     success: function(msg, duration = 5000) {

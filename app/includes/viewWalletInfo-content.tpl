@@ -14,7 +14,7 @@
       <div class="account-help-icon">
         <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
-          You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
+          You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you AION. That icon is an easy way to recognize your address.
         </p>
         <h5 translate="x_Address">
           Your Address:
@@ -38,10 +38,10 @@
       <div class="account-help-icon">
         <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
-          This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
+          This Keystore matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
         <h5 translate="x_Keystore">
-          Keystore/JSON File (Recommended • Encrypted • Mist/Geth Format)
+          Keystore
         </h5>
       </div>
       <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{encFileName}}" translate="x_Download">

@@ -22,7 +22,6 @@ var walletGenCtrl = function($scope) {
             $scope.isDone = false;
             $scope.wallet = Wallet.generate(false);
             $scope.showWallet = true;console.log($scope.wallet.toJSON());
-            //$scope.blob = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toJSON());
 
             var encodedFile = $scope.wallet.toV3($scope.password, {
                 kdf: globalFuncs.kdf,

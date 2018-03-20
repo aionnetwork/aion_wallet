@@ -11,6 +11,8 @@ var angularAnimate           = require('angular-animate');
 window.web3addr = "http://127.0.0.1:8545";
 window.currentNode ="Default: localhost:8545";
 
+window.connectStatus = true;
+
 var marked                   = require('./staticJS/customMarked');
 window.marked                = marked;
 var BigNumber                = require('bignumber.js');
@@ -20,8 +22,6 @@ ethUtil.crypto               = require('crypto');
 ethUtil.Tx                   = require('ethereumjs-tx');
 ethUtil.scrypt               = require('scryptsy');
 ethUtil.uuid                 = require('uuid');
-ethUtil.solidityCoder        = require('./solidity/coder');
-ethUtil.solidityUtils        = require('./solidity/utils');
 ethUtil.WAValidator          = require('wallet-address-validator');
 window.ethUtil               = ethUtil;
 var format                   = require('string-format');
@@ -51,7 +51,6 @@ var viewWalletCtrl           = require('./controllers/viewWalletCtrl');
 var txStatusCtrl              = require('./controllers/txStatusCtrl');
 var sendTxCtrl               = require('./controllers/sendTxCtrl');
 var signMsgCtrl              = require('./controllers/signMsgCtrl');
-var walletBalanceCtrl        = require('./controllers/walletBalanceCtrl');
 var globalService            = require('./services/globalService');
 var walletService            = require('./services/walletService');
 var blockiesDrtv             = require('./directives/blockiesDrtv');
@@ -89,7 +88,6 @@ app.controller('viewWalletCtrl', ['$scope', 'walletService', viewWalletCtrl]);
 app.controller('txStatusCtrl', ['$scope', txStatusCtrl]);
 app.controller('sendTxCtrl', ['$scope', '$sce', 'walletService', '$rootScope', sendTxCtrl]);
 app.controller('signMsgCtrl', ['$scope', '$sce', 'walletService', signMsgCtrl]);
-app.controller('walletBalanceCtrl', ['$scope', '$sce', '$rootScope', walletBalanceCtrl]);
 
 
 

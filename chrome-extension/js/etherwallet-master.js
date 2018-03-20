@@ -240,7 +240,7 @@ function toBuffer(v) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"assert":161,"buffer":196}],2:[function(require,module,exports){
+},{"assert":144,"buffer":179}],2:[function(require,module,exports){
 var Web3 = require('./lib/web3');
 
 // dont override global variable
@@ -4582,7 +4582,7 @@ HttpProvider.prototype.isConnected = function () {
 module.exports = HttpProvider;
 
 }).call(this,require("buffer").Buffer)
-},{"./errors":28,"buffer":196,"xhr2":88,"xmlhttprequest":19}],35:[function(require,module,exports){
+},{"./errors":28,"buffer":179,"xhr2":88,"xmlhttprequest":19}],35:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -6601,7 +6601,7 @@ RequestManager.prototype.poll = function () {
 
 module.exports = RequestManager;
 
-},{"../utils/config":20,"../utils/utils":22,"./errors":28,"./jsonrpc":37,"util":333}],49:[function(require,module,exports){
+},{"../utils/config":20,"../utils/utils":22,"./errors":28,"./jsonrpc":37,"util":315}],49:[function(require,module,exports){
 
 
 var Settings = function Settings() {
@@ -9478,7 +9478,7 @@ module.exports = transfer;
     }
 })(this);
 
-},{"crypto":205}],53:[function(require,module,exports){
+},{"crypto":188}],53:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -16679,7 +16679,7 @@ module.exports = {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196}],91:[function(require,module,exports){
+},{"buffer":179}],91:[function(require,module,exports){
 'use strict';
 
 var decryptWalletCtrl = function decryptWalletCtrl($scope, $sce, walletService) {
@@ -16693,7 +16693,6 @@ var decryptWalletCtrl = function decryptWalletCtrl($scope, $sce, walletService) 
     $scope.showContent = function ($fileContent) {
         $scope.notifier.info(globalFuncs.successMsgs[4] + document.getElementById('fselector').files[0].name);
         try {
-            //$scope.requireFPass = Wallet.walletRequirePass($fileContent);
             $scope.requireFPass = true;
             $scope.showFDecrypt = !$scope.requireFPass;
             $scope.fileContent = $fileContent;
@@ -16773,7 +16772,6 @@ var decryptWalletCtrl = function decryptWalletCtrl($scope, $sce, walletService) 
                     return ethUtil.toChecksumAddress(this.getAddressString());
                 },
                 setBalance: tempWallet.setBalance
-                //setTokens: tempWallet.setTokens
             };
             $scope.notifier.info(globalFuncs.successMsgs[1]);
             walletService.wallet = $scope.wallet;
@@ -16823,7 +16821,6 @@ var onboardingCtrl = function onboardingCtrl($scope, globalService, $translate, 
   $scope.setOnboardStatus = function (slideNum) {
     $scope.showOnboardSlide = slideNum; // show the slide indicated
     globalFuncs.localStorage.setItem("onboardStatus", JSON.stringify(slideNum)); // save number to localStorage for later
-    //console.log( "setOnboardStatus " + slideNum )
   };
 
   $scope.setOnboardStatus($scope.onboardStatus);
@@ -16834,14 +16831,14 @@ module.exports = onboardingCtrl;
 'use strict';
 
 var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
+
     $scope.tx = {};
     $scope.signedTx;
-    //$scope.ajaxReq = ajaxReq;
-    //$scope.unitReadable = ajaxReq.type;
     $scope.sendTxModal = new Modal(document.getElementById('sendTransaction'));
     walletService.wallet = null;
     walletService.password = '';
-    $scope.showAdvance = $rootScope.rootScopeShowRawTx = false;
+    $scope.showAdvance = false;
+    $rootScope.rootScopeShowRawTx = false;
     $scope.dropdownEnabled = true;
     $scope.Validator = Validator;
     $scope.gasLimitChanged = false;
@@ -16853,9 +16850,6 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         value: 0,
         id: -1
     };
-    //$scope.customGasMsg = '';
-
-    // $scope.customGas = CustomGasMessages;
 
     $scope.tx = {
         // if there is no gasLimit or gas key in the URI, use the default value. Otherwise use value of gas or gasLimit. gasLimit wins over gas if both present
@@ -16865,53 +16859,15 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         unit: "ether",
         value: globalFuncs.urlGet('value') == null ? "" : globalFuncs.urlGet('value'),
         nonce: null,
-        gasPrice: globalFuncs.urlGet('gasprice') == null ? null : globalFuncs.urlGet('gasprice'),
+        gasPrice: "1",
         donate: false,
         tokensymbol: globalFuncs.urlGet('tokensymbol') == null ? false : globalFuncs.urlGet('tokensymbol')
+    };
 
-        /*
-            $scope.setSendMode = function(sendMode, tokenId = '', tokensymbol = '') {
-                $scope.tx.sendMode = sendMode;
-                $scope.unitReadable = '';
-                if ( globalFuncs.urlGet('tokensymbol') != null ) {
-                    $scope.unitReadable = $scope.tx.tokensymbol;
-                    $scope.tx.sendMode = 'token';
-                } else if (sendMode == 'ether') {
-                    $scope.unitReadable = ajaxReq.type;
-                } else {
-                    $scope.unitReadable = tokensymbol;
-                    $scope.tokenTx.id = tokenId;
-                }
-                $scope.dropdownAmount = false;
-            }
-        
-            $scope.setTokenSendMode = function() {
-                if ($scope.tx.sendMode == 'token' && !$scope.tx.tokensymbol) {
-                    $scope.tx.tokensymbol = $scope.wallet.tokenObjs[0].symbol;
-                    $scope.wallet.tokenObjs[0].type = "custom";
-                    $scope.setSendMode($scope.tx.sendMode, 0, $scope.tx.tokensymbol);
-                } else if ($scope.tx.tokensymbol) {
-                    for (var i = 0; i < $scope.wallet.tokenObjs.length; i++) {
-                        if ($scope.wallet.tokenObjs[i].symbol.toLowerCase().indexOf($scope.tx.tokensymbol.toLowerCase()) !== -1) {
-                            $scope.wallet.tokenObjs[i].type = "custom";
-                            $scope.setSendMode('token', i, $scope.wallet.tokenObjs[i].symbol);
-                            break;
-                        } else $scope.tokenTx.id = -1;
-                    }
-                }
-                if ($scope.tx.sendMode != 'token') $scope.tokenTx.id = -1;
-            }*/
-
-    };var applyScope = function applyScope() {
+    var applyScope = function applyScope() {
         if (!$scope.$$phase) $scope.$apply();
     };
 
-    var defaultInit = function defaultInit() {
-        globalFuncs.urlGet('sendMode') == null ? $scope.setSendMode('ether') : $scope.setSendMode(globalFuncs.urlGet('sendMode'));
-        $scope.gasLimitChanged = globalFuncs.urlGet('gaslimit') != null ? true : false;
-        $scope.showAdvance = globalFuncs.urlGet('gaslimit') != null || globalFuncs.urlGet('gas') != null || globalFuncs.urlGet('data') != null;
-        if (globalFuncs.urlGet('data') || globalFuncs.urlGet('value') || globalFuncs.urlGet('to') || globalFuncs.urlGet('gaslimit') || globalFuncs.urlGet('sendMode') || globalFuncs.urlGet('gas') || globalFuncs.urlGet('tokensymbol')) $scope.hasQueryString = true; // if there is a query string, show an warning at top of page
-    };
     $scope.$watch(function () {
         if (walletService.wallet == null) return null;
         return walletService.wallet.getAddressString();
@@ -16920,7 +16876,6 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         $scope.wallet = walletService.wallet;
         $scope.wd = true;
         $scope.wallet.setBalance(applyScope);
-        $scope.wallet.setTokens();
         if ($scope.parentTxConfig) {
             var setTxObj = function setTxObj() {
                 $scope.addressDrtv.ensAddressField = $scope.parentTxConfig.to;
@@ -16940,24 +16895,12 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
                 setTxObj();
             }, true);
         }
-        $scope.setTokenSendMode();
-        defaultInit();
     });
-    /*
-        $scope.$watch('ajaxReq.key', function() {
-            if ($scope.wallet) {
-                $scope.setSendMode('ether');
-                $scope.wallet.setBalance(applyScope);
-                $scope.wallet.setTokens();
-            }
-        });
-    */
+
     $scope.$watch('tokenTx', function () {
         if ($scope.wallet && $scope.wallet.tokenObjs !== undefined && $scope.wallet.tokenObjs[$scope.tokenTx.id] !== undefined && $scope.Validator.isValidAddress($scope.tokenTx.to) && $scope.Validator.isPositiveNumber($scope.tokenTx.value)) {
             if ($scope.estimateTimer) clearTimeout($scope.estimateTimer);
-            $scope.estimateTimer = setTimeout(function () {
-                //$scope.estimateGasLimit();
-            }, 500);
+            $scope.estimateTimer = setTimeout(function () {}, 500);
         }
     }, true);
 
@@ -16966,64 +16909,13 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         if (oldValue.sendMode && oldValue.sendMode != newValue.sendMode && newValue.sendMode == 'ether') {
             $scope.tx.data = globalFuncs.urlGet('data') == null ? "" : globalFuncs.urlGet('data');
             $scope.tx.gasLimit = globalFuncs.defaultTxGasLimit;
-        } /*
-          if (newValue.gasLimit == oldValue.gasLimit && $scope.wallet && $scope.Validator.isValidAddress($scope.tx.to) && $scope.Validator.isPositiveNumber($scope.tx.value) && $scope.Validator.isValidHex($scope.tx.data) && $scope.tx.sendMode != 'token') {
-             if ($scope.estimateTimer) clearTimeout($scope.estimateTimer);           
-             $scope.estimateTimer = setTimeout(function() {
-                 $scope.estimateGasLimit();
-             }, 500);            
-          }*/
+        }
         if ($scope.tx.sendMode == 'token') {
             $scope.tokenTx.to = $scope.tx.to;
             $scope.tokenTx.value = $scope.tx.value;
-        } /*
-          if (newValue.to !== oldValue.to) {
-             for (var i in $scope.customGas) {
-                 if ($scope.tx.to.toLowerCase() == $scope.customGas[i].to.toLowerCase()) {
-                     $scope.customGasMsg = $scope.customGas[i].msg != '' ? $scope.customGas[i].msg : ''
-                     return;
-                 }
-             }
-             $scope.customGasMsg = ''
-          }*/
-    }, true);
-    /*
-        $scope.estimateGasLimit = function() {
-            $scope.customGasMsg = ''
-            if ($scope.gasLimitChanged) return;
-            for (var i in $scope.customGas) {
-                if ($scope.tx.to.toLowerCase() == $scope.customGas[i].to.toLowerCase()) {
-                    $scope.showAdvance = $scope.tx.data != '' || $scope.customGas[i].data != '' ? true : false;
-                    $scope.tx.gasLimit = $scope.customGas[i].gasLimit;
-                    if ($scope.customGas[i].data != '') $scope.tx.data = $scope.customGas[i].data;
-                    $scope.customGasMsg = $scope.customGas[i].msg != '' ? $scope.customGas[i].msg : ''
-                    return;
-                }
-            }
-            if (globalFuncs.lightMode) {
-                $scope.tx.gasLimit = globalFuncs.defaultTokenGasLimit;
-                return;
-            }
-            var estObj = {
-                to: $scope.tx.to,
-                from: $scope.wallet.getAddressString(),
-                value: ethFuncs.sanitizeHex(ethFuncs.decimalToHex(etherUnits.toWei($scope.tx.value, $scope.tx.unit)))
-            }
-            if ($scope.tx.data != "") estObj.data = ethFuncs.sanitizeHex($scope.tx.data);
-            if ($scope.tx.sendMode == 'token') {
-                estObj.to = $scope.wallet.tokenObjs[$scope.tokenTx.id].getContractAddress();
-                estObj.data = $scope.wallet.tokenObjs[$scope.tokenTx.id].getData($scope.tokenTx.to, $scope.tokenTx.value).data;
-                estObj.value = '0x00';
-            }
-            ethFuncs.estimateGas(estObj, function(data) {
-    
-                if (!data.error) {
-                    if (data.data == '-1') $scope.notifier.danger(globalFuncs.errorMsgs[21]);
-                    $scope.tx.gasLimit = data.data;
-                } else $scope.notifier.danger(data.msg);
-            });
         }
-    */
+    }, true);
+
     var isEnough = function isEnough(valA, valB) {
         return new BigNumber(valA).lte(new BigNumber(valB));
     };
@@ -17035,9 +16927,9 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
 
     $scope.generateTx = function () {
 
-        if (!$scope.connectStatus) {
-            console.log("status " + $scope.connectStatus);
-            uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+        if (!window.connectStatus) {
+            console.log("status " + window.connectStatus);
+            uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
             return;
         }
 
@@ -17071,7 +16963,7 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
             var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
         } catch (err) {
             console.log("not connected");
-            uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+            uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
         }
 
         if (txData.value > aionweb3.eth.getBalance('0x' + $scope.wallet.getPublicKeyString())) {
@@ -17096,61 +16988,17 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         $scope.sendTxModal.close();
         uiFuncs.sendTx($scope.signedTx, function (resp) {
             if (!resp.isError) {
-                //var checkTxLink = "https://www.myetherwallet.com?txHash=" + resp.data + "#check-tx-status";
-                //var txHashLink = $scope.ajaxReq.blockExplorerTX.replace("[[txHash]]", resp.data);
-                //var emailBody = 'I%20was%20trying%20to..............%0A%0A%0A%0ABut%20I%27m%20confused%20because...............%0A%0A%0A%0A%0A%0ATo%20Address%3A%20https%3A%2F%2Fetherscan.io%2Faddress%2F' + $scope.tx.to + '%0AFrom%20Address%3A%20https%3A%2F%2Fetherscan.io%2Faddress%2F' + $scope.wallet.getAddressString() + '%0ATX%20Hash%3A%20https%3A%2F%2Fetherscan.io%2Ftx%2F' + resp.data + '%0AAmount%3A%20' + $scope.tx.value + '%20' + $scope.unitReadable + '%0ANode%3A%20' + $scope.ajaxReq.type + '%0AToken%20To%20Addr%3A%20' + $scope.tokenTx.to + '%0AToken%20Amount%3A%20' + $scope.tokenTx.value + '%20' + $scope.unitReadable + '%0AData%3A%20' + $scope.tx.data + '%0AGas%20Limit%3A%20' + $scope.tx.gasLimit + '%0AGas%20Price%3A%20' + $scope.tx.gasPrice;
-                //var verifyTxBtn = $scope.ajaxReq.type != nodes.nodeTypes.Custom ? '<a class="btn btn-xs btn-info" href="' + txHashLink + '" class="strong" target="_blank" rel="noopener noreferrer">Verify Transaction</a>' : '';
-                //var checkTxBtn = '<a class="btn btn-xs btn-info" href="' + checkTxLink + '" target="_blank" rel="noopener noreferrer"> Check TX Status </a>';
-                //var emailBtn = '<a class="btn btn-xs btn-info " href="mailto:support@myetherwallet.com?Subject=Issue%20regarding%20my%20TX%20&Body=' + emailBody + '" target="_blank" rel="noopener noreferrer">Confused? Email Us.</a>';
                 var completeMsg = '<p>' + globalFuncs.successMsgs[2] + '<strong>' + resp.data + '</strong></p>';
                 $scope.notifier.success(completeMsg, 0);
                 $scope.wallet.setBalance(applyScope);
-                if ($scope.tx.sendMode == 'token') $scope.wallet.tokenObjs[$scope.tokenTx.id].setBalance();
             } else {
                 $scope.notifier.danger(resp.error);
             }
         });
     };
-    /*
-        $scope.transferAllBalance = function() {
-            if ($scope.tx.sendMode != 'token') {
-                uiFuncs.transferAllBalance($scope.wallet.getAddressString(), $scope.tx.gasLimit, function(resp) {
-                    if (!resp.isError) {
-                        $scope.tx.unit = resp.unit;
-                        $scope.tx.value = resp.value;
-                    } else {
-                        $rootScope.rootScopeShowRawTx = false;
-                        $scope.notifier.danger(resp.error);
-                    }
-                });
-            } else {
-                $scope.tx.value = $scope.wallet.tokenObjs[$scope.tokenTx.id].getBalance();
-            }
-        }
-    */
     $scope.parseSignedTx = function (rawt) {
-        //if( signedTx.slice(0,2)=="0x" ) signedTx = signedTx.slice(2, signedTx.length )
         $scope.parsedSignedTx = {};
-        //var txData = new ethUtil.Tx(signedTx)
         var raw = JSON.parse(rawt);
-        console.log("raw is " + rawt);
-        /*
-              $scope.parsedSignedTx.gasPrice      = {}
-              $scope.parsedSignedTx.txFee         = {}
-              $scope.parsedSignedTx.balance       = $scope.wallet.getBalance()
-              $scope.parsedSignedTx.from          = ethFuncs.sanitizeHex(ethUtil.toChecksumAddress(txData.from.toString('hex')))
-              $scope.parsedSignedTx.to            = ethFuncs.sanitizeHex(ethUtil.toChecksumAddress(txData.to.toString('hex')))
-              $scope.parsedSignedTx.value         = (txData.value=='0x'||txData.value==''||txData.value==null) ? '0' : etherUnits.toEther(new BigNumber(ethFuncs.sanitizeHex(txData.value.toString('hex'))).toString(), 'wei' )
-              $scope.parsedSignedTx.gasLimit      = new BigNumber(ethFuncs.sanitizeHex(txData.gasLimit.toString('hex'))).toString()
-              $scope.parsedSignedTx.gasPrice.wei  = new BigNumber(ethFuncs.sanitizeHex(txData.gasPrice.toString('hex'))).toString()
-              $scope.parsedSignedTx.gasPrice.gwei = new BigNumber(ethFuncs.sanitizeHex(txData.gasPrice.toString('hex'))).div(etherUnits.getValueOfUnit('gwei')).toString()
-              $scope.parsedSignedTx.gasPrice.eth  = etherUnits.toEther(new BigNumber(ethFuncs.sanitizeHex(txData.gasPrice.toString('hex'))).toString(), 'wei' )
-              $scope.parsedSignedTx.txFee.wei     = new BigNumber(parseInt($scope.parsedSignedTx.gasLimit)).times(new BigNumber(parseInt($scope.parsedSignedTx.gasPrice.wei)))
-              $scope.parsedSignedTx.txFee.gwei    = new BigNumber($scope.parsedSignedTx.txFee.wei).div(etherUnits.getValueOfUnit('gwei')).toString()
-              $scope.parsedSignedTx.txFee.eth     = etherUnits.toEther( parseInt($scope.parsedSignedTx.txFee.wei), 'wei' ).toString()
-              $scope.parsedSignedTx.nonce         = (txData.nonce=='0x'||txData.nonce==''||txData.nonce==null) ? '0' : new BigNumber(ethFuncs.sanitizeHex(txData.nonce.toString('hex'))).toString()
-              $scope.parsedSignedTx.data          = (txData.data=='0x'||txData.data==''||txData.data==null) ? '(none)' : ethFuncs.sanitizeHex(txData.data.toString('hex'))
-        */
 
         $scope.parsedSignedTx.balance = $scope.wallet.getBalance();
         $scope.parsedSignedTx.from = "0x" + walletService.wallet.getPublicKeyString();
@@ -17362,7 +17210,7 @@ var signMsgCtrl = function signMsgCtrl($scope, $sce, walletService) {
 module.exports = signMsgCtrl;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196}],95:[function(require,module,exports){
+},{"buffer":179}],95:[function(require,module,exports){
 'use strict';
 
 var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce, $http) {
@@ -17381,7 +17229,6 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce, $http)
 
     var AionWeb3 = require('../aionWeb3/lib/web3.js');
 
-    $scope.connectStatus = true;
     var connect = function connect() {
 
         var data = {
@@ -17392,9 +17239,11 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce, $http)
 
         $http.post(window.web3addr, data).then(function (response) {
             console.log("data " + response);
+            window.connectStatus = true;
             $scope.connectStatus = true;
         }, function (response) {
             console.log("error " + response);
+            window.connectStatus = false;
             $scope.connectStatus = false;
         });
     };
@@ -17419,7 +17268,7 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce, $http)
             if (port) $scope.currentPort = port;
             $scope.currentNode = ip + ":" + port;
         } else {}
-        window.web3addr = "https://" + $scope.currentIP + ":" + $scope.currentPort;
+        window.web3addr = "http://" + $scope.currentIP + ":" + $scope.currentPort;
     };
 
     $scope.setArrowVisibility = function () {
@@ -17432,29 +17281,6 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce, $http)
         }, 200);
     };
     $scope.setArrowVisibility();
-
-    var gasPriceKey = "gasPrice";
-    $scope.gasChanged = function () {
-        globalFuncs.localStorage.setItem(gasPriceKey, $scope.gas.value);
-        ethFuncs.gasAdjustment = $scope.gas.value;
-        $scope.gasPriceMsg = ethFuncs.gasAdjustment < 41 ? true : false;
-    };
-    var setGasValues = function setGasValues() {
-        $scope.gas = {
-            curVal: 41,
-            value: globalFuncs.localStorage.getItem(gasPriceKey, null) ? parseInt(globalFuncs.localStorage.getItem(gasPriceKey)) : 41,
-            max: 99,
-            min: 1,
-            step: 1
-        };
-
-        var curNode = globalFuncs.localStorage.getItem('curNode', null);
-
-        ethFuncs.gasAdjustment = $scope.gas.value;
-        $scope.gasPriceMsg = ethFuncs.gasAdjustment < 41 ? true : false;
-    };
-    setGasValues();
-    $scope.gasChanged();
 
     $scope.tabClick = function (id) {
         globalService.tokensLoaded = false;
@@ -17474,7 +17300,7 @@ module.exports = tabsCtrl;
 
 var txStatusCtrl = function txStatusCtrl($scope) {
     $scope.Validator = Validator;
-    $scope.checkTxPage = true;
+    $scope.checkTxPage = false;
     $scope.checkTxReadOnly = true;
     $scope.txStatus = {
         found: 0,
@@ -17498,56 +17324,6 @@ var txStatusCtrl = function txStatusCtrl($scope) {
     var applyScope = function applyScope() {
         if (!$scope.$$phase) $scope.$apply();
     };
-    /*
-    var setUSDvalues = function() {
-        ajaxReq.getETHvalue(function(data) {
-            $scope.txInfo.gasPrice.usd = new BigNumber(data.usd).mul(new BigNumber($scope.txInfo.gasPrice.eth)).toString();
-            applyScope();
-        });
-    }*/
-    /*
-    var txToObject = function(tx) {
-        var txStatus = $scope.txStatus;
-        if (tx) {
-            console.log('txToObject')
-            console.log(tx)
-            $scope.txInfo = {
-                status: tx.blockNumber ? txStatus.mined : txStatus.found,
-                hash: tx.hash,
-                from: ethUtil.toChecksumAddress(tx.from),
-                to: tx.to ? ethUtil.toChecksumAddress(tx.to) : '',
-                value: new BigNumber(tx.value).toString(),
-                valueStr: etherUnits.toEther(tx.value, 'wei') + " ETH",
-                gasLimit: new BigNumber(tx.gas).toString(),
-                gasPrice: {
-                    wei: new BigNumber(tx.gasPrice).toString(),
-                    gwei: new BigNumber(tx.gasPrice).div(etherUnits.getValueOfUnit('gwei')).toString(),
-                    eth: etherUnits.toEther(tx.gasPrice, 'wei')
-                },
-                data: tx.input == '0x' ? '' : tx.input,
-                nonce: new BigNumber(tx.nonce).toString()
-            }
-            if ($scope.txInfo.status == txStatus.found) {
-                var _gasPrice = new BigNumber($scope.txInfo.gasPrice.wei).mul(1.1).floor();
-                if (_gasPrice.lt(etherUnits.getValueOfUnit('gwei') * MIN_GAS)) _gasPrice = new BigNumber(etherUnits.getValueOfUnit('gwei') * MIN_GAS)
-                $scope.parentTxConfig = {
-                    to: $scope.txInfo.from,
-                    value: '0',
-                    sendMode: 'ether',
-                    tokensymbol: '',
-                    readOnly: false,
-                    gasPrice: _gasPrice.toString(),
-                    gasLimit: '21000',
-                    data: '',
-                    nonce: $scope.txInfo.nonce
-                }
-                new Modal(document.getElementById('sendTransaction'));
-            }
-            setUSDvalues();
-        } else {
-            $scope.txInfo.status = txStatus.notFound;
-        }
-    }*/
     $scope.checkTxStatus = function () {
         var txInfo = $scope.txInfo;
         try {
@@ -17591,7 +17367,6 @@ var viewWalletCtrl = function viewWalletCtrl($scope, walletService) {
 
     walletService.wallet = null;
     walletService.password = '';
-    //   $scope.ajaxReq = ajaxReq;
     $scope.$watch(function () {
         if (walletService.wallet == null) return null;
         return walletService.wallet.getAddressString();
@@ -17609,16 +17384,7 @@ var viewWalletCtrl = function viewWalletCtrl($scope, walletService) {
             $scope.encFileName = $scope.wallet.getV3Filename();
         }
         $scope.wallet.setBalance();
-        //$scope.wallet.setTokens();
     });
-    /*
-    $scope.$watch('ajaxReq.key', function() {
-        if ($scope.wallet) {
-            $scope.wallet.setBalance();
-            //$scope.wallet.setTokens();
-        }
-    });
-    */
     $scope.printQRCode = function () {
         globalFuncs.printPaperWallets(JSON.stringify([{
             address: '0x' + $scope.wallet.getPublicKeyString(),
@@ -17639,105 +17405,6 @@ var viewWalletCtrl = function viewWalletCtrl($scope, walletService) {
 module.exports = viewWalletCtrl;
 
 },{}],99:[function(require,module,exports){
-'use strict';
-
-var walletBalanceCtrl = function walletBalanceCtrl($scope, $sce, $rootScope) {
-    // $scope.ajaxReq = ajaxReq;
-    $scope.tokensLoaded = false;
-    $scope.showAllTokens = false;
-    $scope.localToken = {
-        contractAdd: "",
-        symbol: "",
-        decimals: "",
-        type: "custom"
-    };
-
-    $scope.slide = 2;
-
-    $scope.customTokenField = false;
-
-    $scope.saveTokenToLocal = function () {
-        globalFuncs.saveTokenToLocal($scope.localToken, function (data) {
-            if (!data.error) {
-                $scope.addressDrtv.ensAddressField = "";
-                $scope.localToken = {
-                    contractAdd: "",
-                    symbol: "",
-                    decimals: "",
-                    type: "custom"
-                };
-                // $scope.wallet.setTokens();
-                $scope.validateLocalToken = $sce.trustAsHtml('');
-                $scope.customTokenField = false;
-            } else {
-                $scope.notifier.danger(data.msg);
-            }
-        });
-    };
-
-    $scope.setAndVerifyBalance = function (token) {
-        if (token.balance == 'Click to Load') {
-            token.balance = 'loading';
-
-            token.setBalance(function () {
-                var autoTokens = globalFuncs.localStorage.getItem('autoLoadTokens');
-                $scope.autoLoadTokens = autoTokens ? JSON.parse(autoTokens) : [];
-
-                console.log(token.balance);
-                console.log(token.contractAddress);
-
-                if (parseInt(token.balance) > 0) {
-                    $scope.autoLoadTokens.push(token.contractAddress);
-                    globalFuncs.localStorage.setItem('autoLoadTokens', JSON.stringify($scope.autoLoadTokens));
-                    console.log(token);
-                }
-            });
-        }
-    };
-
-    /*
-    $scope.$watch('wallet', function() {
-        if ($scope.wallet) $scope.reverseLookup();
-    });
-     $scope.reverseLookup = function() {
-        var _ens = new ens();
-        _ens.getName($scope.wallet.getAddressString().substring(2) + '.addr.reverse', function(data) {
-            if (data.error) uiFuncs.notifier.danger(data.msg);
-            else if (data.data == '0x') {
-                $scope.showens = false;
-            } else {
-                $scope.ensAddress = data.data;
-                $scope.showens = true;
-            }
-        });
-    }
-    */
-
-    $scope.removeTokenFromLocal = function (tokensymbol) {
-        globalFuncs.removeTokenFromLocal(tokensymbol, $scope.wallet.tokenObjs);
-        $rootScope.rootScopeShowRawTx = false;
-    };
-
-    $scope.showDisplayOnTrezor = function () {
-        return $scope.wallet != null && $scope.wallet.hwType === 'trezor';
-    };
-
-    $scope.displayOnTrezor = function () {
-        TrezorConnect.ethereumGetAddress($scope.wallet.path, function () {});
-    };
-
-    $scope.showDisplayOnLedger = function () {
-        return $scope.wallet != null && $scope.wallet.hwType === 'ledger';
-    };
-
-    $scope.displayOnLedger = function () {
-        var app = new ledgerEth($scope.wallet.getHWTransport());
-        app.getAddress($scope.wallet.path, function () {}, true, false);
-    };
-};
-module.exports = walletBalanceCtrl;
-
-},{}],100:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -17763,7 +17430,6 @@ var walletGenCtrl = function walletGenCtrl($scope) {
             $scope.isDone = false;
             $scope.wallet = Wallet.generate(false);
             $scope.showWallet = true;console.log($scope.wallet.toJSON());
-            //$scope.blob = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toJSON());
 
             var encodedFile = $scope.wallet.toV3($scope.password, {
                 kdf: globalFuncs.kdf,
@@ -17809,7 +17475,7 @@ var walletGenCtrl = function walletGenCtrl($scope) {
 module.exports = walletGenCtrl;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196}],101:[function(require,module,exports){
+},{"buffer":179}],100:[function(require,module,exports){
 'use strict';
 
 var QRCodeDrtv = function QRCodeDrtv() {
@@ -17835,7 +17501,7 @@ var QRCodeDrtv = function QRCodeDrtv() {
 };
 module.exports = QRCodeDrtv;
 
-},{}],102:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 var addressFieldDrtv = function addressFieldDrtv($compile) {
@@ -17861,51 +17527,36 @@ var addressFieldDrtv = function addressFieldDrtv($compile) {
                 readOnly: false
             };
 
+            console.log("varName is " + varName);
+
             element.html('<div class=\"col-xs-11\">\n \
                     <label translate=\"' + labelTranslated + '\"></label>\n \
-                    <input class=\"form-control\" type=\"text\" placeholder=\"' + placeholder + '\" ng-model=\"addressDrtv.ensAddressField\" ng-disabled=\"addressDrtv.readOnly\" ng-class=\"Validator.isValidENSorEtherAddress(' + varName + ') ? \'is-valid\' : \'is-invalid\'\"/>\n \
+                    <input class=\"form-control\" type=\"text\" placeholder=\"' + placeholder + '\" ng-model=\"addressDrtv.ensAddressField\" ng-disabled=\"addressDrtv.readOnly\" ng-class=\"Validator.isValidAddress(' + varName + ') ? \'is-valid\' : \'is-invalid\'\"/>\n \
                     <p class="ens-response" ng-show="addressDrtv.showDerivedAddress"> ↳ <span class="mono ng-binding"> {{addressDrtv.derivedAddress}} </span> </p>\n \
                 </div>\n \
                 <div class=\"col-xs-1 address-identicon-container\">\n \
                    <div class=\"addressIdenticon\" title=\"Address Indenticon\" blockie-address=\"{{' + varName + '}}\" watch-var=\"' + varName + '\"></div>\n \
                 </div>');
 
-            /*
-                        scope.$watch('addressDrtv.ensAddressField', function() { console.log("varName is "+varName+" addressDrtv is "+scope.addressDrtv.ensAddressField);
-                            var _ens = new ens();
-                            if (Validator.isValidAddress(scope.addressDrtv.ensAddressField)) {
-                                setValue(scope.addressDrtv.ensAddressField);
-                                //if (!Validator.isChecksumAddress(scope.addressDrtv.ensAddressField)) {
-                                //    scope.notifier.info(globalFuncs.errorMsgs[35]);
-                                //}
-                                if (scope.addressDrtv.ensAddressField.substring(0,2)!='0x') scope.addressDrtv.ensAddressField = '0x'+scope.addressDrtv.ensAddressField;
-                            } else if (Validator.isValidENSAddress(scope.addressDrtv.ensAddressField)) {
-                                _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
-                                    if (data.error) uiFuncs.notifier.danger(data.msg);
-                                    else if (data.data == '0x0000000000000000000000000000000000000000' || data.data == '0x') {
-                                        setValue('0x0000000000000000000000000000000000000000');
-                                        scope.addressDrtv.derivedAddress = '0x0000000000000000000000000000000000000000';
-                                        scope.addressDrtv.showDerivedAddress = true;
-                                    } else {
-                                        setValue(data.data);
-                                        scope.addressDrtv.derivedAddress = ethUtil.toChecksumAddress(data.data);
-                                        scope.addressDrtv.showDerivedAddress = true;
-                                    }
-                                });
-                            } else {
-                                setValue('');
-                                scope.addressDrtv.showDerivedAddress = false;
-                            }
-                        });*/
+            scope.$watch('addressDrtv.ensAddressField', function () {
+                console.log("varName is " + varName + " addressDrtv is " + scope.addressDrtv.ensAddressField);
+                if (Validator.isValidAddress(scope.addressDrtv.ensAddressField)) {
+                    setValue(scope.addressDrtv.ensAddressField);
+                    if (scope.addressDrtv.ensAddressField.substring(0, 2) != '0x') scope.addressDrtv.ensAddressField = '0x' + scope.addressDrtv.ensAddressField;
+                } else {
+                    setValue('');
+                    scope.addressDrtv.showDerivedAddress = false;
+                }
+            });
             $compile(element.contents())(scope);
         }
     };
 };
 module.exports = addressFieldDrtv;
 
+},{}],102:[function(require,module,exports){
+module.exports = "<aside >\n\n  <!-- Account Address -->\n  <div class=\"block\">\n    <h5 translate=\"sidebar_AccountAddr\">Account Address</h5>\n    <ul class=\"account-info\">\n      <div class=\"addressIdenticon med float\" blockie-address=\"0x{{wallet.getPublicKeyString()}}\" watch-var=\"wallet\"></div>\n      <span class=\"mono wrap\">0x{{wallet.getPublicKeyString()}}</span>\n      <label class=\"ens-response\" ng-show=\"showEns()\">\n        ↳ <span class=\"mono ng-binding\"> {{ensAddress}} </span>\n      </label>\n    </ul>\n    <h5 translate=\"sidebar_AccountBal\">Account Balance</h5>\n    <ul class=\"account-info point\">\n      <li>\n        <span class=\"mono wrap\">{{wallet.getBalance()}} </span> AION\n      </li>\n    </ul>\n    <h5 translate=\"sidebar_TransHistory\"> Transaction History</h5>\n    <ul class=\"account-info\">\n      <li>\n        <a href=\"http://dashboard.aion.network/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <u>Aion Dashboard<u>\n        </a>\n      </li>\n    </ul>\n  </div>\n\n\n</aside>\n";
 },{}],103:[function(require,module,exports){
-module.exports = "<aside ng-controller=\"walletBalanceCtrl\">\n\n\n\n  <!-- Account Address -->\n  <div class=\"block\">\n    <h5 translate=\"sidebar_AccountAddr\">Account Address</h5>\n    <ul class=\"account-info\">\n      <div class=\"addressIdenticon med float\" blockie-address=\"0x{{wallet.getPublicKeyString()}}\" watch-var=\"wallet\"></div>\n      <span class=\"mono wrap\">0x{{wallet.getPublicKeyString()}}</span>\n      <label class=\"ens-response\" ng-show=\"showEns()\">\n        ↳ <span class=\"mono ng-binding\"> {{ensAddress}} </span>\n      </label>\n    </ul>\n    <div ng-show=\"showDisplayOnTrezor()\">\n      <h5 translate=\"sidebar_DisplayOnTrezor\">Display address on TREZOR</h5>\n      <ul class=\"account-info\">\n        <li><a href=\"\" ng-click=\"displayOnTrezor()\" translate=\"sidebar_DisplayOnTrezor\">Display address on TREZOR</a></li>\n      </ul>\n    </div>\n    <div ng-show=\"showDisplayOnLedger()\">\n      <h5 translate=\"sidebar_DisplayOnLedger\">Display address on Ledger</h5>\n      <ul class=\"account-info\">\n        <li><a href=\"\" ng-click=\"displayOnLedger()\" translate=\"sidebar_DisplayOnLedger\">Display address on Ledger</a></li>\n      </ul>\n    </div>\n    <h5 translate=\"sidebar_AccountBal\">Account Balance</h5>\n    <ul class=\"account-info point\">\n      <li>\n        <span class=\"mono wrap\">{{wallet.getBalance()}} </span> AION\n      </li>\n    </ul>\n    <h5 translate=\"sidebar_TransHistory\"> Transaction History</h5>\n    <ul class=\"account-info\">\n      <li>\n        <a href=\"http://dashboard.aion.network/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <u>Aion Dashboard<u>\n        </a>\n      </li>\n    </ul>\n  </div>\n\n\n</aside>\n";
-},{}],104:[function(require,module,exports){
 'use strict';
 
 var balanceDrtv = function balanceDrtv() {
@@ -17916,7 +17567,7 @@ var balanceDrtv = function balanceDrtv() {
 };
 module.exports = balanceDrtv;
 
-},{"./balanceDrtv.html":103}],105:[function(require,module,exports){
+},{"./balanceDrtv.html":102}],104:[function(require,module,exports){
 'use strict';
 
 var blockiesDrtv = function blockiesDrtv() {
@@ -17933,33 +17584,7 @@ var blockiesDrtv = function blockiesDrtv() {
 };
 module.exports = blockiesDrtv;
 
-},{}],106:[function(require,module,exports){
-'use strict';
-
-var cxWalletDecryptDrtv = function cxWalletDecryptDrtv() {
-  return {
-    restrict: "E",
-    template: '<div class="row" ng-controller=\'cxDecryptWalletCtrl\'>\n \
-      <div class="col-md-4 col-sm-6">\n \
-        <h4 translate="decrypt_Select"> Select a Wallet: </h4>\n \
-        <div class="radio" ng-repeat="twallet in allWallets  track by $index">\n \
-          <label><input type="radio" name="selectedWallet" ng-model="$parent.selectedWallet" value="{{twallet.addr}}"> {{twallet.nick}} <small>({{twallet.balance}} Ether)</small> </label>\n \
-        </div>\n \
-      </div>\n \
-      <div class="col-md-4 col-sm-6" ng-show="selectedWallet!=\'\'">\n \
-        <h4 translate="ADD_Label_3"> Your wallet is encrypted. Please enter the password: </h4>\n \
-        <input class="form-control" type="password" placeholder="{{ \'x_Password\' | translate }}" ng-model="password" ng-keyup="$event.keyCode == 13 && decryptWallet()" >\n \
-      </div>\n \
-      <div class="col-md-4 col-sm-6" id="walletuploadbutton" ng-show="password.length>0">\n \
-        <h4 translate="ADD_Label_6"> Unlock Your Wallet:</h4>\n \
-        <div class="form-group"><a ng-click="decryptWallet()" class="btn btn-primary btn-block" translate="ADD_Label_6_short">UNLOCK</a></div>\n \
-      </div>\n \
-    </div>'
-  };
-};
-module.exports = cxWalletDecryptDrtv;
-
-},{}],107:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 var fileReaderDrtv = function fileReaderDrtv($parse) {
@@ -18011,9 +17636,9 @@ var fileReaderDrtv = function fileReaderDrtv($parse) {
 };
 module.exports = fileReaderDrtv;
 
-},{}],108:[function(require,module,exports){
-module.exports = "<article class=\"block decrypt-drtv clearfix\" ng-controller='decryptWalletCtrl as $crtl'>\n\n  <!-- Column 1 - Select Type of Key -->\n  <section class=\"col-md-4 col-sm-6\">\n\n    <h4 translate=\"decrypt_Access\">\n      How would you like to access your wallet?\n    </h4>\n\n    <!-- Keystore / JSON File -->\n    <label aria-flowto=\"aria6\"\n           class=\"radio\">\n      <input aria-flowto=\"aria6\"\n             aria-label=\"Keystore JSON file\"\n             type=\"radio\"\n             ng-model=\"walletType\"\n             value=\"fileupload\" />\n      Keystore / JSON File\n    </label>\n\n   <!-- Private -->\n    <label aria-flowto=\"aria8\"\n           class=\"radio\">\n      <input aria-flowto=\"aria8\"\n             aria-label=\"private key\"\n             type=\"radio\"\n             ng-model=\"walletType\"\n             value=\"pasteprivkey\" />\n      <span translate=\"x_PrivKey2\">\n        Private Key\n      </span>\n    </label>\n\n    </section>\n  <!-- / Column 1 - Select Type of Key -->\n\n\n  <!-- Column 2 - Unlock That Key -->\n  <section class=\"col-md-8 col-sm-6\">\n\n    <!-- View Only -->\n    <div id=\"selectedTypeKey\" ng-if=\"walletType=='addressOnly'\">\n      <h4 translate=\"x_Address\">\n        Your Address\n      </h4>\n      <h5>\n        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 79.536 79.536\"><path fill=\"#5dba5a\" d=\"M39.769 0C17.8 0 0 17.8 0 39.768c0 21.965 17.8 39.768 39.769 39.768 21.965 0 39.768-17.803 39.768-39.768C79.536 17.8 61.733 0 39.769 0zm-5.627 58.513L15.397 39.768l7.498-7.498 11.247 11.247 22.497-22.493 7.498 7.498-29.995 29.991z\"/></svg>\n        This is a recommended way to view your balance.\n      </h5>\n      <p>\n          You can only view your balance via this option.\n          Please use another option in order to send.\n      </p>\n      <div class=\"form-group\">\n        <textarea rows=\"4\"\n                  id=\"aria8\"\n                  class=\"form-control\"\n                  ng-change=\"onAddressChange()\"\n                  ng-class=\"Validator.isValidAddress($parent.$parent.addressOnly) ? 'is-valid' : 'is-invalid'\"\n                  ng-model=\"$parent.$parent.addressOnly\"\n                  placeholder=\"{{ 'x_Address' | translate }}\"\n        ></textarea>\n      </div>\n      <div class=\"form-group\">\n        <a class=\"btn btn-primary\"\n           ng-click=\"decryptAddressOnly()\"\n           ng-show=\"showAOnly\"\n           role=\"button\"\n           tabindex=\"0\">\n             View Balance\n        </a>\n      </div>\n    </div>\n    <!-- /View Only -->\n\n    <!-- Keystore -->\n    <div ng-if=\"walletType=='fileupload'\">\n      <h4 translate=\"ADD_Radio_2_alt\">Select your wallet file</h4>\n      <h5>\n          <svg class=\"svg-icon\" width=\"20\" height=\"20\" >\n            <path fill=\"#d9534f\" d=\"M14.38,3.467l0.232-0.633c0.086-0.226-0.031-0.477-0.264-0.559c-0.229-0.081-0.48,0.033-0.562,0.262l-0.234,0.631C10.695,2.38,7.648,3.89,6.616,6.689l-1.447,3.93l-2.664,1.227c-0.354,0.166-0.337,0.672,0.035,0.805l4.811,1.729c-0.19,1.119,0.445,2.25,1.561,2.65c1.119,0.402,2.341-0.059,2.923-1.039l4.811,1.73c0,0.002,0.002,0.002,0.002,0.002c0.23,0.082,0.484-0.033,0.568-0.262c0.049-0.129,0.029-0.266-0.041-0.377l-1.219-2.586l1.447-3.932C18.435,7.768,17.085,4.676,14.38,3.467 M9.215,16.211c-0.658-0.234-1.054-0.869-1.014-1.523l2.784,0.998C10.588,16.215,9.871,16.447,9.215,16.211 M16.573,10.27l-1.51,4.1c-0.041,0.107-0.037,0.227,0.012,0.33l0.871,1.844l-4.184-1.506l-3.734-1.342l-4.185-1.504l1.864-0.857c0.104-0.049,0.188-0.139,0.229-0.248l1.51-4.098c0.916-2.487,3.708-3.773,6.222-2.868C16.187,5.024,17.489,7.783,16.573,10.27\"></path>\n          </svg>\n        Integration with hardware wallets is currently under development.\n      </h5>\n      <div class=\"form-group\">\n        Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. Please consider:\n      </div>\n      <li>\n          <a href=\"./helpPages/ProtectingYourWallet.html\"\n             target=\"_blank\"\n             rel=\"noopener noreferrer\">\n              Learn How to Protect Yourself and Your Funds\n          </a>\n        </li>\n     \n      <br />\n      <div class=\"form-group\">\n        <input style=\"display:none;\" type=\"file\" on-read-file=\"showContent($fileContent)\" id=\"fselector\" />\n        <a class=\"btn-file marg-v-sm\"\n           ng-click=\"openFileDialog()\"\n           translate=\"ADD_Radio_2_short\"\n           id=\"aria1\"\n           tabindex=\"0\"\n           role=\"button\">SELECT WALLET FILE... </a>\n      </div>\n      <div class=\"form-group\" ng-if=\"requireFPass\">\n        <p translate=\"ADD_Label_3\">\n          Your file is encrypted. Please enter the password:\n        </p>\n        <input class=\"form-control\"\n               ng-change=\"onFilePassChange()\"\n               ng-class=\"Validator.isPasswordLenValid($parent.$parent.filePassword,0) ? 'is-valid' : 'is-invalid'\"\n               ng-model=\"$parent.$parent.filePassword\"\n               placeholder=\"{{ 'x_Password' | translate }}\"\n               type=\"password\" />\n      </div>\n      <div class=\"form-group\">\n        <a tabindex=\"0\"\n           role=\"button\"\n           class=\"btn btn-primary\"\n           ng-show=\"showFDecrypt||showPDecrypt||showMDecrypt||showParityDecrypt\"\n           ng-click=\"decryptWallet()\"\n           translate=\"ADD_Label_6_short\">\n             UNLOCK\n         </a>\n      </div>\n    </div>\n    <!-- / Keystore -->\n\n    <!--  Private Key -->\n    <div id=\"selectedTypeKey\" ng-if=\"walletType=='pasteprivkey'\">\n      <h4 translate=\"ADD_Radio_3\">\n        Paste your private key:\n      </h4>\n      <h5>\n          <svg class=\"svg-icon\" width=\"20\" height=\"20\" >\n            <path fill=\"#d9534f\" d=\"M14.38,3.467l0.232-0.633c0.086-0.226-0.031-0.477-0.264-0.559c-0.229-0.081-0.48,0.033-0.562,0.262l-0.234,0.631C10.695,2.38,7.648,3.89,6.616,6.689l-1.447,3.93l-2.664,1.227c-0.354,0.166-0.337,0.672,0.035,0.805l4.811,1.729c-0.19,1.119,0.445,2.25,1.561,2.65c1.119,0.402,2.341-0.059,2.923-1.039l4.811,1.73c0,0.002,0.002,0.002,0.002,0.002c0.23,0.082,0.484-0.033,0.568-0.262c0.049-0.129,0.029-0.266-0.041-0.377l-1.219-2.586l1.447-3.932C18.435,7.768,17.085,4.676,14.38,3.467 M9.215,16.211c-0.658-0.234-1.054-0.869-1.014-1.523l2.784,0.998C10.588,16.215,9.871,16.447,9.215,16.211 M16.573,10.27l-1.51,4.1c-0.041,0.107-0.037,0.227,0.012,0.33l0.871,1.844l-4.184-1.506l-3.734-1.342l-4.185-1.504l1.864-0.857c0.104-0.049,0.188-0.139,0.229-0.248l1.51-4.098c0.916-2.487,3.708-3.773,6.222-2.868C16.187,5.024,17.489,7.783,16.573,10.27\"></path>\n          </svg>\n        Integration with hardware wallets is currently under development.\n      </h5>\n      <div class=\"form-group\">\n        Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. Please consider:\n      </div>\n      <ul>\n        <li>\n          <a href=\"./helpPages/ProtectingYourWallet.html\"\n             target=\"_blank\"\n             rel=\"noopener noreferrer\">\n              Learn How to Protect Yourself and Your Funds\n          </a>\n        </li>\n      </ul>\n      <br />\n      <div class=\"form-group\">\n        <textarea id=\"aria6\"\n                  class=\"form-control\"\n                  ng-change=\"onPrivKeyChange()\"\n                  ng-class=\"Validator.isValidPrivKey($parent.$parent.manualprivkey.length) ? 'is-valid' : 'is-invalid'\"\n                  ng-keyup=\"$event.keyCode == 13 && decryptWallet()\"\n                  ng-model=\"$parent.$parent.manualprivkey\"\n                  placeholder=\"{{ 'x_PrivKey2' | translate }}\"\n                  rows=\"4\"\n        ></textarea>\n      </div>\n      <div class=\"form-group\" ng-if=\"requirePPass\">\n        <p translate=\"ADD_Label_3\">\n          Your file is encrypted. Please enter the password:\n        </p>\n        <input class=\"form-control\"\n               ng-change=\"onPrivKeyPassChange()\"\n               ng-class=\"Validator.isPasswordLenValid($parent.$parent.privPassword,0) ? 'is-valid' : 'is-invalid'\"\n               ng-keyup=\"$event.keyCode == 13 && decryptWallet()\"\n               ng-model=\"$parent.$parent.privPassword\"\n               placeholder=\"{{ 'x_Password' | translate }}\"\n               type=\"password\" />\n      </div>\n      <div class=\"form-group\">\n        <a tabindex=\"0\"\n           role=\"button\"\n           class=\"btn btn-primary\"\n           ng-show=\"showFDecrypt||showPDecrypt||showMDecrypt||showParityDecrypt\"\n           ng-click=\"decryptWallet()\"\n           translate=\"ADD_Label_6\">\n             Unlock your wallet\n         </a>\n      </div>\n    </div>\n    <!-- / Private Key -->\n\n  </section>\n  <!-- / Column 2 - Unlock That Key -->\n\n</article>\n";
-},{}],109:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
+module.exports = "<article class=\"block decrypt-drtv clearfix\" ng-controller='decryptWalletCtrl as $crtl'>\n\n  <!-- Column 1 - Select Type of Key -->\n  <section class=\"col-md-4 col-sm-6\">\n\n    <h4 translate=\"decrypt_Access\">\n      How would you like to access your wallet?\n    </h4>\n\n    <!-- Keystore -->\n    <label aria-flowto=\"aria6\"\n           class=\"radio\">\n      <input aria-flowto=\"aria6\"\n             aria-label=\"Keystore JSON file\"\n             type=\"radio\"\n             ng-model=\"walletType\"\n             value=\"fileupload\" />\n      Keystore \n    </label>\n\n   <!-- Private -->\n    <label aria-flowto=\"aria8\"\n           class=\"radio\">\n      <input aria-flowto=\"aria8\"\n             aria-label=\"private key\"\n             type=\"radio\"\n             ng-model=\"walletType\"\n             value=\"pasteprivkey\" />\n      <span translate=\"x_PrivKey2\">\n        Private Key\n      </span>\n    </label>\n\n    </section>\n  <!-- / Column 1 - Select Type of Key -->\n\n\n  <!-- Column 2 - Unlock That Key -->\n  <section class=\"col-md-8 col-sm-6\">\n\n    <!-- View Only -->\n    <div id=\"selectedTypeKey\" ng-if=\"walletType=='addressOnly'\">\n      <h4 translate=\"x_Address\">\n        Your Address\n      </h4>\n      <h5>\n        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 79.536 79.536\"><path fill=\"#5dba5a\" d=\"M39.769 0C17.8 0 0 17.8 0 39.768c0 21.965 17.8 39.768 39.769 39.768 21.965 0 39.768-17.803 39.768-39.768C79.536 17.8 61.733 0 39.769 0zm-5.627 58.513L15.397 39.768l7.498-7.498 11.247 11.247 22.497-22.493 7.498 7.498-29.995 29.991z\"/></svg>\n        This is a recommended way to view your balance.\n      </h5>\n      <p>\n          You can only view your balance via this option.\n          Please use another option in order to send.\n      </p>\n      <div class=\"form-group\">\n        <textarea rows=\"4\"\n                  id=\"aria8\"\n                  class=\"form-control\"\n                  ng-change=\"onAddressChange()\"\n                  ng-class=\"Validator.isValidAddress($parent.$parent.addressOnly) ? 'is-valid' : 'is-invalid'\"\n                  ng-model=\"$parent.$parent.addressOnly\"\n                  placeholder=\"{{ 'x_Address' | translate }}\"\n        ></textarea>\n      </div>\n      <div class=\"form-group\">\n        <a class=\"btn btn-primary\"\n           ng-click=\"decryptAddressOnly()\"\n           ng-show=\"showAOnly\"\n           role=\"button\"\n           tabindex=\"0\">\n             View Balance\n        </a>\n      </div>\n    </div>\n    <!-- /View Only -->\n\n    <!-- Keystore -->\n    <div ng-if=\"walletType=='fileupload'\">\n      <h4 translate=\"ADD_Radio_2_alt\">Select your wallet file</h4>\n      <h5>\n          <svg class=\"svg-icon\" width=\"20\" height=\"20\" >\n            <path fill=\"#d9534f\" d=\"M14.38,3.467l0.232-0.633c0.086-0.226-0.031-0.477-0.264-0.559c-0.229-0.081-0.48,0.033-0.562,0.262l-0.234,0.631C10.695,2.38,7.648,3.89,6.616,6.689l-1.447,3.93l-2.664,1.227c-0.354,0.166-0.337,0.672,0.035,0.805l4.811,1.729c-0.19,1.119,0.445,2.25,1.561,2.65c1.119,0.402,2.341-0.059,2.923-1.039l4.811,1.73c0,0.002,0.002,0.002,0.002,0.002c0.23,0.082,0.484-0.033,0.568-0.262c0.049-0.129,0.029-0.266-0.041-0.377l-1.219-2.586l1.447-3.932C18.435,7.768,17.085,4.676,14.38,3.467 M9.215,16.211c-0.658-0.234-1.054-0.869-1.014-1.523l2.784,0.998C10.588,16.215,9.871,16.447,9.215,16.211 M16.573,10.27l-1.51,4.1c-0.041,0.107-0.037,0.227,0.012,0.33l0.871,1.844l-4.184-1.506l-3.734-1.342l-4.185-1.504l1.864-0.857c0.104-0.049,0.188-0.139,0.229-0.248l1.51-4.098c0.916-2.487,3.708-3.773,6.222-2.868C16.187,5.024,17.489,7.783,16.573,10.27\"></path>\n          </svg>\n        Integration with hardware wallets is currently under development.\n      </h5>\n      <div class=\"form-group\">\n        Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. Please consider:\n      </div>\n      <li>\n          <a href=\"./helpPages/ProtectingYourWallet.html\"\n             target=\"_blank\"\n             rel=\"noopener noreferrer\">\n              Learn How to Protect Yourself and Your Funds\n          </a>\n        </li>\n     \n      <br />\n      <div class=\"form-group\">\n        <input style=\"display:none;\" type=\"file\" on-read-file=\"showContent($fileContent)\" id=\"fselector\" />\n        <a class=\"btn-file marg-v-sm\"\n           ng-click=\"openFileDialog()\"\n           translate=\"ADD_Radio_2_short\"\n           id=\"aria1\"\n           tabindex=\"0\"\n           role=\"button\">SELECT WALLET FILE... </a>\n      </div>\n      <div class=\"form-group\" ng-if=\"requireFPass\">\n        <p translate=\"ADD_Label_3\">\n          Your file is encrypted. Please enter the password:\n        </p>\n        <input class=\"form-control\"\n               ng-change=\"onFilePassChange()\"\n               ng-class=\"Validator.isPasswordLenValid($parent.$parent.filePassword,0) ? 'is-valid' : 'is-invalid'\"\n               ng-model=\"$parent.$parent.filePassword\"\n               placeholder=\"{{ 'x_Password' | translate }}\"\n               type=\"password\" />\n      </div>\n      <div class=\"form-group\">\n        <a tabindex=\"0\"\n           role=\"button\"\n           class=\"btn btn-primary\"\n           ng-show=\"showFDecrypt||showPDecrypt||showMDecrypt||showParityDecrypt\"\n           ng-click=\"decryptWallet()\"\n           translate=\"ADD_Label_6_short\">\n             UNLOCK\n         </a>\n      </div>\n    </div>\n    <!-- / Keystore -->\n\n    <!--  Private Key -->\n    <div id=\"selectedTypeKey\" ng-if=\"walletType=='pasteprivkey'\">\n      <h4 translate=\"ADD_Radio_3\">\n        Paste your private key:\n      </h4>\n      <h5>\n          <svg class=\"svg-icon\" width=\"20\" height=\"20\" >\n            <path fill=\"#d9534f\" d=\"M14.38,3.467l0.232-0.633c0.086-0.226-0.031-0.477-0.264-0.559c-0.229-0.081-0.48,0.033-0.562,0.262l-0.234,0.631C10.695,2.38,7.648,3.89,6.616,6.689l-1.447,3.93l-2.664,1.227c-0.354,0.166-0.337,0.672,0.035,0.805l4.811,1.729c-0.19,1.119,0.445,2.25,1.561,2.65c1.119,0.402,2.341-0.059,2.923-1.039l4.811,1.73c0,0.002,0.002,0.002,0.002,0.002c0.23,0.082,0.484-0.033,0.568-0.262c0.049-0.129,0.029-0.266-0.041-0.377l-1.219-2.586l1.447-3.932C18.435,7.768,17.085,4.676,14.38,3.467 M9.215,16.211c-0.658-0.234-1.054-0.869-1.014-1.523l2.784,0.998C10.588,16.215,9.871,16.447,9.215,16.211 M16.573,10.27l-1.51,4.1c-0.041,0.107-0.037,0.227,0.012,0.33l0.871,1.844l-4.184-1.506l-3.734-1.342l-4.185-1.504l1.864-0.857c0.104-0.049,0.188-0.139,0.229-0.248l1.51-4.098c0.916-2.487,3.708-3.773,6.222-2.868C16.187,5.024,17.489,7.783,16.573,10.27\"></path>\n          </svg>\n        Integration with hardware wallets is currently under development.\n      </h5>\n      <div class=\"form-group\">\n        Entering your private key on a website is dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. Please consider:\n      </div>\n      <ul>\n        <li>\n          <a href=\"./helpPages/ProtectingYourWallet.html\"\n             target=\"_blank\"\n             rel=\"noopener noreferrer\">\n              Learn How to Protect Yourself and Your Funds\n          </a>\n        </li>\n      </ul>\n      <br />\n      <div class=\"form-group\">\n        <textarea id=\"aria6\"\n                  class=\"form-control\"\n                  ng-change=\"onPrivKeyChange()\"\n                  ng-class=\"Validator.isValidPrivKey($parent.$parent.manualprivkey.length) ? 'is-valid' : 'is-invalid'\"\n                  ng-keyup=\"$event.keyCode == 13 && decryptWallet()\"\n                  ng-model=\"$parent.$parent.manualprivkey\"\n                  placeholder=\"{{ 'x_PrivKey2' | translate }}\"\n                  rows=\"4\"\n        ></textarea>\n      </div>\n      <div class=\"form-group\" ng-if=\"requirePPass\">\n        <p translate=\"ADD_Label_3\">\n          Your file is encrypted. Please enter the password:\n        </p>\n        <input class=\"form-control\"\n               ng-change=\"onPrivKeyPassChange()\"\n               ng-class=\"Validator.isPasswordLenValid($parent.$parent.privPassword,0) ? 'is-valid' : 'is-invalid'\"\n               ng-keyup=\"$event.keyCode == 13 && decryptWallet()\"\n               ng-model=\"$parent.$parent.privPassword\"\n               placeholder=\"{{ 'x_Password' | translate }}\"\n               type=\"password\" />\n      </div>\n      <div class=\"form-group\">\n        <a tabindex=\"0\"\n           role=\"button\"\n           class=\"btn btn-primary\"\n           ng-show=\"showFDecrypt||showPDecrypt||showMDecrypt||showParityDecrypt\"\n           ng-click=\"decryptWallet()\"\n           translate=\"ADD_Label_6\">\n             Unlock your wallet\n         </a>\n      </div>\n    </div>\n    <!-- / Private Key -->\n\n  </section>\n  <!-- / Column 2 - Unlock That Key -->\n\n</article>\n";
+},{}],107:[function(require,module,exports){
 'use strict';
 
 var walletDecryptDrtv = function walletDecryptDrtv() {
@@ -18024,7 +17649,7 @@ var walletDecryptDrtv = function walletDecryptDrtv() {
 };
 module.exports = walletDecryptDrtv;
 
-},{"./walletDecryptDrtv.html":108}],110:[function(require,module,exports){
+},{"./walletDecryptDrtv.html":106}],108:[function(require,module,exports){
 'use strict';
 
 var ethFuncs = function ethFuncs() {};
@@ -18057,12 +17682,6 @@ ethFuncs.padLeftEven = function (hex) {
     hex = hex.length % 2 != 0 ? '0' + hex : hex;
     return hex;
 };
-/*
-ethFuncs.addTinyMoreToGas = function(hex) {
-    hex = this.sanitizeHex(hex);
-    return new BigNumber(ethFuncs.gasAdjustment * etherUnits.getValueOfUnit('gwei')).toString(16);
-}
-*/
 ethFuncs.decimalToHex = function (dec) {
     return new BigNumber(dec).toString(16);
 };
@@ -18102,30 +17721,10 @@ ethFuncs.getDataObj = function (to, func, arrVals) {
 ethFuncs.getFunctionSignature = function (name) {
     return ethUtil.sha3(name).toString('hex').slice(0, 8);
 };
-/*
-ethFuncs.estimateGas = function(dataObj, callback) {
-    var adjustGas = function(gasLimit) {
-        if (gasLimit == "0x5209") return "21000";
-        if (new BigNumber(gasLimit).gt(4000000)) return "-1";
-        return new BigNumber(gasLimit).toString();
-    }
-    ajaxReq.getEstimatedGas(dataObj, function(data) {
-        if (data.error) {
-            callback(data);
-            return;
-        } else {
-            callback({
-                "error": false,
-                "msg": "",
-                "data": adjustGas(data.data)
-            });
-        }
-    });
-}
-*/
+
 module.exports = ethFuncs;
 
-},{}],111:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 var globalFuncs = function globalFuncs() {};
@@ -18147,7 +17746,6 @@ globalFuncs.printPaperWallets = function (strJson) {
 globalFuncs.getBlob = function (mime, str) {
     console.log("getBlob: ", mime);
     console.log("getBlob: ", str);
-    //var str = (typeof str === 'object') ? JSON.stringify(str) : str;
     if (str == null) return '';
     var blob = new Blob([str], {
         type: mime
@@ -18170,20 +17768,20 @@ globalFuncs.errorMsgs = ['Please enter a valid amount.', // 0
 'Please enter a valid address. ', // 5
 'Please enter a valid password. ', // 6
 'Please enter valid decimals (Must be integer, 0-18). ', // 7
-'Please enter a valid gas limit (Must be integer. Try 21000-4000000). ', // 8
+'Please enter a valid NRG limit (Must be integer. Try 21000-4000000). ', // 8
 'Please enter a valid data value (Must be hex). ', // 9
-'Please enter a valid gas price. ', // 10 - NOT USED
+'Please enter a valid NEG price. ', // 10 - NOT USED
 'Please enter a valid nonce (Must be integer).', // 11
 'Invalid signed transaction. ', // 12
 'A wallet with this nickname already exists. ', // 13
 'Wallet not found. ', // 14
 'Whoops. It doesn\'t look like a proposal with this ID exists yet or there is an error reading this proposal. ', // 15 - NOT USED
 'A wallet with this address already exists in storage. Please check your wallets page. ', // 16
-'(error_17) Insufficient balance. Your gas limit * gas price + amount to send exceeds your current balance. Send more ETH to your account or use the "Send Entire Balance" button. If you believe this is in error, try pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)', // 17
-'All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.', // 18
+'(error_17) Insufficient balance.', // 17
+'All NRG would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.', // 18
 'Please enter a valid symbol', // 19
-'Not a valid ERC-20 token', // 20
-'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.', // 21
+'Not a valid ASC-20 token', // 20
+'Could not estimate NRG.', // 21
 'Please enter valid node name', // 22
 'Enter valid URL. If you are on https, your URL must be https', // 23
 'Please enter a valid port. ', // 24
@@ -18197,7 +17795,7 @@ globalFuncs.errorMsgs = ['Please enter a valid amount.', // 0
 'Could not connect to the node. Refresh your page, try a different node (top-right corner), check your firewall settings. If custom node, check your configs.', // 32
 'The wallet you have unlocked does not match the owner\'s address. ', // 33
 'The name you are attempting to reveal does not match the name you have entered. ', // 34
-'Input address is not checksummed. <a href="https://myetherwallet.github.io/knowledge-base/addresses/not-checksummed-shows-when-i-enter-an-address.html" target="_blank" rel="noopener noreferrer"> Click here to learn what this means.</a>', // 35
+'Input address is not checksummed.', // 35
 'Please enter valid TX hash', // 36
 'Please enter valid hex string. Hex only contains: 0x, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, a, b, c, d, e, f', // 37
 'Offer must have either price or reserve set to more than 0', // 38
@@ -18208,65 +17806,6 @@ globalFuncs.errorMsgs = ['Please enter a valid amount.', // 0
 // These are translated in the translation files
 globalFuncs.successMsgs = ['Valid address', 'Wallet successfully decrypted', 'Transaction submitted. TX Hash: ', 'Your wallet was successfully added: ', 'File Selected: ', 'You are connected to the node ', 'Message Signature Verified'];
 
-// These are translated in the translation files
-globalFuncs.gethErrors = {
-    '(geth-06) Invalid sender\\.': 'GETH_InvalidSender',
-    "(geth-08) This TX's [nonce](https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html) is too low\\. Try incrementing the nonce by pressing the Generate button again, or [replace the pending transaction](https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html)\\.": "GETH_Nonce",
-    '(geth-02) Gas price too low for acceptance\\. Try raising the gas price to 21 GWEI via the dropdown in top-right\\.': 'GETH_Cheap',
-    '(geth-01) Insufficient balance\\. Your gas limit * gas price + amount to send exceeds your current balance\\. Send more ETH to your account or use the "Send Entire Balance" button\\. If you believe this is in error, try pressing generate again\\. Required (d+) WEI and got: (d+) WEI\\. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)': 'GETH_Balance',
-    '(geth-09) Account does not exist or account balance too low\\.': 'GETH_NonExistentAccount',
-    '(geth-04) Insufficient balance\\. Your gas limit * gas price + amount to send exceeds your current balance\\. Send more ETH to your account or use the "Send Entire Balance" button\\. If you believe this is in error, try pressing generate again\\. Required (d+) WEI and got: (d+) WEI\\. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)': 'GETH_InsufficientFunds',
-    '(geth-05) Intrinsic gas too low\\. Try raising the gas price to 21 GWEI via the dropdown in top-right or the gas limit to 21000 (for sending) or 200000 (for sending tokens or contracts) and try again.': 'GETH_IntrinsicGas',
-    '(geth-03) Exceeds block gas limit\\. Transaction cost exceeds current gas limit\\. Limit: (d+) WEI, got: (d+) WEI\\. Please lower the gas limit to 21000 (for sending) or 200000 (for sending tokens or contracts) and try again\\. [Learn More](https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html)': 'GETH_GasLimit',
-    '(geth-07) Negative value\\.': 'GETH_NegativeValue'
-};
-
-globalFuncs.gethErrorMsgs = {};
-globalFuncs.getGethMsg = function (str) {
-    if (str in this.gethErrors) {
-        var key = this.gethErrors[str];
-        if (key in this.gethErrorMsgs) {
-            return this.gethErrorMsgs[key];
-        }
-    }
-    return str;
-};
-
-// These are translated in the translation files
-globalFuncs.parityErrors = {
-    "A (parity-01) A transaction with the same hash was already imported. It was probably already broadcast. To avoid duplicate transactions, check your address on [etherscan.io](https://etherscan.io) & wait 10 minutes before attempting to send again. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)\\. This means it was already broadcast. Please check your address on etherscan.io & wait 10 minutes before attempting to send again to avoid duplicate transactions. <a target='_blank' rel='noopener noreferrer' href='https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html'>Learn more</a>": "PARITY_AlreadyImported",
-    "(parity-07) There is already a transaction with this [nonce](https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html)\\. Try incrementing the nonce by pressing the Generate button again, or [replace the pending transaction](https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html)\\.": "PARITY_Old",
-    "(parity-04) There is another transaction with same nonce in the queue, or the transaction fee is too low\\. Try incrementing the nonce by clicking the Generate button again\\. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)\\.": "PARITY_TooCheapToReplace",
-    "(parity-06) There are too many transactions in the queue\\. Your transaction was dropped due to limit\\. Try increasing the gas price\\. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)\\.": "PARITY_LimitReached",
-    "(parity-08) TX Fee is too low\\. It does not satisfy your node's minimal fee (minimal: (d+) WEI, got: (d+) WEI)\\. Try increasing the gas price and/or gas limit\\. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)\\.": "PARITY_InsufficientGasPrice",
-    "(parity-03) Insufficient balance\\. The account you tried to send transaction from does not have enough funds\\. If you believe this is in error, try using the 'Send Entire Balance' button, or pressing generate again. Required (d+) WEI and got: (d+) WEI\\. [Learn More](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)\\.": "ERROR_17",
-    "(parity-02) Transaction cost exceeds current gas limit\\. Limit: (d+) WEI, got: (d+) WEI\\. Please lower the gas limit to 21000 (for sending) or 200000 (for sending tokens or contracts) and try again\\. [Learn More](https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html)\\.": "PARITY_GasLimitExceeded",
-    "(parity-05) Supplied gas limit is beyond limit\\. Try lowering the gas limit to 21000\\. [Learn More](https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html)\\.": "PARITY_InvalidGasLimit"
-};
-globalFuncs.parityErrorMsgs = {};
-globalFuncs.getParityMsg = function (str) {
-    for (var reg in this.parityErrors) {
-        if (this.parityErrors.hasOwnProperty(reg)) {
-            var args = str.match("^" + reg + "$");
-            if (args) {
-                var key = this.parityErrors[reg];
-                if (key in this.parityErrorMsgs) {
-                    args[0] = this.parityErrorMsgs[key];
-                    return format.apply(this, args);
-                }
-            }
-        }
-    }
-    return str;
-};
-globalFuncs.getEthNodeName = function () {
-    //  return "geth";
-    return "parity";
-};
-globalFuncs.getEthNodeMsg = function (str) {
-    var ethNode = this.getEthNodeName();
-    if (ethNode == "geth") return this.getGethMsg(str);else return this.getParityMsg(str);
-};
 globalFuncs.scrypt = {
     n: 1024
 };
@@ -18289,12 +17828,7 @@ globalFuncs.stripTags = function (str) {
     }
     return str;
 };
-globalFuncs.checkAndRedirectHTTPS = function () {
-    var host = "myetherwallet.com";
-    var hostw = "https://www.myetherwallet.com";
-    var path = window.location.pathname;
-    if (host == window.location.host) window.location = hostw + path;
-};
+
 globalFuncs.isStrongPass = function (password) {
     return password.length > 8;
 };
@@ -18312,182 +17846,6 @@ globalFuncs.isAlphaNumeric = function (value) {
 };
 globalFuncs.getRandomBytes = function (num) {
     return ethUtil.crypto.randomBytes(num);
-};
-
-function getFromLS(key, errorMsg) {
-    var localStorageItemString = globalFuncs.localStorage.getItem(key);
-    if (!localStorageItemString && errorMsg) {
-        throw Error(errorMsg);
-    } else if (!localStorageItemString) {
-        return null;
-    } else {
-        return JSON.parse(localStorageItemString);
-    }
-}
-/*
-globalFuncs.getDefaultTokensAndNetworkType =  function getDefaultTokensAndNetworkType() {
-    var defaultNodes = require('./nodes').nodeList;
-
-    var tokenMappings = {
-        'eth': require('./tokens/ethTokens.json'),
-        'etc': require('./tokens/etcTokens.json'),
-        'rop': require('./tokens/ropstenTokens.json'),
-        'kov': require('./tokens/kovanTokens.json'),
-        'rin': require('./tokens/rinkebyTokens.json')
-    };
-
-    var nodeErrMsg = 'Node does not exist, contact support@myetherwallet.com CODE:localstorageNodeMissing'
-    // localStorage selected node
-    var currentNodeKey = getFromLS("curNode", nodeErrMsg).key;
-    // custom nodes in local storage
-    var customLocalNodes = getFromLS("localNodes") || [];
-
-    var customNodeNetworkType = currentNodeKey.split('_')[1];
-
-    var isCustomNode = !!customLocalNodes.find(function (currentLocalCustomNode) {
-      return currentLocalCustomNode.options === customNodeNetworkType
-    });
-
-    var defaultNode;
-    var firstCustomNodeWithMatchingNetwork;
-    var defaultTokens;
-
-    if (isCustomNode) {
-      // NOTE: Different curNode value structure for default nodes and custom nodes. This will work because we are checking to make sure we are a custom node first.
-
-      firstCustomNodeWithMatchingNetwork = customLocalNodes.find(function (currentLocalCustomNode) {
-        return currentLocalCustomNode.options === customNodeNetworkType
-      });
-
-      // if the reference the custom local node is invalid, throw
-      if (!firstCustomNodeWithMatchingNetwork) {
-        throw Error("Custom Local Node does not exist. Please clear local storage, and re-input your custom node.")
-      }
-    } else {
-      defaultNode = defaultNodes[currentNodeKey];
-      if (!defaultNode) {
-        throw Error("Default Node does not exist. Please clear local storage and try again.")
-      }
-    }
-
-    if (isCustomNode) {
-      // tokenMappings maps localStorage custom node key to corresponding default tokens of network. If we are unable to retrieve the default tokens of the custom network, we return an empty array.
-      defaultTokens = tokenMappings[firstCustomNodeWithMatchingNetwork.options] || []
-    }
-    else {
-      defaultTokens = defaultNode.tokenList
-    }
-
-    return {
-      defaultTokens: defaultTokens,
-      networkType: isCustomNode ? firstCustomNodeWithMatchingNetwork.options : defaultNode.name.toLowerCase(),
-      isCustomNode: isCustomNode
-    }
-};*/
-
-function isDuplicateTokenAddress(tokenOne, tokenTwo, currentNetwork) {
-    var hasNetwork = tokenTwo.network;
-    if (hasNetwork) {
-        return tokenTwo.network === currentNetwork && tokenTwo.contractAddress === tokenOne.address;
-    } else {
-        return tokenTwo.contractAddress === tokenOne.address;
-    }
-}
-
-function isDuplicateTokenSymbol(tokenOne, tokenTwo, currentNetwork) {
-    var hasNetwork = tokenTwo.network;
-    if (hasNetwork) {
-        return tokenTwo.network === currentNetwork && tokenTwo.symbol === tokenOne.symbol;
-    } else {
-        return tokenTwo.symbol === tokenOne.symbol;
-    }
-}
-
-globalFuncs.isDuplicateToken = function (tokenOne, tokenTwo, currentNetwork) {
-    return isDuplicateTokenSymbol(tokenOne, tokenTwo, currentNetwork) || isDuplicateTokenAddress(tokenOne, tokenTwo, currentNetwork);
-};
-
-globalFuncs.doesTokenExistInDefaultTokens = function (token, defaultTokensAndNetworkType) {
-    for (var i = 0; i < defaultTokensAndNetworkType.defaultTokens.length; i++) {
-        var currentDefaultToken = defaultTokensAndNetworkType.defaultTokens[i];
-        var isDuplicateToken = globalFuncs.isDuplicateToken(currentDefaultToken, token, defaultTokensAndNetworkType.networkType);
-        // do not simplify to return isDuplicateToken
-        if (isDuplicateToken) {
-            return true;
-        }
-    }
-    return false;
-};
-
-globalFuncs.saveTokenToLocal = function (localToken, callback) {
-    try {
-        if (!ethFuncs.validateEtherAddress(localToken.contractAdd)) {
-            throw globalFuncs.errorMsgs[5];
-        } else if (!globalFuncs.isNumeric(localToken.decimals) || parseFloat(localToken.decimals) < 0) {
-            throw globalFuncs.errorMsgs[7];
-        } else if (!globalFuncs.isAlphaNumeric(localToken.symbol) || localToken.symbol == "") {
-            throw globalFuncs.errorMsgs[19];
-        }
-        var storedTokens = globalFuncs.localStorage.getItem("localTokens", null) != null ? JSON.parse(globalFuncs.localStorage.getItem("localTokens")) : [];
-
-        // catch if TOKEN SYMBOL is already in storedTokens
-        for (var i = 0; i < storedTokens.length; i++) {
-            if (storedTokens[i].symbol.toLowerCase().replace(/ /g, '') === localToken.symbol.toLowerCase().replace(/ /g, '')) {
-                throw Error('Unable to add a custom token with the same symbol as an existing custom token. Try clicking the "Load Tokens" button, or choosing a different token symbol');
-            }
-        }
-
-        // catch if CONTRACT ADDRESS is already in storedTokens
-        for (var i = 0; i < storedTokens.length; i++) {
-            if (storedTokens[i].contractAddress.toLowerCase().replace(/ /g, '') === localToken.contractAdd.toLowerCase().replace(/ /g, '')) {
-                throw Error('Unable to add custom token. It has the same address as custom token ' + storedTokens[i].symbol + '. Try clicking the "Load Tokens" button to see it. :)');
-            }
-        }
-
-        var defaultTokensAndNetworkType = globalFuncs.getDefaultTokensAndNetworkType();
-
-        // catch if TOKEN SYMBOL is already in defaultTokens
-        if (globalFuncs.doesTokenExistInDefaultTokens(localToken, defaultTokensAndNetworkType)) {
-            throw Error('This token is already added as a default token. Try clicking the "Load Tokens" button to see it. :)');
-        }
-
-        storedTokens.push({
-            contractAddress: localToken.contractAdd,
-            symbol: localToken.symbol,
-            decimal: parseInt(localToken.decimals),
-            type: "custom",
-            network: globalFuncs.getDefaultTokensAndNetworkType().networkType
-        });
-
-        globalFuncs.localStorage.setItem("localTokens", JSON.stringify(storedTokens));
-
-        callback({
-            error: false
-        });
-    } catch (e) {
-        callback({
-            error: true,
-            msg: e.message
-        });
-    }
-};
-globalFuncs.removeTokenFromLocal = function (symbol, tokenObj) {
-    var storedTokens = globalFuncs.localStorage.getItem("localTokens", null) != null ? JSON.parse(globalFuncs.localStorage.getItem("localTokens", null)) : [];
-    // remove from localstorage so it doesn't show up on refresh
-    for (var i = 0; i < storedTokens.length; i++) {
-        if (storedTokens[i].symbol === symbol) {
-            storedTokens.splice(i, 1);
-            break;
-        }
-    }globalFuncs.localStorage.setItem("localTokens", JSON.stringify(storedTokens));
-    if (!tokenObj) return;
-    // remove from tokenObj so it removes from display
-    for (var i = 0; i < tokenObj.length; i++) {
-        if (tokenObj[i].symbol === symbol) {
-            tokenObj.splice(i, 1);
-            break;
-        }
-    }
 };
 
 globalFuncs.localStorage = {
@@ -18518,7 +17876,7 @@ globalFuncs.localStorage = {
 
 module.exports = globalFuncs;
 
-},{}],112:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict';
 
 function storageAvailable(type) {
@@ -18623,7 +17981,7 @@ if (!storageAvailable('localStorage')) {
 
 module.exports = null;
 
-},{}],113:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 require('./localStoragePolyfill');
@@ -18638,6 +17996,8 @@ var angularAnimate = require('angular-animate');
 window.web3addr = "http://127.0.0.1:8545";
 window.currentNode = "Default: localhost:8545";
 
+window.connectStatus = true;
+
 var marked = require('./staticJS/customMarked');
 window.marked = marked;
 var BigNumber = require('bignumber.js');
@@ -18647,8 +18007,6 @@ ethUtil.crypto = require('crypto');
 ethUtil.Tx = require('ethereumjs-tx');
 ethUtil.scrypt = require('scryptsy');
 ethUtil.uuid = require('uuid');
-ethUtil.solidityCoder = require('./solidity/coder');
-ethUtil.solidityUtils = require('./solidity/utils');
 ethUtil.WAValidator = require('wallet-address-validator');
 window.ethUtil = ethUtil;
 var format = require('string-format');
@@ -18678,14 +18036,12 @@ var viewWalletCtrl = require('./controllers/viewWalletCtrl');
 var txStatusCtrl = require('./controllers/txStatusCtrl');
 var sendTxCtrl = require('./controllers/sendTxCtrl');
 var signMsgCtrl = require('./controllers/signMsgCtrl');
-var walletBalanceCtrl = require('./controllers/walletBalanceCtrl');
 var globalService = require('./services/globalService');
 var walletService = require('./services/walletService');
 var blockiesDrtv = require('./directives/blockiesDrtv');
 var addressFieldDrtv = require('./directives/addressFieldDrtv');
 var QRCodeDrtv = require('./directives/QRCodeDrtv');
 var walletDecryptDrtv = require('./directives/walletDecryptDrtv');
-var cxWalletDecryptDrtv = require('./directives/cxWalletDecryptDrtv');
 var fileReaderDrtv = require('./directives/fileReaderDrtv');
 var balanceDrtv = require('./directives/balanceDrtv');
 
@@ -18708,7 +18064,6 @@ app.directive('qrCode', QRCodeDrtv);
 app.directive('onReadFile', fileReaderDrtv);
 app.directive('walletBalanceDrtv', balanceDrtv);
 app.directive('walletDecryptDrtv', walletDecryptDrtv);
-app.directive('cxWalletDecryptDrtv', cxWalletDecryptDrtv);
 app.controller('tabsCtrl', ['$scope', 'globalService', '$translate', '$sce', '$http', tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$sce', viewCtrl]);
 app.controller('walletGenCtrl', ['$scope', walletGenCtrl]);
@@ -18718,9 +18073,8 @@ app.controller('viewWalletCtrl', ['$scope', 'walletService', viewWalletCtrl]);
 app.controller('txStatusCtrl', ['$scope', txStatusCtrl]);
 app.controller('sendTxCtrl', ['$scope', '$sce', 'walletService', '$rootScope', sendTxCtrl]);
 app.controller('signMsgCtrl', ['$scope', '$sce', 'walletService', signMsgCtrl]);
-app.controller('walletBalanceCtrl', ['$scope', '$sce', '$rootScope', walletBalanceCtrl]);
 
-},{"./controllers/decryptWalletCtrl":91,"./controllers/onboardingCtrl":92,"./controllers/sendTxCtrl":93,"./controllers/signMsgCtrl":94,"./controllers/tabsCtrl":95,"./controllers/txStatusCtrl":96,"./controllers/viewCtrl":97,"./controllers/viewWalletCtrl":98,"./controllers/walletBalanceCtrl":99,"./controllers/walletGenCtrl":100,"./directives/QRCodeDrtv":101,"./directives/addressFieldDrtv":102,"./directives/balanceDrtv":104,"./directives/blockiesDrtv":105,"./directives/cxWalletDecryptDrtv":106,"./directives/fileReaderDrtv":107,"./directives/walletDecryptDrtv":109,"./ethFuncs":110,"./globalFuncs":111,"./localStoragePolyfill":112,"./myetherwallet":114,"./services/globalService":116,"./services/walletService":117,"./solidity/coder":121,"./solidity/utils":132,"./staticJS/customMarked":133,"./translations/translate.js":135,"./uiFuncs":136,"./validator":137,"./web3Wallet":138,"angular":146,"angular-animate":140,"angular-sanitize":142,"angular-translate":144,"angular-translate-handler-log":143,"bignumber.js":163,"crypto":205,"detect-browser":212,"ethereumjs-tx":236,"ethereumjs-util":237,"scryptsy":310,"string-format":326,"uuid":334,"wallet-address-validator":343}],114:[function(require,module,exports){
+},{"./controllers/decryptWalletCtrl":91,"./controllers/onboardingCtrl":92,"./controllers/sendTxCtrl":93,"./controllers/signMsgCtrl":94,"./controllers/tabsCtrl":95,"./controllers/txStatusCtrl":96,"./controllers/viewCtrl":97,"./controllers/viewWalletCtrl":98,"./controllers/walletGenCtrl":99,"./directives/QRCodeDrtv":100,"./directives/addressFieldDrtv":101,"./directives/balanceDrtv":103,"./directives/blockiesDrtv":104,"./directives/fileReaderDrtv":105,"./directives/walletDecryptDrtv":107,"./ethFuncs":108,"./globalFuncs":109,"./localStoragePolyfill":110,"./myetherwallet":112,"./services/globalService":114,"./services/walletService":115,"./staticJS/customMarked":116,"./translations/translate.js":118,"./uiFuncs":119,"./validator":120,"./web3Wallet":121,"angular":129,"angular-animate":123,"angular-sanitize":125,"angular-translate":127,"angular-translate-handler-log":126,"bignumber.js":146,"crypto":188,"detect-browser":195,"ethereumjs-tx":219,"ethereumjs-util":220,"scryptsy":293,"string-format":309,"uuid":316,"wallet-address-validator":325}],112:[function(require,module,exports){
 (function (process,Buffer){
 'use strict';
 
@@ -18796,83 +18150,10 @@ var Wallet = function Wallet(priv, pub, path, hwType, hwTransport) {
     this.type = "default";
 };
 
-/*
-Wallet.generate = function(icapDirect) {
-    if (icapDirect) {
-        while (true) {
-            var privKey = ethUtil.crypto.randomBytes(32)
-            if (ethUtil.privateToAddress(privKey)[0] === 0) {
-                return new Wallet(privKey)
-            }
-        }
-    } else {
-        return new Wallet(ethUtil.crypto.randomBytes(32))
-    }
-}
-*/
-
 Wallet.generate = function (icapDirect) {
-    //if (icapDirect) {
-    //   while (true) {
-    //      var privKey = ethUtil.crypto.randomBytes(32)
-    //     if (ethUtil.privateToAddress(privKey)[0] === 0) {
-    //        return new Wallet(privKey)
-    //   }
-    // }
-    //} else {
     var keys = nacl.sign.keyPair();
     return new Wallet(keys.secretKey, keys.publicKey);
-    // }
 };
-/*
-Wallet.prototype.setTokens = function () {
-    this.tokenObjs = [];
-    var defaultTokensAndNetworkType = globalFuncs.getDefaultTokensAndNetworkType();
-    var tokens = Token.popTokens;
-
-    for (var i = 0; i < tokens.length; i++) {
-      this.tokenObjs.push(
-        new Token(
-          tokens[i].address,
-          this.getAddressString(),
-          tokens[i].symbol,
-          tokens[i].decimal,
-          tokens[i].type
-        )
-      );
-
-      var autoTokens = globalFuncs.localStorage.getItem('autoLoadTokens')
-      var autoLoadTokens = autoTokens ? autoTokens : [];
-      var thisAddr = tokens[i].address
-
-      if ( autoLoadTokens.indexOf( thisAddr ) > -1 ) {
-        this.tokenObjs[this.tokenObjs.length - 1].setBalance();
-      }
-    }
-
-    var storedTokens = globalFuncs.localStorage.getItem('localTokens', null) != null ? JSON.parse(globalFuncs.localStorage.getItem('localTokens')) : [];
-
-    var conflictWithDefaultTokens = [];
-    for (var e = 0; e < storedTokens.length; e++) {
-        if (globalFuncs.doesTokenExistInDefaultTokens(storedTokens[e], defaultTokensAndNetworkType)) {
-            conflictWithDefaultTokens.push(storedTokens[e]);
-            // don't push to tokenObjs if token is default; continue to next element
-            continue;
-        }
-
-        this.tokenObjs.push(
-          new Token(
-            storedTokens[e].contractAddress,
-            this.getAddressString(),
-            globalFuncs.stripTags(storedTokens[e].symbol),
-            storedTokens[e].decimal,
-            storedTokens[e].type,
-          )
-        );
-        this.tokenObjs[this.tokenObjs.length - 1].setBalance();
-    }
-    removeAllTokenConflicts(conflictWithDefaultTokens, storedTokens)
-};*/
 
 function saveToLocalStorage(key, value) {
     globalFuncs.localStorage.setItem(key, JSON.stringify(value));
@@ -18916,30 +18197,6 @@ Wallet.prototype.setBalance = function (callback) {
     var parentObj = this;
     this.balance = this.usdBalance = this.eurBalance = this.btcBalance = this.chfBalance = this.repBalance = this.gbpBalance = 'loading';
 
-    /*
-        ajaxReq.getBalance(parentObj.getPublicKeyString (), function(data) {
-        
-            if (data.error) parentObj.balance = data.msg;
-            else {
-                parentObj.balance = etherUnits.toEther(data.data.balance, 'wei');
-                ajaxReq.getETHvalue(function(data) {
-                    parentObj.usdPrice   = etherUnits.toFiat('1', 'ether', data.usd);
-                    parentObj.gbpPrice   = etherUnits.toFiat('1', 'ether', data.gbp);
-                    parentObj.eurPrice   = etherUnits.toFiat('1', 'ether', data.eur);
-                    parentObj.btcPrice   = etherUnits.toFiat('1', 'ether', data.btc);
-                    parentObj.chfPrice   = etherUnits.toFiat('1', 'ether', data.chf);
-                    parentObj.repPrice   = etherUnits.toFiat('1', 'ether', data.rep);
-    
-                    parentObj.usdBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.usd);
-                    parentObj.gbpBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.gbp);
-                    parentObj.eurBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.eur);
-                    parentObj.btcBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.btc);
-                    parentObj.chfBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.chf);
-                    parentObj.repBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.rep);
-                    if(callback) callback();
-                });
-            }
-        });*/
     try {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         var AionWeb3 = require('./aionWeb3/lib/web3.js');
@@ -18947,13 +18204,10 @@ Wallet.prototype.setBalance = function (callback) {
         this.balance = aionweb3.eth.getBalance('0x' + this.pubKey);
     } catch (err) {
         console.log("not connected");
-        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+        uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
     }
 };
 Wallet.prototype.getBalance = function () {
-
-    //if (!$scope.connectStatus) return "You are not currently connected to a node for";
-
     return this.balance / Math.pow(10, 18);
 };
 Wallet.prototype.getPath = function () {
@@ -18976,28 +18230,12 @@ Wallet.prototype.getPrivateKeyString = function () {
     }
 };
 Wallet.prototype.getPublicKey = function () {
-    //  if (typeof this.pubKey == "undefined") {
-    //return ethUtil.privateToPublic(this.privKey)
-    // return nacl.sign.keyPair.fromSecretKey(this.privKey);
-    // } else {
     return this.pubKey;
-    //   }
 };
 Wallet.prototype.getPublicKeyString = function () {
-    //  if (typeof this.pubKey == "undefined") {
-    //     return '0x' + this.getPublicKey().toString('hex')
-    //  } else {
-    //return "0x" + this.pubKey.toString('hex')
     return this.pubKey;
-    //  }
 };
 Wallet.prototype.getAddress = function () {
-    /*
-    if (typeof this.pubKey == "undefined") {
-        return ethUtil.privateToAddress(this.privKey)
-    } else {
-        return ethUtil.publicToAddress(this.pubKey, true)
-    }*/
     return this.pubKey;
 };
 Wallet.prototype.getAddressString = function () {
@@ -19049,27 +18287,7 @@ Wallet.prototype.toV3 = function (password, opts) {
     }
     var ciphertext = Buffer.concat([cipher.update(this.privKey), cipher.final()]);
 
-    //var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]))
     var mac = blake2bHex(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
-
-    /*
-    return {
-        version: 3,
-        id: ethUtil.uuid.v4({
-            random: opts.uuid || ethUtil.crypto.randomBytes(16)
-        }),
-        address: this.getAddress().toString('hex'),
-        Crypto: {
-            ciphertext: ciphertext.toString('hex'),
-            cipherparams: {
-                iv: iv.toString('hex')
-            },
-            cipher: opts.cipher || 'aes-128-ctr',
-            kdf: kdf,
-            kdfparams: kdfparams,
-            mac: mac.toString('hex')
-        }
-    }*/
 
     var returnData = [ethUtil.uuid.v4({
         random: opts.uuid || ethUtil.crypto.randomBytes(16) //0
@@ -19086,14 +18304,10 @@ Wallet.prototype.toV3 = function (password, opts) {
     mac.toString('hex') //11       
     ];
     console.log("return data is " + hexToBinary(RLP.encode(returnData).toString('hex')));
-    //return hexToBinary(RLP.encode(returnData).toString('hex'));
     return RLP.encode(returnData);
 };
 
 Wallet.fromV3 = function (input, password, nonStrict) {
-
-    //var hexx =bin2hex(input);
-    //var keyStoreContents = RLP.decode(new Buffer(hexx,'hex')).toString().split(',');
 
     console.log("input is: " + hexToBinary(input));
     var keyStoreContents = RLP.decode(input);
@@ -19114,7 +18328,6 @@ Wallet.fromV3 = function (input, password, nonStrict) {
     }
     var ciphertext = new Buffer(keyStoreContent[2], 'hex');
 
-    //var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))    
     var mac = blake2bHex(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
 
     if (mac.toString('hex') !== keyStoreContent[11]) {
@@ -19133,8 +18346,6 @@ Wallet.fromV3 = function (input, password, nonStrict) {
 Wallet.prototype.toJSON = function () {
 
     return {
-        // address: this.getAddressString(),
-        // checksumAddress: this.getChecksumAddressString(),
         privKey: this.getPrivateKeyString(),
         pubKey: this.getPublicKeyString(),
         publisher: "AionWallet",
@@ -19205,43 +18416,6 @@ Wallet.fromMyEtherWalletKey = function (input, password) {
     privKey = new Buffer(privKey.toString(), 'hex');
     return new Wallet(privKey);
 };
-/*
-Wallet.fromV3 = function(input, password, nonStrict) {
-    var json = (typeof input === 'object') ? input : JSON.parse(nonStrict ? input.toLowerCase() : input)
-    if (json.version !== 3) {
-        throw new Error('Not a V3 wallet')
-    }
-    var derivedKey
-    var kdfparams
-    if (json.crypto.kdf === 'scrypt') {
-        kdfparams = json.crypto.kdfparams
-        derivedKey = ethUtil.scrypt(new Buffer(password), new Buffer(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dklen)
-    } else if (json.crypto.kdf === 'pbkdf2') {
-        kdfparams = json.crypto.kdfparams
-        if (kdfparams.prf !== 'hmac-sha256') {
-            throw new Error('Unsupported parameters to PBKDF2')
-        }
-        derivedKey = ethUtil.crypto.pbkdf2Sync(new Buffer(password), new Buffer(kdfparams.salt, 'hex'), kdfparams.c, kdfparams.dklen, 'sha256')
-    } else {
-        throw new Error('Unsupported key derivation scheme')
-    }
-    var ciphertext = new Buffer(json.crypto.ciphertext, 'hex')
-    
-    //var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))    
-    var mac = blake2bHex(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
-
-    if (mac.toString('hex') !== json.crypto.mac) {
-        throw new Error('Key derivation failed - possibly wrong passphrase')
-    }
-    var decipher = ethUtil.crypto.createDecipheriv(json.crypto.cipher, derivedKey.slice(0, 16), new Buffer(json.crypto.cipherparams.iv, 'hex'))
-    var seed = Wallet.decipherBuffer(decipher, ciphertext, 'hex')
-    while (seed.length < 32) {
-        var nullBuff = new Buffer([0x00]);
-        seed = Buffer.concat([nullBuff, seed]);
-    }
-    return new Wallet(seed)
-}
-*/
 
 Wallet.prototype.toV3String = function (password, opts) {
     return JSON.stringify(this.toV3(password, opts));
@@ -19311,7 +18485,7 @@ Wallet.getWalletFromPrivKeyFile = function (strjson, password) {
 module.exports = Wallet;
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./RLPlib.js":1,"./aionWeb3/lib/web3.js":24,"./blakejs/blake2b":89,"./nacl.js":115,"_process":285,"buffer":196}],115:[function(require,module,exports){
+},{"./RLPlib.js":1,"./aionWeb3/lib/web3.js":24,"./blakejs/blake2b":89,"./nacl.js":113,"_process":268,"buffer":179}],113:[function(require,module,exports){
 (function (nacl) {
   'use strict';
 
@@ -20564,13 +19738,10 @@ module.exports = Wallet;
   })();
 })(typeof module !== 'undefined' && module.exports ? module.exports : self.nacl = self.nacl || {});
 
-},{"crypto":205}],116:[function(require,module,exports){
+},{"crypto":188}],114:[function(require,module,exports){
 'use strict';
 
 var globalService = function globalService($http, $httpParamSerializerJQLike) {
-  globalFuncs.checkAndRedirectHTTPS();
-  //ajaxReq.http = $http
-  //ajaxReq.postSerializer = $httpParamSerializerJQLike
 
   var tabs = {
     generateWallet: {
@@ -20600,56 +19771,7 @@ var globalService = function globalService($http, $httpParamSerializerJQLike) {
       url: "send-transaction",
       mew: true,
       cx: true
-    }, /*
-       swap: {
-       id: 4,
-       name: "NAV_Swap",
-       url: "swap",
-       mew: true,
-       cx: true
-       },
-       offlineTransaction: {
-       id: 5,
-       name: "NAV_Offline",
-       url:"offline-transaction",
-       mew: true,
-       cx: false
-       },
-       contracts: {
-       id: 6,
-       name: "NAV_Contracts",
-       url: "contracts",
-       mew: true,
-       cx: true
-       },*/ /*
-            ens: {
-            id:7,
-            name: "NAV_ENS",
-            url: "ens",
-            mew: true,
-            cx: true
-            },*/ /*
-                 domainsale: {
-                 id: 8,
-                 name: "NAV_DomainSale",
-                 url: "domainsale",
-                 mew: true,
-                 cx: true
-                 },
-                 txStatus: {
-                 id: 9,
-                 name: "NAV_CheckTxStatus",
-                 url: "check-tx-status",
-                 mew: true,
-                 cx: true
-                 },
-                 viewWalletInfo: {
-                 id: 10,
-                 name: "NAV_ViewWallet",
-                 url: "view-wallet-info",
-                 mew: true,
-                 cx: false
-                 },*/
+    },
     signMsg: {
       id: 11,
       name: "NAV_SignMsg",
@@ -20718,7 +19840,7 @@ var globalService = function globalService($http, $httpParamSerializerJQLike) {
 
 module.exports = globalService;
 
-},{}],117:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 var walletService = function walletService() {
@@ -20729,1674 +19851,7 @@ var walletService = function walletService() {
 };
 module.exports = walletService;
 
-},{}],118:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityType = require('./type');
-
-/**
- * SolidityTypeAddress is a prootype that represents address type
- * It matches:
- * address
- * address[]
- * address[4]
- * address[][]
- * address[3][]
- * address[][6][], ...
- */
-var SolidityTypeAddress = function SolidityTypeAddress() {
-    this._inputFormatter = f.formatInputInt;
-    this._outputFormatter = f.formatOutputAddress;
-};
-
-SolidityTypeAddress.prototype = new SolidityType({});
-SolidityTypeAddress.prototype.constructor = SolidityTypeAddress;
-
-SolidityTypeAddress.prototype.isType = function (name) {
-    return !!name.match(/address(\[([0-9]*)\])?/);
-};
-
-module.exports = SolidityTypeAddress;
-
-},{"./formatters":124,"./type":129}],119:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityType = require('./type');
-
-/**
- * SolidityTypeBool is a prootype that represents bool type
- * It matches:
- * bool
- * bool[]
- * bool[4]
- * bool[][]
- * bool[3][]
- * bool[][6][], ...
- */
-var SolidityTypeBool = function SolidityTypeBool() {
-    this._inputFormatter = f.formatInputBool;
-    this._outputFormatter = f.formatOutputBool;
-};
-
-SolidityTypeBool.prototype = new SolidityType({});
-SolidityTypeBool.prototype.constructor = SolidityTypeBool;
-
-SolidityTypeBool.prototype.isType = function (name) {
-    return !!name.match(/^bool(\[([0-9]*)\])*$/);
-};
-
-module.exports = SolidityTypeBool;
-
-},{"./formatters":124,"./type":129}],120:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityType = require('./type');
-
-/**
- * SolidityTypeBytes is a prototype that represents the bytes type.
- * It matches:
- * bytes
- * bytes[]
- * bytes[4]
- * bytes[][]
- * bytes[3][]
- * bytes[][6][], ...
- * bytes32
- * bytes8[4]
- * bytes[3][]
- */
-var SolidityTypeBytes = function SolidityTypeBytes() {
-    this._inputFormatter = f.formatInputBytes;
-    this._outputFormatter = f.formatOutputBytes;
-};
-
-SolidityTypeBytes.prototype = new SolidityType({});
-SolidityTypeBytes.prototype.constructor = SolidityTypeBytes;
-
-SolidityTypeBytes.prototype.isType = function (name) {
-    return !!name.match(/^bytes([0-9]{1,})(\[([0-9]*)\])*$/);
-};
-
-module.exports = SolidityTypeBytes;
-
-},{"./formatters":124,"./type":129}],121:[function(require,module,exports){
-/*
-    This file is part of web3.js.
-
-    web3.js is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    web3.js is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * @file coder.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @date 2015
- */
-
-var f = require('./formatters');
-
-var SolidityTypeAddress = require('./address');
-var SolidityTypeBool = require('./bool');
-var SolidityTypeInt = require('./int');
-var SolidityTypeUInt = require('./uint');
-var SolidityTypeDynamicBytes = require('./dynamicbytes');
-var SolidityTypeString = require('./string');
-var SolidityTypeReal = require('./real');
-var SolidityTypeUReal = require('./ureal');
-var SolidityTypeBytes = require('./bytes');
-var utils = require('./utils');
-
-var isDynamic = function isDynamic(solidityType, type) {
-    return solidityType.isDynamicType(type) || solidityType.isDynamicArray(type);
-};
-
-/**
- * SolidityCoder prototype should be used to encode/decode solidity params of any type
- */
-var SolidityCoder = function SolidityCoder(types) {
-    this._types = types;
-};
-
-/**
- * This method should be used to transform type to SolidityType
- *
- * @method _requireType
- * @param {String} type
- * @returns {SolidityType}
- * @throws {Error} throws if no matching type is found
- */
-SolidityCoder.prototype._requireType = function (type) {
-    var solidityType = this._types.filter(function (t) {
-        return t.isType(type);
-    })[0];
-
-    if (!solidityType) {
-        throw Error('invalid solidity type!: ' + type);
-    }
-
-    return solidityType;
-};
-
-/**
- * Should be used to encode plain param
- *
- * @method encodeParam
- * @param {String} type
- * @param {Object} plain param
- * @return {String} encoded plain param
- */
-SolidityCoder.prototype.encodeParam = function (type, param) {
-    return this.encodeParams([type], [param]);
-};
-
-/**
- * Should be used to encode list of params
- *
- * @method encodeParams
- * @param {Array} types
- * @param {Array} params
- * @return {String} encoded list of params
- */
-SolidityCoder.prototype.encodeParams = function (types, params) {
-    var solidityTypes = this.getSolidityTypes(types);
-
-    var encodeds = solidityTypes.map(function (solidityType, index) {
-        return solidityType.encode(params[index], types[index]);
-    });
-
-    var dynamicOffset = solidityTypes.reduce(function (acc, solidityType, index) {
-        var staticPartLength = solidityType.staticPartLength(types[index]);
-        var roundedStaticPartLength = Math.floor((staticPartLength + 31) / 32) * 32;
-
-        return acc + (isDynamic(solidityTypes[index], types[index]) ? 32 : roundedStaticPartLength);
-    }, 0);
-
-    var result = this.encodeMultiWithOffset(types, solidityTypes, encodeds, dynamicOffset);
-
-    return result;
-};
-
-SolidityCoder.prototype.encodeMultiWithOffset = function (types, solidityTypes, encodeds, dynamicOffset) {
-    var result = "";
-    var self = this;
-
-    types.forEach(function (type, i) {
-        if (isDynamic(solidityTypes[i], types[i])) {
-            result += f.formatInputInt(dynamicOffset).encode();
-            var e = self.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset);
-            dynamicOffset += e.length / 2;
-        } else {
-            // don't add length to dynamicOffset. it's already counted
-            result += self.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset);
-        }
-
-        // TODO: figure out nested arrays
-    });
-
-    types.forEach(function (type, i) {
-        if (isDynamic(solidityTypes[i], types[i])) {
-            var e = self.encodeWithOffset(types[i], solidityTypes[i], encodeds[i], dynamicOffset);
-            dynamicOffset += e.length / 2;
-            result += e;
-        }
-    });
-    return result;
-};
-
-// TODO: refactor whole encoding!
-SolidityCoder.prototype.encodeWithOffset = function (type, solidityType, encoded, offset) {
-    var self = this;
-    if (solidityType.isDynamicArray(type)) {
-        return function () {
-            // offset was already set
-            var nestedName = solidityType.nestedName(type);
-            var nestedStaticPartLength = solidityType.staticPartLength(nestedName);
-            var result = encoded[0];
-
-            (function () {
-                var previousLength = 2; // in int
-                if (solidityType.isDynamicArray(nestedName)) {
-                    for (var i = 1; i < encoded.length; i++) {
-                        previousLength += +encoded[i - 1][0] || 0;
-                        result += f.formatInputInt(offset + i * nestedStaticPartLength + previousLength * 32).encode();
-                    }
-                }
-            })();
-
-            // first element is length, skip it
-            (function () {
-                for (var i = 0; i < encoded.length - 1; i++) {
-                    var additionalOffset = result / 2;
-                    result += self.encodeWithOffset(nestedName, solidityType, encoded[i + 1], offset + additionalOffset);
-                }
-            })();
-
-            return result;
-        }();
-    } else if (solidityType.isStaticArray(type)) {
-        return function () {
-            var nestedName = solidityType.nestedName(type);
-            var nestedStaticPartLength = solidityType.staticPartLength(nestedName);
-            var result = "";
-
-            if (solidityType.isDynamicArray(nestedName)) {
-                (function () {
-                    var previousLength = 0; // in int
-                    for (var i = 0; i < encoded.length; i++) {
-                        // calculate length of previous item
-                        previousLength += +(encoded[i - 1] || [])[0] || 0;
-                        result += f.formatInputInt(offset + i * nestedStaticPartLength + previousLength * 32).encode();
-                    }
-                })();
-            }
-
-            (function () {
-                for (var i = 0; i < encoded.length; i++) {
-                    var additionalOffset = result / 2;
-                    result += self.encodeWithOffset(nestedName, solidityType, encoded[i], offset + additionalOffset);
-                }
-            })();
-
-            return result;
-        }();
-    }
-
-    return encoded;
-};
-
-/**
- * Should be used to decode bytes to plain param
- *
- * @method decodeParam
- * @param {String} type
- * @param {String} bytes
- * @return {Object} plain param
- */
-SolidityCoder.prototype.decodeParam = function (type, bytes) {
-    return this.decodeParams([type], bytes)[0];
-};
-
-/**
- * Should be used to decode list of params
- *
- * @method decodeParam
- * @param {Array} types
- * @param {String} bytes
- * @return {Array} array of plain params
- */
-SolidityCoder.prototype.decodeParams = function (types, bytes) {
-    var solidityTypes = this.getSolidityTypes(types);
-    var offsets = this.getOffsets(types, solidityTypes);
-
-    return solidityTypes.map(function (solidityType, index) {
-        return solidityType.decode(bytes, offsets[index], types[index], index);
-    });
-};
-
-SolidityCoder.prototype.getOffsets = function (types, solidityTypes) {
-    var lengths = solidityTypes.map(function (solidityType, index) {
-        return solidityType.staticPartLength(types[index]);
-    });
-
-    for (var i = 1; i < lengths.length; i++) {
-        // sum with length of previous element
-        lengths[i] += lengths[i - 1];
-    }
-
-    return lengths.map(function (length, index) {
-        // remove the current length, so the length is sum of previous elements
-        var staticPartLength = solidityTypes[index].staticPartLength(types[index]);
-        return length - staticPartLength;
-    });
-};
-
-SolidityCoder.prototype.getSolidityTypes = function (types) {
-    var self = this;
-    return types.map(function (type) {
-        return self._requireType(type);
-    });
-};
-
-var coder = new SolidityCoder([new SolidityTypeAddress(), new SolidityTypeBool(), new SolidityTypeInt(), new SolidityTypeUInt(), new SolidityTypeDynamicBytes(), new SolidityTypeBytes(), new SolidityTypeString(), new SolidityTypeReal(), new SolidityTypeUReal()]);
-
-module.exports = coder;
-
-},{"./address":118,"./bool":119,"./bytes":120,"./dynamicbytes":123,"./formatters":124,"./int":125,"./real":127,"./string":128,"./uint":130,"./ureal":131,"./utils":132}],122:[function(require,module,exports){
-arguments[4][20][0].apply(exports,arguments)
-},{"bignumber.js":163,"dup":20}],123:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityType = require('./type');
-
-var SolidityTypeDynamicBytes = function SolidityTypeDynamicBytes() {
-    this._inputFormatter = f.formatInputDynamicBytes;
-    this._outputFormatter = f.formatOutputDynamicBytes;
-};
-
-SolidityTypeDynamicBytes.prototype = new SolidityType({});
-SolidityTypeDynamicBytes.prototype.constructor = SolidityTypeDynamicBytes;
-
-SolidityTypeDynamicBytes.prototype.isType = function (name) {
-    return !!name.match(/^bytes(\[([0-9]*)\])*$/);
-};
-
-SolidityTypeDynamicBytes.prototype.isDynamicType = function () {
-    return true;
-};
-
-module.exports = SolidityTypeDynamicBytes;
-
-},{"./formatters":124,"./type":129}],124:[function(require,module,exports){
-/*
-    This file is part of web3.js.
-
-    web3.js is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    web3.js is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * @file formatters.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @date 2015
- */
-
-var BigNumber = require('bignumber.js');
-var utils = require('./utils');
-var c = require('./config');
-var SolidityParam = require('./param');
-
-/**
- * Formats input value to byte representation of int
- * If value is negative, return it's two's complement
- * If the value is floating point, round it down
- *
- * @method formatInputInt
- * @param {String|Number|BigNumber} value that needs to be formatted
- * @returns {SolidityParam}
- */
-var formatInputInt = function formatInputInt(value) {
-    BigNumber.config(c.ETH_BIGNUMBER_ROUNDING_MODE);
-    var result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64);
-    return new SolidityParam(result);
-};
-
-/**
- * Formats input bytes
- *
- * @method formatInputBytes
- * @param {String}
- * @returns {SolidityParam}
- */
-var formatInputBytes = function formatInputBytes(value) {
-    var result = utils.toHex(value).substr(2);
-    var l = Math.floor((result.length + 63) / 64);
-    result = utils.padRight(result, l * 64);
-    return new SolidityParam(result);
-};
-
-/**
- * Formats input bytes
- *
- * @method formatDynamicInputBytes
- * @param {String}
- * @returns {SolidityParam}
- */
-var formatInputDynamicBytes = function formatInputDynamicBytes(value) {
-    var result = utils.toHex(value).substr(2);
-    var length = result.length / 2;
-    var l = Math.floor((result.length + 63) / 64);
-    result = utils.padRight(result, l * 64);
-    return new SolidityParam(formatInputInt(length).value + result);
-};
-
-/**
- * Formats input value to byte representation of string
- *
- * @method formatInputString
- * @param {String}
- * @returns {SolidityParam}
- */
-var formatInputString = function formatInputString(value) {
-    var result = utils.fromUtf8(value).substr(2);
-    var length = result.length / 2;
-    var l = Math.floor((result.length + 63) / 64);
-    result = utils.padRight(result, l * 64);
-    return new SolidityParam(formatInputInt(length).value + result);
-};
-
-/**
- * Formats input value to byte representation of bool
- *
- * @method formatInputBool
- * @param {Boolean}
- * @returns {SolidityParam}
- */
-var formatInputBool = function formatInputBool(value) {
-    var result = '000000000000000000000000000000000000000000000000000000000000000' + (value ? '1' : '0');
-    return new SolidityParam(result);
-};
-
-/**
- * Formats input value to byte representation of real
- * Values are multiplied by 2^m and encoded as integers
- *
- * @method formatInputReal
- * @param {String|Number|BigNumber}
- * @returns {SolidityParam}
- */
-var formatInputReal = function formatInputReal(value) {
-    return formatInputInt(new BigNumber(value).times(new BigNumber(2).pow(128)));
-};
-
-/**
- * Check if input value is negative
- *
- * @method signedIsNegative
- * @param {String} value is hex format
- * @returns {Boolean} true if it is negative, otherwise false
- */
-var signedIsNegative = function signedIsNegative(value) {
-    return new BigNumber(value.substr(0, 1), 16).toString(2).substr(0, 1) === '1';
-};
-
-/**
- * Formats right-aligned output bytes to int
- *
- * @method formatOutputInt
- * @param {SolidityParam} param
- * @returns {BigNumber} right-aligned output bytes formatted to big number
- */
-var formatOutputInt = function formatOutputInt(param) {
-    var value = param.staticPart() || "0";
-
-    // check if it's negative number
-    // it it is, return two's complement
-    if (signedIsNegative(value)) {
-        return new BigNumber(value, 16).minus(new BigNumber('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 16)).minus(1);
-    }
-    return new BigNumber(value, 16);
-};
-
-/**
- * Formats right-aligned output bytes to uint
- *
- * @method formatOutputUInt
- * @param {SolidityParam}
- * @returns {BigNumeber} right-aligned output bytes formatted to uint
- */
-var formatOutputUInt = function formatOutputUInt(param) {
-    var value = param.staticPart() || "0";
-    return new BigNumber(value, 16);
-};
-
-/**
- * Formats right-aligned output bytes to real
- *
- * @method formatOutputReal
- * @param {SolidityParam}
- * @returns {BigNumber} input bytes formatted to real
- */
-var formatOutputReal = function formatOutputReal(param) {
-    return formatOutputInt(param).dividedBy(new BigNumber(2).pow(128));
-};
-
-/**
- * Formats right-aligned output bytes to ureal
- *
- * @method formatOutputUReal
- * @param {SolidityParam}
- * @returns {BigNumber} input bytes formatted to ureal
- */
-var formatOutputUReal = function formatOutputUReal(param) {
-    return formatOutputUInt(param).dividedBy(new BigNumber(2).pow(128));
-};
-
-/**
- * Should be used to format output bool
- *
- * @method formatOutputBool
- * @param {SolidityParam}
- * @returns {Boolean} right-aligned input bytes formatted to bool
- */
-var formatOutputBool = function formatOutputBool(param) {
-    return param.staticPart() === '0000000000000000000000000000000000000000000000000000000000000001' ? true : false;
-};
-
-/**
- * Should be used to format output bytes
- *
- * @method formatOutputBytes
- * @param {SolidityParam} left-aligned hex representation of string
- * @param {String} name type name
- * @returns {String} hex string
- */
-var formatOutputBytes = function formatOutputBytes(param, name) {
-    var matches = name.match(/^bytes([0-9]*)/);
-    var size = parseInt(matches[1]);
-    return '0x' + param.staticPart().slice(0, 2 * size);
-};
-
-/**
- * Should be used to format output bytes
- *
- * @method formatOutputDynamicBytes
- * @param {SolidityParam} left-aligned hex representation of string
- * @returns {String} hex string
- */
-var formatOutputDynamicBytes = function formatOutputDynamicBytes(param) {
-    var length = new BigNumber(param.dynamicPart().slice(0, 64), 16).toNumber() * 2;
-    return '0x' + param.dynamicPart().substr(64, length);
-};
-
-/**
- * Should be used to format output string
- *
- * @method formatOutputString
- * @param {SolidityParam} left-aligned hex representation of string
- * @returns {String} ascii string
- */
-var formatOutputString = function formatOutputString(param) {
-    var length = new BigNumber(param.dynamicPart().slice(0, 64), 16).toNumber() * 2;
-    return utils.toUtf8(param.dynamicPart().substr(64, length));
-};
-
-/**
- * Should be used to format output address
- *
- * @method formatOutputAddress
- * @param {SolidityParam} right-aligned input bytes
- * @returns {String} address
- */
-var formatOutputAddress = function formatOutputAddress(param) {
-    var value = param.staticPart();
-    return "0x" + value.slice(value.length - 40, value.length);
-};
-
-module.exports = {
-    formatInputInt: formatInputInt,
-    formatInputBytes: formatInputBytes,
-    formatInputDynamicBytes: formatInputDynamicBytes,
-    formatInputString: formatInputString,
-    formatInputBool: formatInputBool,
-    formatInputReal: formatInputReal,
-    formatOutputInt: formatOutputInt,
-    formatOutputUInt: formatOutputUInt,
-    formatOutputReal: formatOutputReal,
-    formatOutputUReal: formatOutputUReal,
-    formatOutputBool: formatOutputBool,
-    formatOutputBytes: formatOutputBytes,
-    formatOutputDynamicBytes: formatOutputDynamicBytes,
-    formatOutputString: formatOutputString,
-    formatOutputAddress: formatOutputAddress
-};
-
-},{"./config":122,"./param":126,"./utils":132,"bignumber.js":163}],125:[function(require,module,exports){
-arguments[4][12][0].apply(exports,arguments)
-},{"./formatters":124,"./type":129,"dup":12}],126:[function(require,module,exports){
-/*
-    This file is part of web3.js.
-
-    web3.js is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    web3.js is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/** 
- * @file param.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @date 2015
- */
-
-var utils = require('./utils');
-
-/**
- * SolidityParam object prototype.
- * Should be used when encoding, decoding solidity bytes
- */
-var SolidityParam = function SolidityParam(value, offset) {
-    this.value = value || '';
-    this.offset = offset; // offset in bytes
-};
-
-/**
- * This method should be used to get length of params's dynamic part
- * 
- * @method dynamicPartLength
- * @returns {Number} length of dynamic part (in bytes)
- */
-SolidityParam.prototype.dynamicPartLength = function () {
-    return this.dynamicPart().length / 2;
-};
-
-/**
- * This method should be used to create copy of solidity param with different offset
- *
- * @method withOffset
- * @param {Number} offset length in bytes
- * @returns {SolidityParam} new solidity param with applied offset
- */
-SolidityParam.prototype.withOffset = function (offset) {
-    return new SolidityParam(this.value, offset);
-};
-
-/**
- * This method should be used to combine solidity params together
- * eg. when appending an array
- *
- * @method combine
- * @param {SolidityParam} param with which we should combine
- * @param {SolidityParam} result of combination
- */
-SolidityParam.prototype.combine = function (param) {
-    return new SolidityParam(this.value + param.value);
-};
-
-/**
- * This method should be called to check if param has dynamic size.
- * If it has, it returns true, otherwise false
- *
- * @method isDynamic
- * @returns {Boolean}
- */
-SolidityParam.prototype.isDynamic = function () {
-    return this.offset !== undefined;
-};
-
-/**
- * This method should be called to transform offset to bytes
- *
- * @method offsetAsBytes
- * @returns {String} bytes representation of offset
- */
-SolidityParam.prototype.offsetAsBytes = function () {
-    return !this.isDynamic() ? '' : utils.padLeft(utils.toTwosComplement(this.offset).toString(16), 64);
-};
-
-/**
- * This method should be called to get static part of param
- *
- * @method staticPart
- * @returns {String} offset if it is a dynamic param, otherwise value
- */
-SolidityParam.prototype.staticPart = function () {
-    if (!this.isDynamic()) {
-        return this.value;
-    }
-    return this.offsetAsBytes();
-};
-
-/**
- * This method should be called to get dynamic part of param
- *
- * @method dynamicPart
- * @returns {String} returns a value if it is a dynamic param, otherwise empty string
- */
-SolidityParam.prototype.dynamicPart = function () {
-    return this.isDynamic() ? this.value : '';
-};
-
-/**
- * This method should be called to encode param
- *
- * @method encode
- * @returns {String}
- */
-SolidityParam.prototype.encode = function () {
-    return this.staticPart() + this.dynamicPart();
-};
-
-/**
- * This method should be called to encode array of params
- *
- * @method encodeList
- * @param {Array[SolidityParam]} params
- * @returns {String}
- */
-SolidityParam.encodeList = function (params) {
-
-    // updating offsets
-    var totalOffset = params.length * 32;
-    var offsetParams = params.map(function (param) {
-        if (!param.isDynamic()) {
-            return param;
-        }
-        var offset = totalOffset;
-        totalOffset += param.dynamicPartLength();
-        return param.withOffset(offset);
-    });
-
-    // encode everything!
-    return offsetParams.reduce(function (result, param) {
-        return result + param.dynamicPart();
-    }, offsetParams.reduce(function (result, param) {
-        return result + param.staticPart();
-    }, ''));
-};
-
-module.exports = SolidityParam;
-
-},{"./utils":132}],127:[function(require,module,exports){
-arguments[4][14][0].apply(exports,arguments)
-},{"./formatters":124,"./type":129,"dup":14}],128:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityType = require('./type');
-
-var SolidityTypeString = function SolidityTypeString() {
-    this._inputFormatter = f.formatInputString;
-    this._outputFormatter = f.formatOutputString;
-};
-
-SolidityTypeString.prototype = new SolidityType({});
-SolidityTypeString.prototype.constructor = SolidityTypeString;
-
-SolidityTypeString.prototype.isType = function (name) {
-    return !!name.match(/^string(\[([0-9]*)\])*$/);
-};
-
-SolidityTypeString.prototype.isDynamicType = function () {
-    return true;
-};
-
-module.exports = SolidityTypeString;
-
-},{"./formatters":124,"./type":129}],129:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityParam = require('./param');
-
-/**
- * SolidityType prototype is used to encode/decode solidity params of certain type
- */
-var SolidityType = function SolidityType(config) {
-    this._inputFormatter = config.inputFormatter;
-    this._outputFormatter = config.outputFormatter;
-};
-
-/**
- * Should be used to determine if this SolidityType do match given name
- *
- * @method isType
- * @param {String} name
- * @return {Bool} true if type match this SolidityType, otherwise false
- */
-SolidityType.prototype.isType = function (name) {
-    throw "this method should be overrwritten for type " + name;
-};
-
-/**
- * Should be used to determine what is the length of static part in given type
- *
- * @method staticPartLength
- * @param {String} name
- * @return {Number} length of static part in bytes
- */
-SolidityType.prototype.staticPartLength = function (name) {
-    // If name isn't an array then treat it like a single element array.
-    return (this.nestedTypes(name) || ['[1]']).map(function (type) {
-        // the length of the nested array
-        return parseInt(type.slice(1, -1), 10) || 1;
-    }).reduce(function (previous, current) {
-        return previous * current;
-        // all basic types are 32 bytes long
-    }, 32);
-};
-
-/**
- * Should be used to determine if type is dynamic array
- * eg:
- * "type[]" => true
- * "type[4]" => false
- *
- * @method isDynamicArray
- * @param {String} name
- * @return {Bool} true if the type is dynamic array
- */
-SolidityType.prototype.isDynamicArray = function (name) {
-    var nestedTypes = this.nestedTypes(name);
-    return !!nestedTypes && !nestedTypes[nestedTypes.length - 1].match(/[0-9]{1,}/g);
-};
-
-/**
- * Should be used to determine if type is static array
- * eg:
- * "type[]" => false
- * "type[4]" => true
- *
- * @method isStaticArray
- * @param {String} name
- * @return {Bool} true if the type is static array
- */
-SolidityType.prototype.isStaticArray = function (name) {
-    var nestedTypes = this.nestedTypes(name);
-    return !!nestedTypes && !!nestedTypes[nestedTypes.length - 1].match(/[0-9]{1,}/g);
-};
-
-/**
- * Should return length of static array
- * eg.
- * "int[32]" => 32
- * "int256[14]" => 14
- * "int[2][3]" => 3
- * "int" => 1
- * "int[1]" => 1
- * "int[]" => 1
- *
- * @method staticArrayLength
- * @param {String} name
- * @return {Number} static array length
- */
-SolidityType.prototype.staticArrayLength = function (name) {
-    var nestedTypes = this.nestedTypes(name);
-    if (nestedTypes) {
-        return parseInt(nestedTypes[nestedTypes.length - 1].match(/[0-9]{1,}/g) || 1);
-    }
-    return 1;
-};
-
-/**
- * Should return nested type
- * eg.
- * "int[32]" => "int"
- * "int256[14]" => "int256"
- * "int[2][3]" => "int[2]"
- * "int" => "int"
- * "int[]" => "int"
- *
- * @method nestedName
- * @param {String} name
- * @return {String} nested name
- */
-SolidityType.prototype.nestedName = function (name) {
-    // remove last [] in name
-    var nestedTypes = this.nestedTypes(name);
-    if (!nestedTypes) {
-        return name;
-    }
-
-    return name.substr(0, name.length - nestedTypes[nestedTypes.length - 1].length);
-};
-
-/**
- * Should return true if type has dynamic size by default
- * such types are "string", "bytes"
- *
- * @method isDynamicType
- * @param {String} name
- * @return {Bool} true if is dynamic, otherwise false
- */
-SolidityType.prototype.isDynamicType = function () {
-    return false;
-};
-
-/**
- * Should return array of nested types
- * eg.
- * "int[2][3][]" => ["[2]", "[3]", "[]"]
- * "int[] => ["[]"]
- * "int" => null
- *
- * @method nestedTypes
- * @param {String} name
- * @return {Array} array of nested types
- */
-SolidityType.prototype.nestedTypes = function (name) {
-    // return list of strings eg. "[]", "[3]", "[]", "[2]"
-    return name.match(/(\[[0-9]*\])/g);
-};
-
-/**
- * Should be used to encode the value
- *
- * @method encode
- * @param {Object} value
- * @param {String} name
- * @return {String} encoded value
- */
-SolidityType.prototype.encode = function (value, name) {
-    var self = this;
-    if (this.isDynamicArray(name)) {
-
-        return function () {
-            var length = value.length; // in int
-            var nestedName = self.nestedName(name);
-
-            var result = [];
-            result.push(f.formatInputInt(length).encode());
-
-            value.forEach(function (v) {
-                result.push(self.encode(v, nestedName));
-            });
-
-            return result;
-        }();
-    } else if (this.isStaticArray(name)) {
-
-        return function () {
-            var length = self.staticArrayLength(name); // in int
-            var nestedName = self.nestedName(name);
-
-            var result = [];
-            for (var i = 0; i < length; i++) {
-                result.push(self.encode(value[i], nestedName));
-            }
-
-            return result;
-        }();
-    }
-
-    return this._inputFormatter(value, name).encode();
-};
-
-/**
- * Should be used to decode value from bytes
- *
- * @method decode
- * @param {String} bytes
- * @param {Number} offset in bytes
- * @param {String} name type name
- * @returns {Object} decoded value
- */
-SolidityType.prototype.decode = function (bytes, offset, name) {
-    var self = this;
-
-    if (this.isDynamicArray(name)) {
-
-        return function () {
-            var arrayOffset = parseInt('0x' + bytes.substr(offset * 2, 64)); // in bytes
-            var length = parseInt('0x' + bytes.substr(arrayOffset * 2, 64)); // in int
-            var arrayStart = arrayOffset + 32; // array starts after length; // in bytes
-
-            var nestedName = self.nestedName(name);
-            var nestedStaticPartLength = self.staticPartLength(nestedName); // in bytes
-            var roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32;
-            var result = [];
-
-            for (var i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
-                result.push(self.decode(bytes, arrayStart + i, nestedName));
-            }
-
-            return result;
-        }();
-    } else if (this.isStaticArray(name)) {
-
-        return function () {
-            var length = self.staticArrayLength(name); // in int
-            var arrayStart = offset; // in bytes
-
-            var nestedName = self.nestedName(name);
-            var nestedStaticPartLength = self.staticPartLength(nestedName); // in bytes
-            var roundedNestedStaticPartLength = Math.floor((nestedStaticPartLength + 31) / 32) * 32;
-            var result = [];
-
-            for (var i = 0; i < length * roundedNestedStaticPartLength; i += roundedNestedStaticPartLength) {
-                result.push(self.decode(bytes, arrayStart + i, nestedName));
-            }
-
-            return result;
-        }();
-    } else if (this.isDynamicType(name)) {
-
-        return function () {
-            var dynamicOffset = parseInt('0x' + bytes.substr(offset * 2, 64)); // in bytes
-            var length = parseInt('0x' + bytes.substr(dynamicOffset * 2, 64)); // in bytes
-            var roundedLength = Math.floor((length + 31) / 32); // in int
-            var param = new SolidityParam(bytes.substr(dynamicOffset * 2, (1 + roundedLength) * 64), 0);
-            return self._outputFormatter(param, name);
-        }();
-    }
-
-    var length = this.staticPartLength(name);
-    var param = new SolidityParam(bytes.substr(offset * 2, length * 2));
-    return this._outputFormatter(param, name);
-};
-
-module.exports = SolidityType;
-
-},{"./formatters":124,"./param":126}],130:[function(require,module,exports){
-var f = require('./formatters');
-var SolidityType = require('./type');
-
-/**
- * SolidityTypeUInt is a prootype that represents uint type
- * It matches:
- * uint
- * uint[]
- * uint[4]
- * uint[][]
- * uint[3][]
- * uint[][6][], ...
- * uint32
- * uint64[]
- * uint8[4]
- * uint256[][]
- * uint[3][]
- * uint64[][6][], ...
- */
-var SolidityTypeUInt = function SolidityTypeUInt() {
-    this._inputFormatter = f.formatInputInt;
-    this._outputFormatter = f.formatOutputUInt;
-};
-
-SolidityTypeUInt.prototype = new SolidityType({});
-SolidityTypeUInt.prototype.constructor = SolidityTypeUInt;
-
-SolidityTypeUInt.prototype.isType = function (name) {
-    return !!name.match(/^uint([0-9]*)?(\[([0-9]*)\])*$/);
-};
-
-module.exports = SolidityTypeUInt;
-
-},{"./formatters":124,"./type":129}],131:[function(require,module,exports){
-arguments[4][18][0].apply(exports,arguments)
-},{"./formatters":124,"./type":129,"dup":18}],132:[function(require,module,exports){
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/*
-    This file is part of web3.js.
-
-    web3.js is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    web3.js is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * @file utils.js
- * @author Marek Kotewicz <marek@ethdev.com>
- * @date 2015
- */
-
-/**
- * Utils
- *
- * @module utils
- */
-
-/**
- * Utility functions
- *
- * @class [utils] utils
- * @constructor
- */
-
-var BigNumber = require('bignumber.js');
-var sha3 = require('ethereumjs-util').sha3;
-var utf8 = require('utf8');
-
-var unitMap = {
-    'noether': '0',
-    'wei': '1',
-    'kwei': '1000',
-    'Kwei': '1000',
-    'babbage': '1000',
-    'femtoether': '1000',
-    'mwei': '1000000',
-    'Mwei': '1000000',
-    'lovelace': '1000000',
-    'picoether': '1000000',
-    'gwei': '1000000000',
-    'Gwei': '1000000000',
-    'shannon': '1000000000',
-    'nanoether': '1000000000',
-    'nano': '1000000000',
-    'szabo': '1000000000000',
-    'microether': '1000000000000',
-    'micro': '1000000000000',
-    'finney': '1000000000000000',
-    'milliether': '1000000000000000',
-    'milli': '1000000000000000',
-    'ether': '1000000000000000000',
-    'kether': '1000000000000000000000',
-    'grand': '1000000000000000000000',
-    'mether': '1000000000000000000000000',
-    'gether': '1000000000000000000000000000',
-    'tether': '1000000000000000000000000000000'
-};
-
-/**
- * Should be called to pad string to expected length
- *
- * @method padLeft
- * @param {String} string to be padded
- * @param {Number} characters that result string should have
- * @param {String} sign, by default 0
- * @returns {String} right aligned string
- */
-var padLeft = function padLeft(string, chars, sign) {
-    return new Array(chars - string.length + 1).join(sign ? sign : "0") + string;
-};
-
-/**
- * Should be called to pad string to expected length
- *
- * @method padRight
- * @param {String} string to be padded
- * @param {Number} characters that result string should have
- * @param {String} sign, by default 0
- * @returns {String} right aligned string
- */
-var padRight = function padRight(string, chars, sign) {
-    return string + new Array(chars - string.length + 1).join(sign ? sign : "0");
-};
-
-/**
- * Should be called to get utf8 from it's hex representation
- *
- * @method toUtf8
- * @param {String} string in hex
- * @returns {String} ascii string representation of hex value
- */
-var toUtf8 = function toUtf8(hex) {
-    // Find termination
-    var str = "";
-    var i = 0,
-        l = hex.length;
-    if (hex.substring(0, 2) === '0x') {
-        i = 2;
-    }
-    for (; i < l; i += 2) {
-        var code = parseInt(hex.substr(i, 2), 16);
-        if (code === 0) break;
-        str += String.fromCharCode(code);
-    }
-
-    return utf8.decode(str);
-};
-
-/**
- * Should be called to get ascii from it's hex representation
- *
- * @method toAscii
- * @param {String} string in hex
- * @returns {String} ascii string representation of hex value
- */
-var toAscii = function toAscii(hex) {
-    // Find termination
-    var str = "";
-    var i = 0,
-        l = hex.length;
-    if (hex.substring(0, 2) === '0x') {
-        i = 2;
-    }
-    for (; i < l; i += 2) {
-        var code = parseInt(hex.substr(i, 2), 16);
-        str += String.fromCharCode(code);
-    }
-
-    return str;
-};
-
-/**
- * Should be called to get hex representation (prefixed by 0x) of utf8 string
- *
- * @method fromUtf8
- * @param {String} string
- * @param {Number} optional padding
- * @returns {String} hex representation of input string
- */
-var fromUtf8 = function fromUtf8(str) {
-    str = utf8.encode(str);
-    var hex = "";
-    for (var i = 0; i < str.length; i++) {
-        var code = str.charCodeAt(i);
-        if (code === 0) break;
-        var n = code.toString(16);
-        hex += n.length < 2 ? '0' + n : n;
-    }
-
-    return "0x" + hex;
-};
-
-/**
- * Should be called to get hex representation (prefixed by 0x) of ascii string
- *
- * @method fromAscii
- * @param {String} string
- * @param {Number} optional padding
- * @returns {String} hex representation of input string
- */
-var fromAscii = function fromAscii(str) {
-    var hex = "";
-    for (var i = 0; i < str.length; i++) {
-        var code = str.charCodeAt(i);
-        var n = code.toString(16);
-        hex += n.length < 2 ? '0' + n : n;
-    }
-
-    return "0x" + hex;
-};
-
-/**
- * Should be used to create full function/event name from json abi
- *
- * @method transformToFullName
- * @param {Object} json-abi
- * @return {String} full fnction/event name
- */
-var transformToFullName = function transformToFullName(json) {
-    if (json.name.indexOf('(') !== -1) {
-        return json.name;
-    }
-
-    var typeName = json.inputs.map(function (i) {
-        return i.type;
-    }).join();
-    return json.name + '(' + typeName + ')';
-};
-
-/**
- * Should be called to get display name of contract function
- *
- * @method extractDisplayName
- * @param {String} name of function/event
- * @returns {String} display name for function/event eg. multiply(uint256) -> multiply
- */
-var extractDisplayName = function extractDisplayName(name) {
-    var length = name.indexOf('(');
-    return length !== -1 ? name.substr(0, length) : name;
-};
-
-/// @returns overloaded part of function/event name
-var extractTypeName = function extractTypeName(name) {
-    /// TODO: make it invulnerable
-    var length = name.indexOf('(');
-    return length !== -1 ? name.substr(length + 1, name.length - 1 - (length + 1)).replace(' ', '') : "";
-};
-
-/**
- * Converts value to it's decimal representation in string
- *
- * @method toDecimal
- * @param {String|Number|BigNumber}
- * @return {String}
- */
-var toDecimal = function toDecimal(value) {
-    return toBigNumber(value).toNumber();
-};
-
-/**
- * Converts value to it's hex representation
- *
- * @method fromDecimal
- * @param {String|Number|BigNumber}
- * @return {String}
- */
-var fromDecimal = function fromDecimal(value) {
-    var number = toBigNumber(value);
-    var result = number.toString(16);
-
-    return number.lessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
-};
-
-/**
- * Auto converts any given value into it's hex representation.
- *
- * And even stringifys objects before.
- *
- * @method toHex
- * @param {String|Number|BigNumber|Object}
- * @return {String}
- */
-var toHex = function toHex(val) {
-    /*jshint maxcomplexity: 8 */
-
-    if (isBoolean(val)) return fromDecimal(+val);
-
-    if (isBigNumber(val)) return fromDecimal(val);
-
-    if (isObject(val)) return fromUtf8(JSON.stringify(val));
-
-    // if its a negative number, pass it through fromDecimal
-    if (isString(val)) {
-        if (val.indexOf('-0x') === 0) return fromDecimal(val);else if (val.indexOf('0x') === 0) return val;else if (!isFinite(val)) return fromAscii(val);
-    }
-
-    return fromDecimal(val);
-};
-
-/**
- * Returns value of unit in Wei
- *
- * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default ether
- * @returns {BigNumber} value of the unit (in Wei)
- * @throws error if the unit is not correct:w
- */
-var getValueOfUnit = function getValueOfUnit(unit) {
-    unit = unit ? unit.toLowerCase() : 'ether';
-    var unitValue = unitMap[unit];
-    if (unitValue === undefined) {
-        throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
-    }
-    return new BigNumber(unitValue, 10);
-};
-
-/**
- * Takes a number of wei and converts it to any other ether unit.
- *
- * Possible units are:
- *   SI Short   SI Full        Effigy       Other
- * - kwei       femtoether     babbage
- * - mwei       picoether      lovelace
- * - gwei       nanoether      shannon      nano
- * - --         microether     szabo        micro
- * - --         milliether     finney       milli
- * - ether      --             --
- * - kether                    --           grand
- * - mether
- * - gether
- * - tether
- *
- * @method fromWei
- * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default ether
- * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
-*/
-var fromWei = function fromWei(number, unit) {
-    var returnValue = toBigNumber(number).dividedBy(getValueOfUnit(unit));
-
-    return isBigNumber(number) ? returnValue : returnValue.toString(10);
-};
-
-/**
- * Takes a number of a unit and converts it to wei.
- *
- * Possible units are:
- *   SI Short   SI Full        Effigy       Other
- * - kwei       femtoether     babbage
- * - mwei       picoether      lovelace
- * - gwei       nanoether      shannon      nano
- * - --         microether     szabo        micro
- * - --         microether     szabo        micro
- * - --         milliether     finney       milli
- * - ether      --             --
- * - kether                    --           grand
- * - mether
- * - gether
- * - tether
- *
- * @method toWei
- * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default ether
- * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
-*/
-var toWei = function toWei(number, unit) {
-    var returnValue = toBigNumber(number).times(getValueOfUnit(unit));
-
-    return isBigNumber(number) ? returnValue : returnValue.toString(10);
-};
-
-/**
- * Takes an input and transforms it into an bignumber
- *
- * @method toBigNumber
- * @param {Number|String|BigNumber} a number, string, HEX string or BigNumber
- * @return {BigNumber} BigNumber
-*/
-var toBigNumber = function toBigNumber(number) {
-    /*jshint maxcomplexity:5 */
-    number = number || 0;
-    if (isBigNumber(number)) return number;
-
-    if (isString(number) && (number.indexOf('0x') === 0 || number.indexOf('-0x') === 0)) {
-        return new BigNumber(number.replace('0x', ''), 16);
-    }
-
-    return new BigNumber(number.toString(10), 10);
-};
-
-/**
- * Takes and input transforms it into bignumber and if it is negative value, into two's complement
- *
- * @method toTwosComplement
- * @param {Number|String|BigNumber}
- * @return {BigNumber}
- */
-var toTwosComplement = function toTwosComplement(number) {
-    var bigNumber = toBigNumber(number).round();
-    if (bigNumber.lessThan(0)) {
-        return new BigNumber("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16).plus(bigNumber).plus(1);
-    }
-    return bigNumber;
-};
-
-/**
- * Checks if the given string is strictly an address
- *
- * @method isStrictAddress
- * @param {String} address the given HEX adress
- * @return {Boolean}
-*/
-var isStrictAddress = function isStrictAddress(address) {
-    return (/^0x[0-9a-f]{40}$/i.test(address)
-    );
-};
-
-/**
- * Checks if the given string is an address
- *
- * @method isAddress
- * @param {String} address the given HEX adress
- * @return {Boolean}
-*/
-var isAddress = function isAddress(address) {
-    if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-        // check if it has the basic requirements of an address
-        return false;
-    } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
-        // If it's all small caps or all all caps, return true
-        return true;
-    } else {
-        // Otherwise check each case
-        return isChecksumAddress(address);
-    }
-};
-
-/**
- * Checks if the given string is a checksummed address
- *
- * @method isChecksumAddress
- * @param {String} address the given HEX adress
- * @return {Boolean}
-*/
-var isChecksumAddress = function isChecksumAddress(address) {
-    // Check each case
-    address = address.replace('0x', '');
-    var addressHash = sha3(address.toLowerCase()).toString('hex');
-    for (var i = 0; i < 40; i++) {
-        // the nth letter should be uppercase if the nth digit of casemap is 1
-        if (parseInt(addressHash[i], 16) > 7 && address[i].toUpperCase() !== address[i] || parseInt(addressHash[i], 16) <= 7 && address[i].toLowerCase() !== address[i]) {
-            return false;
-        }
-    }
-    return true;
-};
-
-/**
- * Makes a checksum address
- *
- * @method toChecksumAddress
- * @param {String} address the given HEX adress
- * @return {String}
-*/
-var toChecksumAddress = function toChecksumAddress(address) {
-    if (typeof address === 'undefined') return '';
-
-    address = address.toLowerCase().replace('0x', '');
-    var addressHash = sha3(address).toString('hex');
-    var checksumAddress = '0x';
-
-    for (var i = 0; i < address.length; i++) {
-        // If ith character is 9 to f then make it uppercase 
-        if (parseInt(addressHash[i], 16) > 7) {
-            checksumAddress += address[i].toUpperCase();
-        } else {
-            checksumAddress += address[i];
-        }
-    }
-    return checksumAddress;
-};
-
-/**
- * Transforms given string to valid 20 bytes-length addres with 0x prefix
- *
- * @method toAddress
- * @param {String} address
- * @return {String} formatted address
- */
-var toAddress = function toAddress(address) {
-    if (isStrictAddress(address)) {
-        return address;
-    }
-
-    if (/^[0-9a-f]{40}$/.test(address)) {
-        return '0x' + address;
-    }
-
-    return '0x' + padLeft(toHex(address).substr(2), 40);
-};
-
-/**
- * Returns true if object is BigNumber, otherwise false
- *
- * @method isBigNumber
- * @param {Object}
- * @return {Boolean}
- */
-var isBigNumber = function isBigNumber(object) {
-    return object instanceof BigNumber || object && object.constructor && object.constructor.name === 'BigNumber';
-};
-
-/**
- * Returns true if object is string, otherwise false
- *
- * @method isString
- * @param {Object}
- * @return {Boolean}
- */
-var isString = function isString(object) {
-    return typeof object === 'string' || object && object.constructor && object.constructor.name === 'String';
-};
-
-/**
- * Returns true if object is function, otherwise false
- *
- * @method isFunction
- * @param {Object}
- * @return {Boolean}
- */
-var isFunction = function isFunction(object) {
-    return typeof object === 'function';
-};
-
-/**
- * Returns true if object is Objet, otherwise false
- *
- * @method isObject
- * @param {Object}
- * @return {Boolean}
- */
-var isObject = function isObject(object) {
-    return (typeof object === 'undefined' ? 'undefined' : _typeof(object)) === 'object';
-};
-
-/**
- * Returns true if object is boolean, otherwise false
- *
- * @method isBoolean
- * @param {Object}
- * @return {Boolean}
- */
-var isBoolean = function isBoolean(object) {
-    return typeof object === 'boolean';
-};
-
-/**
- * Returns true if object is array, otherwise false
- *
- * @method isArray
- * @param {Object}
- * @return {Boolean}
- */
-var isArray = function isArray(object) {
-    return object instanceof Array;
-};
-
-/**
- * Returns true if given string is valid json object
- *
- * @method isJson
- * @param {String}
- * @return {Boolean}
- */
-var isJson = function isJson(str) {
-    try {
-        return !!JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-};
-
-module.exports = {
-    padLeft: padLeft,
-    padRight: padRight,
-    toHex: toHex,
-    toDecimal: toDecimal,
-    fromDecimal: fromDecimal,
-    toUtf8: toUtf8,
-    toAscii: toAscii,
-    fromUtf8: fromUtf8,
-    fromAscii: fromAscii,
-    transformToFullName: transformToFullName,
-    extractDisplayName: extractDisplayName,
-    extractTypeName: extractTypeName,
-    toWei: toWei,
-    fromWei: fromWei,
-    toBigNumber: toBigNumber,
-    toTwosComplement: toTwosComplement,
-    toAddress: toAddress,
-    isBigNumber: isBigNumber,
-    isStrictAddress: isStrictAddress,
-    isAddress: isAddress,
-    isChecksumAddress: isChecksumAddress,
-    toChecksumAddress: toChecksumAddress,
-    isFunction: isFunction,
-    isString: isString,
-    isObject: isObject,
-    isBoolean: isBoolean,
-    isArray: isArray,
-    isJson: isJson
-};
-
-},{"bignumber.js":163,"ethereumjs-util":237,"utf8":329}],133:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 'use strict';
 
 var marked = require('marked');
@@ -22427,177 +19882,272 @@ marked.setOptions({
 });
 module.exports = marked;
 
-},{"marked":268}],134:[function(require,module,exports){
+},{"marked":251}],117:[function(require,module,exports){
 // English
 'use strict';
 
-var _en$data;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var en = function en() {};
 en.code = 'en';
-en.data = (_en$data = {
-
-  GEN_Help_0: 'Already have a wallet somewhere?',
-  GEN_Help_MetaMask: 'So easy! Keys stay in MetaMask, not on a phishing site! Try it today.',
+en.data = {
 
   GEN_Warning_1: '**Do not lose it!** It cannot be recovered if you lose it.',
   GEN_Warning_2: '**Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.',
   GEN_Warning_3: '**Make a backup!** Secure it like the millions of dollars it may one day be worth.',
-
-  GAS_Price_1: 'Not So Fast',
-  GAS_Price_2: 'Fast',
-  GAS_Price_3: 'Fast AF',
-
-  CONTRACT_Helper_1: 'Please change the address to your own Multisig Contract Address.',
-  CONTRACT_Warning_1: 'You are about to **deploy a contract**.',
-  CONTRACT_Warning_2: 'It will be deployed on the following network:',
-  CONTRACT_Warning_3: 'You are about to **execute a function on contract**.',
 
   SEND_Helper_Contract: 'In most cases you should leave this as 0.',
   SEND_ViewOnly: 'You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.',
   SEND_LoadTokens: 'Load Tokens',
   SEND_CustomAddrMsg: 'A message regarding',
 
-  SWAP_Warning_1: 'Warning! You do not have enough funds to complete this swap.',
-  SWAP_Warning_2: 'Please add more funds to your wallet or access a different wallet.',
-
   X_Advanced: 'Advanced Users Only.',
   X_HelpfulLinks: 'Helpful Links & FAQs',
   X_HelpfulLinks_1: 'How to Access your Wallet',
   X_HelpfulLinks_2: 'I lost my private key',
   X_HelpfulLinks_3: 'My private key opens a different address',
-  X_HelpfulLinks_4: 'Migrating to/from MyEtherWallet',
   X_Network: 'Network', // aka "node" or "chain" - used in the dropdown in header
   X_Network_Custom: 'Add Custom Network / Node',
 
-  DOMAIN_Buy: 'Buy the domain',
-  DOMAIN_BuyItNow: 'Price to buy the domain immediately:',
-  DOMAIN_bid: 'Bid for the domain',
-  DOMAIN_bid_0: 'You are currently winning this auction with the highest bid. You can bid higher if you want, but it will delay the close of the auction for 24 hours.',
-  DOMAIN_bid_1: 'Bid at least',
-  DOMAIN_bid_2: 'on the domain.',
-  DOMAIN_bid_3: 'You will win the domain if no higher bids are placed within the next 24 hours.',
-  DOMAIN_bid_4: 'Note that the domain has a locked value of',
-  DOMAIN_bid_5: 'As part of the sale you will receive the deed with this value but cannot claim it unless you release the name.',
-  DOMAIN_Finish_1: 'Not related to that auction',
-  DOMAIN_Finish_2: 'This address is neither the winner nor the seller of the auction.',
-  DOMAIN_Finish_3: 'Finish the auction',
-  DOMAIN_Finish_4: 'Finish the auction to allocate the domain to the winner and the funds to the seller.',
-  DOMAIN_Finish_5: 'Click your TX hash to see if you successfully transferred the domain to DomainSale.',
-  DOMAIN_offer_1: 'Incorrect Wallet',
-  DOMAIN_offer_2: 'The wallet you unlocked does not own this name.',
-  DOMAIN_offer_3: 'In order to offer this name, please unlock the wallet with address:',
-  DOMAIN_offer_4: 'Offer For Sale:',
-  DOMAIN_offer_5: 'Set either of both of the prices below to offer your domain for sale.  Remember that any funds you have locked in the domain\'s deed will go to the buyer and 10% of the funds when sold goes to referrers.',
-  DOMAIN_offer_7: 'Alter Your Offer for:',
-  DOMAIN_offer_8: 'Change either of both of the prices below to alter your domain sale offer.  Remember that any funds you have locked in the domain\'s deed will go to the buyer and 10% of the funds when sold goes to referrers.',
-  DOMAIN_offer_9: 'Buy price',
-  DOMAIN_offer_10: 'This is the price at which someone can buy the domain immediately. 0 means that the domain cannot be purchased immediately.',
-  DOMAIN_offer_11: 'This is the price at which someone can start an auction for the domain.  0 means that the domain will not be available for auction.',
-  DOMAIN_offer_12: 'Offer your domain',
-  DOMAIN_offer_13: 'Alter your sale',
-  DOMAIN_offer_14: 'Cancel your sale',
-  DOMAIN_offer_15: 'You can cancel your domain sale, which will return the domain to you with no charge.  This is only available before any bids have been received for the domain.',
-
-  ENS_Bid_Title: 'Place a Bid',
-  ENS_Finalize: 'Finalize',
-  ENS_Finalize_content: 'Finalizing this name assigns the ENS name to the winning bidder. The winner will be refunded the difference between their bid and the next-highest bid. If you are the only bidder, you will refunded all but 0.01 ETH. Any non-winners will also be refunded.',
-  ENS_Finalize_content_1: 'You are about to finalize the auction & claim the name:',
-  ENS_Helper_1: 'What is the process like?',
-  ENS_Helper_10: '**If you do not reveal your bid, you will not be refunded.**',
-  ENS_Helper_11: 'Reveal Period lasts 2 days (48 hours).',
-  ENS_Helper_12: 'You will unlock your account, enter the <u>Bid Amount</u>, and the <u>Secret Phrase</u>.',
-  ENS_Helper_13: 'In the event that two parties bid exactly the same amount, the first bid revealed will win.',
-  ENS_Helper_14: '4) Finalize the Auction',
-  ENS_Helper_15: 'Once the auction has ended (after 5 days / 120 hours), the winner needs to finalize the auction in order to claim their new name.',
-  ENS_Helper_16: 'The winner will be refunded the difference between their bid and the next-highest bid. If you are the only bidder, you will refunded all but 0.01 ETH.',
-  ENS_Helper_17: 'More Information',
-  ENS_Helper_18: 'The auction for this registrar is a blind auction, and is described in',
-  ENS_Helper_19: 'Basically, no one can see *anything* during the auction.',
-  ENS_Helper_2: '1) Preparation',
-  ENS_Helper_20: 'ENS: Read the Docs',
-  ENS_Helper_21: 'Announcing the Ethereum Name Service Relaunch Date!',
-  ENS_Helper_22: 'Knowledge Base: ENS',
-  ENS_Helper_23: 'Debugging a [BAD INSTRUCTION] Reveal',
-  ENS_Helper_24: 'Please try the above before relying on support for reveal issues as we are severely backlogged on support tickets. We\'re so sorry. :(',
-  ENS_Helper_3: 'Decide which account you wish to own the name & ensure you have multiple backups of that account.',
-  ENS_Helper_4: 'Decide the maximum amount of ETH you are willing to pay for the name (your <u>Bid Amount</u>). Ensure that account has enough to cover your bid + 0.01 ETH for gas.',
-  ENS_Helper_5: '2) Start an Auction / Place a Bid',
-  ENS_Helper_6: 'Bidding period lasts 3 days (72 hours).',
-  ENS_Helper_7: 'You will enter the <u>name</u>, <u>Actual Bid Amount</u>, <u>Bid Mask</u>, which is protected by a <u>Secret Phrase</u>.',
-  ENS_Helper_8: 'This places your bid, but this information is kept secret until you reveal it.',
-  ENS_Helper_9: '3) Reveal your Bid',
-  ENS_Reveal_Title: 'Reveal your Bid',
-  ENS_Start_Title: 'Start an Auction',
-  ENS_WrongAddress_1: 'The wallet you unlocked does not own the name ',
   ENS_WrongAddress_2: 'Please unlock the wallet with address ',
 
-  EOS_01: '**Generate EOS Key-pair**',
-  EOS_02: '**Register / Map your EOS Key**',
-  EOS_03: 'Select `register`',
-  EOS_04: 'Enter your **EOS Public Key** <--- CAREFUL! EOS PUBLIC KEY!',
-  EOS_05: 'Fund EOS Contract on Send Page',
-  EOS_06: 'Go to Send Ether & Tokens Page',
-  EOS_07: 'Unlock same wallet you are unlocking here.',
-  EOS_08: 'Send Amount you want to Contribute to `0xd0a6E6C54DbC68Db5db3A091B171A77407Ff7ccf`',
-  EOS_09: 'Claim EOS Tokens',
-  EOS_10: 'Select `claimAll`.',
+  /* Old */
+  ADD_DigitalBitbox_0a: 'Re-open MyEtherWallet on a secure (SSL) connection',
+  ADD_DigitalBitbox_0b: 'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/)',
+  ADD_DigitalBitbox_scan: 'Connect your Digital Bitbox',
+  ADD_Label_1: 'What would you like to do?',
+  ADD_Label_2: 'Create a Nickname',
+  ADD_Label_3: 'Your wallet is encrypted. Good! Please enter the password.',
+  ADD_Label_4: 'Add an Account to Watch',
+  ADD_Label_5: 'Enter the Address',
+  ADD_Label_6: 'Unlock your Wallet',
+  ADD_Label_6_short: 'Unlock',
+  ADD_Label_7: 'Add Account',
+  ADD_Label_8: 'Password (optional):',
+  ADD_Ledger_0a: 'Please use MyEtherWallet on a secure (SSL / HTTPS) connection to connect.',
+  ADD_Ledger_0b: 'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/)',
+  ADD_Ledger_1: 'Connect your Ledger Wallet',
+  ADD_Ledger_2: 'Open the Ethereum application (or a contract application)',
+  ADD_Ledger_2_Exp: 'Open the Expanse application (or a contract application)',
+  ADD_Ledger_2_Ubq: 'Open the Ubiq application (or a contract application)',
+  ADD_Ledger_3: 'Verify that Browser Support is enabled in Settings',
+  ADD_Ledger_4: 'If no Browser Support is found in settings, verify that you have [Firmware >1.2](https://www.ledgerwallet.com/apps/manager)',
+  ADD_Ledger_scan: 'Connect to Ledger Wallet',
+  ADD_MetaMask: 'Connect to MetaMask',
+  ADD_Radio_1: 'Generate New Wallet',
+  ADD_Radio_2: 'Select Your Wallet File (Keystore / JSON)',
+  ADD_Radio_2_alt: 'Select Your Wallet File',
+  ADD_Radio_2_short: 'SELECT WALLET FILE...',
+  ADD_Radio_3: 'Paste Your Private Key',
+  ADD_Radio_4: 'Add an Account to Watch',
+  ADD_Radio_5: 'Paste Your Mnemonic',
+  ADD_Radio_5_Path: 'Select HD derivation path',
+  ADD_Radio_5_PathAlternative: '(Ledger)',
+  ADD_Radio_5_PathCustom: 'Custom',
+  ADD_Radio_5_PathTrezor: '(TREZOR)',
+  ADD_Radio_5_withTrezor: '(Jaxx, Metamask, Exodus, imToken, TREZOR)',
+  ADD_Radio_5_woTrezor: '(Jaxx, Metamask, Exodus, imToken)',
+  ADD_Trezor_scan: 'Connect to TREZOR',
+  ADD_Warning_1: 'You can add any account to "watch" on the wallets tab without uploading a private key. This does ** not ** mean you have access to this wallet, nor can you transfer Ether from it.',
 
-  /* Onboarding */
-  ONBOARD_welcome_title: 'Welcome to MyEtherWallet.com',
-  ONBOARD_welcome_content__1: 'Please take some time to understand this for your own safety. 🙏',
-  ONBOARD_welcome_content__2: 'Your funds will be stolen if you do not heed these warnings.',
-  ONBOARD_welcome_content__3: 'We know this click-through stuff is annoying. We are sorry.',
-  ONBOARD_welcome_content__4: 'What is MEW? ',
-  ONBOARD_welcome_content__5: 'MyEtherWallet is a free, open-source, client-side interface.',
-  ONBOARD_welcome_content__6: 'We allow you to interact directly with the blockchain while remaining in full control of your keys &amp; your funds.',
-  ONBOARD_welcome_content__7: '**You** and **only you** are responsible for your security.',
-  ONBOARD_welcome_content__8: 'We cannot recover your funds or freeze your account if you visit a phishing site or lose your private key.',
-  ONBOARD_bank_title: 'MyEtherWallet is not a Bank',
-  ONBOARD_bank_content__1: 'When you open an account with a bank or exchange, they create an account for you in their system.',
-  ONBOARD_bank_content__2: 'The bank keeps track of your personal information, account passwords, balances, transactions and ultimately your money.',
-  ONBOARD_bank_content__3: 'The bank charge fees to manage your account and provide services, like refunding transactions when your card gets stolen.',
-  ONBOARD_bank_content__4: 'The bank allows you to write a check or charge your debit card to send money, go online to check your balance, reset your password, and get a new debit card if you lose it.',
-  ONBOARD_bank_content__5: 'You have an account *with the bank or exchange* and they decide how much money you can send, where you can send it, and how long to hold on a suspicious deposit. All for a fee.',
-  ONBOARD_welcome_title__alt: 'Introduction',
-  ONBOARD_interface_title: 'MyEtherWallet is an Interface',
-  ONBOARD_interface_content__1: 'When you create an account on MyEtherWallet you are generating a cryptographic set of numbers: your private key and your public key (address).',
-  ONBOARD_interface_content__2: 'The handling of your keys happens entirely on your computer, inside your browser.',
-  ONBOARD_interface_content__3: 'We never transmit, receive or store your private key, password, or other account information.',
-  ONBOARD_interface_content__4: 'We do not charge a transaction fee.',
-  ONBOARD_interface_content__5: 'You are simply using our **interface** to interact **directly with the blockchain**.',
-  ONBOARD_interface_content__6: 'If you send your *public key (address)* to someone, they can send you ETH or tokens. 👍',
-  ONBOARD_interface_content__7: 'If you send your *private key* to someone, they now have full control of your account. 👎',
-  ONBOARD_bank_title__alt: 'MEW isn\'t a Bank',
-  ONBOARD_blockchain_title__alt: 'WTF is a Blockchain?',
-  ONBOARD_blockchain_skip: 'I already know what a blockchain is...',
-  ONBOARD_blockchain_title: 'Wait, WTF is a Blockchain?',
-  ONBOARD_blockchain_content__1: 'The blockchain is like a huge, global, decentralized spreadsheet.',
-  ONBOARD_blockchain_content__2: 'It keeps track of who sent how many coins to whom, and what the balance of every account is.',
-  ONBOARD_blockchain_content__3: 'It is stored and maintained by thousands of people (miners) across the globe who have special computers.',
-  ONBOARD_blockchain_content__4: 'The blocks in the blockchain are made up of all the individual transactions sent from MyEtherWallet, MetaMask, Exodus, Mist, Geth, Parity, and everywhere else.',
-  ONBOARD_blockchain_content__5: 'When you see your balance on MyEtherWallet.com or view your transactions on [etherscan.io](https://etherscan.io), you are seeing data on the blockchain, not in our personal systems.',
-  ONBOARD_blockchain_content__6: 'Again: **we are not a bank**.',
-  ONBOARD_interface_title__alt: 'MEW is an Interface',
-  ONBOARD_why_title__alt: 'But...why does this matter?',
-  ONBOARD_why_title: 'Why are you making me read all this?',
-  ONBOARD_why_content__1: 'Because we need you to understand that we **cannot**...',
-  ONBOARD_why_content__2: 'Access your account or send your funds for you X.',
-  ONBOARD_why_content__3: 'Recover or change your private key.',
-  ONBOARD_why_content__4: 'Recover or reset your password.',
-  ONBOARD_why_content__5: 'Reverse, cancel, or refund transactions.',
-  ONBOARD_why_content__6: 'Freeze accounts.',
-  ONBOARD_why_content__7: '**You** and **only you** are responsible for your security.',
-  ONBOARD_why_content__8: 'Be diligent to keep your private key and password safe. Your private key is sometimes called your mnemonic phrase, keystore file, UTC file, JSON file,  wallet file.',
-  ONBOARD_why_content__9: 'If you lose your private key or password, no one can recover it.',
-  ONBOARD_why_content__10: 'If you enter your private key on a phishing website, you will have **all your funds taken**.'
-}, _defineProperty(_en$data, 'ONBOARD_blockchain_title__alt', 'WTF is a Blockchain?'), _defineProperty(_en$data, 'ONBOARD_point_title__alt', 'What\'s the Point of MEW then?'), _defineProperty(_en$data, 'ONBOARD_whymew_title', 'If MyEtherWallet can\'t do those things, what\'s the point?'), _defineProperty(_en$data, 'ONBOARD_whymew_content__1', 'Because that is the point of decentralization and the blockchain.'), _defineProperty(_en$data, 'ONBOARD_whymew_content__2', 'You don\'t have to rely on your bank, government, or anyone else when you want to move your funds.'), _defineProperty(_en$data, 'ONBOARD_whymew_content__3', 'You don\'t have to rely on the security of an exchange or bank to keep your funds safe.'), _defineProperty(_en$data, 'ONBOARD_whymew_content__4', 'If you don\'t find these things valuable, ask yourself why you think the blockchain and cryptocurrencies are valuable. 😉'), _defineProperty(_en$data, 'ONBOARD_whymew_content__5', 'If you don\'t like the sound of this, consider using [Coinbase](https://www.coinbase.com/) or [Blockchain.info](https://blockchain.info/wallet/#/signup). They have more familiar accounts with usernames & passwords.'), _defineProperty(_en$data, 'ONBOARD_whymew_content__6', 'If you are scared but want to use MEW, [get a hardware wallet](https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.'), _defineProperty(_en$data, 'ONBOARD_why_title__alt', 'But...why?'), _defineProperty(_en$data, 'ONBOARD_secure_title', 'How To Protect Yourself & Your Funds'), _defineProperty(_en$data, 'ONBOARD_secure_1_title', 'How To Protect Yourself from Phishers'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__1', 'Phishers send you a message with a link to a website that looks just like MyEtherWallet, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__2', 'Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyEtherWallet Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__3', 'Always check the URL: `https://www.myetherwallet.com`.'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__4', 'Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__5', 'Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__6', 'Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.'), _defineProperty(_en$data, 'ONBOARD_secure_1_content__7', '[Install an AdBlocker](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and do not click ads on your search engine (e.g. Google).'), _defineProperty(_en$data, 'ONBOARD_point_title__alt_2', 'What\'s the point?'), _defineProperty(_en$data, 'ONBOARD_secure_2_title', 'How To Protect Yourself from Scams'), _defineProperty(_en$data, 'ONBOARD_secure_2_content__1', 'People will try to get you to give them money in return for nothing.'), _defineProperty(_en$data, 'ONBOARD_secure_2_content__2', 'If it is too good to be true, it probably is.'), _defineProperty(_en$data, 'ONBOARD_secure_2_content__3', 'Research before sending money to someone or some project. Look for information on a variety of websites and forums. Be wary.'), _defineProperty(_en$data, 'ONBOARD_secure_2_content__4', 'Ask questions when you don\'t understand something or it doesn\'t seem right.'), _defineProperty(_en$data, 'ONBOARD_secure_2_content__5', 'Don\'t let fear, FUD, or FOMO win over common sense. If something is very urgent, ask yourself "why?". It may be to create FOMO or prevent you from doing research.'), _defineProperty(_en$data, 'ONBOARD_secure_3_title__alt', 'Phuck Phishers'), _defineProperty(_en$data, 'ONBOARD_secure_3_title', 'How To Protect Yourself from Loss'), _defineProperty(_en$data, 'ONBOARD_secure_3_content__1', 'If you lose your private key or password, it is gone forever. Don\'t lose it.'), _defineProperty(_en$data, 'ONBOARD_secure_3_content__2', 'Make a backup of your private key and password. Do NOT just store it on your computer. Print it out on a piece of paper or save it to a USB drive.'), _defineProperty(_en$data, 'ONBOARD_secure_3_content__3', 'Store this paper or USB drive in a different physical location. A backup is not useful if it is destroyed by a fire or flood along with your laptop.'), _defineProperty(_en$data, 'ONBOARD_secure_3_content__4', 'Do not store your private key in Dropbox, Google Drive, or other cloud storage. If that account is compromised, your funds will be stolen.'), _defineProperty(_en$data, 'ONBOARD_secure_3_content__5', 'If you have more than 1-week\'s worth of pay worth of cryptocurrency, get a hardware wallet. No excuses. It\'s worth it. I promise.'), _defineProperty(_en$data, 'ONBOARD_secure_3_content__6', '[Even more Security Tips!](https://myetherwallet.github.io/knowledge-base/getting-started/protecting-yourself-and-your-funds.html)'), _defineProperty(_en$data, 'ONBOARD_secure_2_title__alt_2', 'Screw Scams'), _defineProperty(_en$data, 'ONBOARD_final_title__alt', 'One more click & you\'re done! 🤘'), _defineProperty(_en$data, 'ONBOARD_final_title', 'Alright, I\'m done lecturing you!'), _defineProperty(_en$data, 'ONBOARD_final_subtitle', 'Sorry for being like this. Onwards!'), _defineProperty(_en$data, 'ONBOARD_final_content__1', 'Create a wallet'), _defineProperty(_en$data, 'ONBOARD_final_content__2', 'Get a hardware wallet'), _defineProperty(_en$data, 'ONBOARD_final_content__3', 'How to Set up MEW + MetaMask'), _defineProperty(_en$data, 'ONBOARD_final_content__4', 'How to Run MEW Offline / Locally'), _defineProperty(_en$data, 'ONBOARD_final_content__5', 'How to Send via Ledger hardware wallet'), _defineProperty(_en$data, 'ONBOARD_final_content__6', 'How to Send via TREZOR hardware wallet'), _defineProperty(_en$data, 'ONBOARD_final_content__7', 'How to Send via MetaMask'), _defineProperty(_en$data, 'ONBOARD_final_content__8', 'Learn More or Contact Us'), _defineProperty(_en$data, 'ONBOARD_final_content__9', 'OMG, please just let me send FFS.'), _defineProperty(_en$data, 'ONBOARD_resume', 'It looks like you didn\'t finish reading through these slides last time. ProTip: Finish reading through the slides 😉'), _defineProperty(_en$data, 'ADD_DigitalBitbox_0a', 'Re-open MyEtherWallet on a secure (SSL) connection'), _defineProperty(_en$data, 'ADD_DigitalBitbox_0b', 'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/)'), _defineProperty(_en$data, 'ADD_DigitalBitbox_scan', 'Connect your Digital Bitbox'), _defineProperty(_en$data, 'ADD_Label_1', 'What would you like to do?'), _defineProperty(_en$data, 'ADD_Label_2', 'Create a Nickname'), _defineProperty(_en$data, 'ADD_Label_3', 'Your wallet is encrypted. Good! Please enter the password.'), _defineProperty(_en$data, 'ADD_Label_4', 'Add an Account to Watch'), _defineProperty(_en$data, 'ADD_Label_5', 'Enter the Address'), _defineProperty(_en$data, 'ADD_Label_6', 'Unlock your Wallet'), _defineProperty(_en$data, 'ADD_Label_6_short', 'Unlock'), _defineProperty(_en$data, 'ADD_Label_7', 'Add Account'), _defineProperty(_en$data, 'ADD_Label_8', 'Password (optional):'), _defineProperty(_en$data, 'ADD_Ledger_0a', 'Please use MyEtherWallet on a secure (SSL / HTTPS) connection to connect.'), _defineProperty(_en$data, 'ADD_Ledger_0b', 'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/)'), _defineProperty(_en$data, 'ADD_Ledger_1', 'Connect your Ledger Wallet'), _defineProperty(_en$data, 'ADD_Ledger_2', 'Open the Ethereum application (or a contract application)'), _defineProperty(_en$data, 'ADD_Ledger_2_Exp', 'Open the Expanse application (or a contract application)'), _defineProperty(_en$data, 'ADD_Ledger_2_Ubq', 'Open the Ubiq application (or a contract application)'), _defineProperty(_en$data, 'ADD_Ledger_3', 'Verify that Browser Support is enabled in Settings'), _defineProperty(_en$data, 'ADD_Ledger_4', 'If no Browser Support is found in settings, verify that you have [Firmware >1.2](https://www.ledgerwallet.com/apps/manager)'), _defineProperty(_en$data, 'ADD_Ledger_scan', 'Connect to Ledger Wallet'), _defineProperty(_en$data, 'ADD_MetaMask', 'Connect to MetaMask'), _defineProperty(_en$data, 'ADD_Radio_1', 'Generate New Wallet'), _defineProperty(_en$data, 'ADD_Radio_2', 'Select Your Wallet File (Keystore / JSON)'), _defineProperty(_en$data, 'ADD_Radio_2_alt', 'Select Your Wallet File'), _defineProperty(_en$data, 'ADD_Radio_2_short', 'SELECT WALLET FILE...'), _defineProperty(_en$data, 'ADD_Radio_3', 'Paste Your Private Key'), _defineProperty(_en$data, 'ADD_Radio_4', 'Add an Account to Watch'), _defineProperty(_en$data, 'ADD_Radio_5', 'Paste Your Mnemonic'), _defineProperty(_en$data, 'ADD_Radio_5_Path', 'Select HD derivation path'), _defineProperty(_en$data, 'ADD_Radio_5_PathAlternative', '(Ledger)'), _defineProperty(_en$data, 'ADD_Radio_5_PathCustom', 'Custom'), _defineProperty(_en$data, 'ADD_Radio_5_PathTrezor', '(TREZOR)'), _defineProperty(_en$data, 'ADD_Radio_5_withTrezor', '(Jaxx, Metamask, Exodus, imToken, TREZOR)'), _defineProperty(_en$data, 'ADD_Radio_5_woTrezor', '(Jaxx, Metamask, Exodus, imToken)'), _defineProperty(_en$data, 'ADD_Trezor_scan', 'Connect to TREZOR'), _defineProperty(_en$data, 'ADD_Warning_1', 'You can add any account to "watch" on the wallets tab without uploading a private key. This does ** not ** mean you have access to this wallet, nor can you transfer Ether from it.'), _defineProperty(_en$data, 'BULK_Label_1', 'Number of Wallets To Generate'), _defineProperty(_en$data, 'BULK_Label_2', 'Generate Wallets'), _defineProperty(_en$data, 'BULK_SuccessMsg', 'Success! Your wallets have been generated.'), _defineProperty(_en$data, 'CONTRACT_ByteCode', 'Byte Code'), _defineProperty(_en$data, 'CONTRACT_Interact_CTA', 'Select a function'), _defineProperty(_en$data, 'CONTRACT_Interact_Title', 'Read / Write Contract'), _defineProperty(_en$data, 'CONTRACT_Json', 'ABI / JSON Interface'), _defineProperty(_en$data, 'CONTRACT_Read', 'READ'), _defineProperty(_en$data, 'CONTRACT_Title', 'Contract Address'), _defineProperty(_en$data, 'CONTRACT_Title_2', 'Select Existing Contract'), _defineProperty(_en$data, 'CONTRACT_Write', 'WRITE'), _defineProperty(_en$data, 'CX_error_1', 'You don\'t have any wallets saved. Click ["Add Wallet"](/cx-wallet.html#add-wallet) to add one!'), _defineProperty(_en$data, 'CX_quicksend', 'QuickSend'), _defineProperty(_en$data, 'CX_Tagline', 'Open Source JavaScript Client-Side Ether Wallet Chrome Extension'), _defineProperty(_en$data, 'CX_Warning_1', 'Make sure you have **external backups** of any wallets you store here. Many things could happen that would cause you to lose the data in this Chrome Extension, including uninstalling and reinstalling the extension. This extension is a way to easily access your wallets, **not** a way to back them up.'), _defineProperty(_en$data, 'decrypt_Access', 'How would you like to access your wallet?'), _defineProperty(_en$data, 'decrypt_Select', 'Select a Wallet'), _defineProperty(_en$data, 'decrypt_Title', 'Select the format of your private key'), _defineProperty(_en$data, 'DEP_generate', 'Generate Bytecode'), _defineProperty(_en$data, 'DEP_generated', 'Generated Bytecode'), _defineProperty(_en$data, 'DEP_interface', 'Generated Interface'), _defineProperty(_en$data, 'DEP_signtx', 'Sign Transaction'), _defineProperty(_en$data, 'ERROR_0', '(error_01) Please enter a valid amount.'), _defineProperty(_en$data, 'ERROR_1', '(error_02) Your password must be at least 9 characters. Please ensure it is a strong password.'), _defineProperty(_en$data, 'ERROR_2', '(error_03) Sorry! We don\'t recognize this type of wallet file.'), _defineProperty(_en$data, 'ERROR_3', '(error_04) This is not a valid wallet file.'), _defineProperty(_en$data, 'ERROR_4', '(error_05) This unit doesn\'t exists, please use the one of the following units'), _defineProperty(_en$data, 'ERROR_5', '(error_06) Please enter a valid address.'), _defineProperty(_en$data, 'ERROR_6', '(error_07) Please enter a valid password.'), _defineProperty(_en$data, 'ERROR_7', '(error_08) Please enter valid decimals     (Must be an integer. Try 0-18.)'), _defineProperty(_en$data, 'ERROR_8', '(error_09) Please enter a valid gas limit  (Must be an integer. Try 21000-4000000.)'), _defineProperty(_en$data, 'ERROR_9', '(error_10) Please enter a valid data value (Must be hex.)'), _defineProperty(_en$data, 'ERROR_10', '(error_11) Please enter a valid gas price. (Must be an integer. Try 20 PLAT / 20000000000 WEI.)'), _defineProperty(_en$data, 'ERROR_11', '(error_12) Please enter a valid nonce (Must be an integer.)'), _defineProperty(_en$data, 'ERROR_12', '(error_13) Invalid signed transaction.'), _defineProperty(_en$data, 'ERROR_13', '(error_14) A wallet with this nickname already exists.'), _defineProperty(_en$data, 'ERROR_14', '(error_15) Wallet not found.'), _defineProperty(_en$data, 'ERROR_15', '(error_16) Whoops. It doesn\'t look like a proposal with this ID exists yet or there is an error reading this proposal.'), _defineProperty(_en$data, 'ERROR_16', '(error_17) A wallet with this address already exists in storage. Please check your wallets page.'), _defineProperty(_en$data, 'ERROR_17', '(error_18) Insufficient balance. Your gas limit * gas price + amount to send exceeds your current balance. Send more ETH to your account or use the "Send Entire Balance" button. If you believe this is in error, try pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)'), _defineProperty(_en$data, 'ERROR_18', '(error_19) All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.'), _defineProperty(_en$data, 'ERROR_19', '(error_20) Please enter a valid symbol'), _defineProperty(_en$data, 'ERROR_20', '(error_21) Not a valid ERC-20 token'), _defineProperty(_en$data, 'ERROR_21', '(error_22) Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.'), _defineProperty(_en$data, 'ERROR_22', '(error_23) Please enter a valid node name'), _defineProperty(_en$data, 'ERROR_23', '(error_24) Please enter a valid URL. If you are on https, your URL must be https'), _defineProperty(_en$data, 'ERROR_24', '(error_25) Please enter a valid port.'), _defineProperty(_en$data, 'ERROR_25', '(error_26) Please enter a valid chain ID.'), _defineProperty(_en$data, 'ERROR_26', '(error_27) Please enter a valid ABI.'), _defineProperty(_en$data, 'ERROR_27', '(error_28) Minimum amount: 0.01. Max amount:'), _defineProperty(_en$data, 'ERROR_28', '(error_29) You need this `Keystore File + Password` or the `Private Key` (next page) to access this wallet in the future. '), _defineProperty(_en$data, 'ERROR_29', '(error_30) Please enter a valid user and password.'), _defineProperty(_en$data, 'ERROR_30', '(error_31) Please enter a valid name (7+ characters, limited punctuation)'), _defineProperty(_en$data, 'ERROR_31', '(error_32) Please enter a valid secret phrase.'), _defineProperty(_en$data, 'ERROR_32', '(error_33) Could not connect to the node. Refresh your page, try a different node (top-right corner), check your firewall settings. If custom node, check your configs.'), _defineProperty(_en$data, 'ERROR_33', '(error_34) The wallet you have unlocked does not match the owner\'s address.'), _defineProperty(_en$data, 'ERROR_34', '(error_35) The name you are attempting to reveal does not match the name you have entered.'), _defineProperty(_en$data, 'ERROR_35', '(error_36) Input address is not checksummed. <a href="https://myetherwallet.github.io/knowledge-base/addresses/not-checksummed-shows-when-i-enter-an-address.html" target="_blank" rel="noopener noreferrer">What does that mean?</a>'), _defineProperty(_en$data, 'ERROR_36', '(error_37) Please enter a valid TX hash'), _defineProperty(_en$data, 'ERROR_37', '(error_38) Please enter valid hex string. Hex only contains: 0x, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, a, b, c, d, e, f'), _defineProperty(_en$data, 'ERROR_38', '(error_39) Offer must have either price or reserve set to more than 0'), _defineProperty(_en$data, 'ERROR_39', '(error_40) Bid must be more than the specified minimum'), _defineProperty(_en$data, 'ERROR_40', '(error_41) Your password and re-typed password do not match!'), _defineProperty(_en$data, 'GETH_Balance', '(geth-01) Insufficient balance. Your gas limit * gas price + amount to send exceeds your current balance. Send more ETH to your account or use the "Send Entire Balance" button. If you believe this is in error, try pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)'), _defineProperty(_en$data, 'GETH_Cheap', '(geth-02) Gas price too low for acceptance. Try raising the gas price to 21 GWEI via the dropdown in top-right.'), _defineProperty(_en$data, 'GETH_GasLimit', '(geth-03) Exceeds block gas limit. Transaction cost exceeds current gas limit. Limit: (d+), got: (d+). Please lower the gas limit to 21000 (for sending) or 200000 (for sending tokens or contracts) and try again. [Learn More](https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html)'), _defineProperty(_en$data, 'GETH_InsufficientFunds', '(geth-04) Insufficient balance. Your gas limit * gas price + amount to send exceeds your current balance. Send more ETH to your account or use the "Send Entire Balance" button. If you believe this is in error, try pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)'), _defineProperty(_en$data, 'GETH_IntrinsicGas', '(geth-05) Intrinsic gas too low. Try raising the gas price to 21 GWEI via the dropdown in top-right or the gas limit to 21000 (for sending) or 200000 (for sending tokens or contracts) and try again.'), _defineProperty(_en$data, 'GETH_InvalidSender', '(geth-06) Invalid sender.'), _defineProperty(_en$data, 'GETH_NegativeValue', '(geth-07) Negative value.'), _defineProperty(_en$data, 'GETH_Nonce', "(geth-08) This TX's [nonce](https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html) is too low. Try incrementing the nonce by pressing the Generate button again, or [replace the pending transaction](https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html)."), _defineProperty(_en$data, 'GETH_NonExistentAccount', '(geth-09) Account does not exist or account balance too low'), _defineProperty(_en$data, 'PARITY_AlreadyImported', "(parity-01) A transaction with the same hash was already imported. It was probably already broadcast. To avoid duplicate transactions, check your address on [etherscan.io](https://etherscan.io) & wait 10 minutes before attempting to send again. [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)"), _defineProperty(_en$data, 'PARITY_GasLimitExceeded', "(parity-02) Transaction cost exceeds current gas limit. Limit: (d+), got: (d+). Please lower the gas limit to 21000 (for sending) or 200000 (for sending tokens or contracts) and try again. [Learn More](https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html)"), _defineProperty(_en$data, 'PARITY_InsufficientBalance', "(parity-03) Insufficient balance. The account you tried to send transaction from does not have enough funds. If you believe this is in error, try using the 'Send Entire Balance' button, or pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)"), _defineProperty(_en$data, 'PARITY_InsufficientGasPrice', "(parity-04) There is another transaction with same nonce in the queue, or the transaction fee is too low. Try incrementing the nonce by clicking the Generate button again. [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)"), _defineProperty(_en$data, 'PARITY_InvalidGasLimit', "(parity-05) Supplied gas limit is beyond limit. Try lowering the gas limit to 21000. [Learn More.](https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html)"), _defineProperty(_en$data, 'PARITY_LimitReached', "(parity-06) There are too many transactions in the queue. Your transaction was dropped due to limit. Try increasing the gas price. [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)"), _defineProperty(_en$data, 'PARITY_Old', "(parity-07) There is already a transaction with this [nonce](https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html). Try incrementing the nonce by pressing the Generate button again, or [replace the pending transaction](https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html)."), _defineProperty(_en$data, 'PARITY_TooCheapToReplace', "(parity-08) TX Fee is too low. It does not satisfy your node's minimal fee (minimal: (d+), got: (d+)). Try increasing the gas price and/or gas limit. [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)"), _defineProperty(_en$data, 'FOOTER_1', 'Free, open-source, client-side interface for generating Ethereum wallets &amp; more. Interact with the Ethereum blockchain easily &amp; securely. Double-check the URL ( myetherwallet.com ) before unlocking your wallet.'), _defineProperty(_en$data, 'FOOTER_1b', 'Created by'), _defineProperty(_en$data, 'FOOTER_2', 'Donations greatly appreciated'), _defineProperty(_en$data, 'FOOTER_3', 'Client-side wallet generation by'), _defineProperty(_en$data, 'FOOTER_4', 'Disclaimer'), _defineProperty(_en$data, 'GAS_LIMIT_Desc', 'NRG limit is the amount of NRG to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.'), _defineProperty(_en$data, 'GAS_PRICE_Desc', 'NRG Price is the amount you pay per unit of NRG. `TX fee = NRG price * NRG limit` & is paid to miners for including your TX in a block. Higher the NRG price = faster transaction, but more expensive. Default is `41 PLAT`.'), _defineProperty(_en$data, 'GEN_desc', 'If you want to generate multiple wallets, you can do so here'), _defineProperty(_en$data, 'GEN_Help_1', 'Use your'), _defineProperty(_en$data, 'GEN_Help_10', 'Right click & save file as. Filename:'), _defineProperty(_en$data, 'GEN_Help_11', 'Don\'t open this file on your computer'), _defineProperty(_en$data, 'GEN_Help_12', 'Use it to unlock your wallet via Aion Wallet'), _defineProperty(_en$data, 'GEN_Help_13', 'How to Back Up Your Keystore File'), _defineProperty(_en$data, 'GEN_Help_14', 'What are these Different Formats?'), _defineProperty(_en$data, 'GEN_Help_15', 'Preventing loss &amp; theft of your funds.'), _defineProperty(_en$data, 'GEN_Help_16', 'What are these Different Formats?'), _defineProperty(_en$data, 'GEN_Help_17', 'Why Should I?'), _defineProperty(_en$data, 'GEN_Help_18', 'To have a secondary backup.'), _defineProperty(_en$data, 'GEN_Help_19', 'In case you ever forget your password.'), _defineProperty(_en$data, 'GEN_Help_2', 'to access your account.'), _defineProperty(_en$data, 'GEN_Help_20', 'Cold Storage'), _defineProperty(_en$data, 'GEN_Help_3', 'Your device * is * your wallet.'), _defineProperty(_en$data, 'GEN_Help_4', 'Guides & FAQ'), _defineProperty(_en$data, 'GEN_Help_5', 'How to Create a Wallet'), _defineProperty(_en$data, 'GEN_Help_6', 'Getting Started'), _defineProperty(_en$data, 'GEN_Help_7', 'Keep it safe · Make a backup · Don\'t share it with anyone · Don\'t lose it · It cannot be recovered if you lose it.'), _defineProperty(_en$data, 'GEN_Help_8', 'Not Downloading a File?'), _defineProperty(_en$data, 'GEN_Help_9', 'Try using Google Chrome'), _defineProperty(_en$data, 'GEN_Label_1', 'Enter a password'), _defineProperty(_en$data, 'GEN_Label_2', 'Save your `Keystore` File.'), _defineProperty(_en$data, 'GEN_Label_3', 'Continue to Wallet'), _defineProperty(_en$data, 'GEN_Label_4', 'Print paper wallet or a QR code.'), _defineProperty(_en$data, 'GEN_Label_5', 'Save Your `Private Key`.'), _defineProperty(_en$data, 'GEN_Placeholder_1', 'Do NOT forget to save this!'), _defineProperty(_en$data, 'GEN_Placeholder_2', 'Retype your password!'), _defineProperty(_en$data, 'GEN_SuccessMsg', 'Success! Your wallet has been generated.'), _defineProperty(_en$data, 'GEN_Unlock', 'Unlock your wallet to see your address'), _defineProperty(_en$data, 'GET_ConfButton', 'I understand. Continue.'), _defineProperty(_en$data, 'MEW_Tagline', 'Open Source JavaScript Client-Side Ether Wallet'), _defineProperty(_en$data, 'MEW_Warning_1', 'Always check the URL before accessing your wallet or creating a new wallet. Beware of phishing sites!'), _defineProperty(_en$data, 'MNEM_1', 'Please select the address you would like to interact with.'), _defineProperty(_en$data, 'MNEM_2', 'Your single HD mnemonic phrase can access a number of wallets / addresses. Please select the address you would like to interact with at this time.'), _defineProperty(_en$data, 'MNEM_more', 'More Addresses'), _defineProperty(_en$data, 'MNEM_prev', 'Previous Addresses'), _defineProperty(_en$data, 'MSG_date', 'Date'), _defineProperty(_en$data, 'MSG_info1', 'Include the current date so the signature cannot be reused on a different date.'), _defineProperty(_en$data, 'MSG_info2', 'Include your nickname and where you use the nickname so someone else cannot use it.'), _defineProperty(_en$data, 'MSG_info3', 'Include a specific reason for the message so it cannot be reused for a different purpose.'), _defineProperty(_en$data, 'MSG_message', 'Message'), _defineProperty(_en$data, 'MSG_signature', 'Signature'), _defineProperty(_en$data, 'MSG_verify', 'Verify Message'), _defineProperty(_en$data, 'MYWAL_Address', 'Wallet Address'), _defineProperty(_en$data, 'MYWAL_Bal', 'Balance'), _defineProperty(_en$data, 'MYWAL_Content_1', 'Warning! You are about to remove your wallet'), _defineProperty(_en$data, 'MYWAL_Content_2', 'Be sure you have **saved the private key and/or Keystore File and the password** before you remove it.'), _defineProperty(_en$data, 'MYWAL_Content_3', 'If you want to use this wallet with your MyEtherWallet CX in the future, you will need to manually re-add it using the private key/JSON and password.'), _defineProperty(_en$data, 'MYWAL_Edit', 'Edit'), _defineProperty(_en$data, 'MYWAL_Edit_2', 'Edit Wallet'), _defineProperty(_en$data, 'MYWAL_Hide', 'Hide Wallet Info'), _defineProperty(_en$data, 'MYWAL_Name', 'Wallet Name'), _defineProperty(_en$data, 'MYWAL_Nick', 'Wallet Nickname'), _defineProperty(_en$data, 'MYWAL_Remove', 'Remove'), _defineProperty(_en$data, 'MYWAL_RemoveWal', 'Remove Wallet'), _defineProperty(_en$data, 'MYWAL_View', 'View'), _defineProperty(_en$data, 'MYWAL_Viewing', 'Viewing Wallet'), _defineProperty(_en$data, 'MYWAL_WatchOnly', 'Your Watch-Only Accounts'), _defineProperty(_en$data, 'NAV_AddWallet', 'Add Wallet'), _defineProperty(_en$data, 'NAV_BulkGenerate', 'Bulk Generate'), _defineProperty(_en$data, 'NAV_CheckTxStatus', 'Check TX Status'), _defineProperty(_en$data, 'NAV_Contact', 'Contact'), _defineProperty(_en$data, 'NAV_Contracts', 'Contracts'), _defineProperty(_en$data, 'NAV_DeployContract', 'Deploy Contract'), _defineProperty(_en$data, 'NAV_DomainSale', 'DomainSale'), _defineProperty(_en$data, 'NAV_ENS', 'ENS'), _defineProperty(_en$data, 'NAV_GenerateWallet', 'Create New Wallet'), _defineProperty(_en$data, 'NAV_GenerateWallet_alt', 'New Wallet'), _defineProperty(_en$data, 'NAV_Help', 'Help'), _defineProperty(_en$data, 'NAV_InteractContract', 'Interact with Contract'), _defineProperty(_en$data, 'NAV_Multisig', 'Multisig'), _defineProperty(_en$data, 'NAV_MyWallets', 'My Wallets'), _defineProperty(_en$data, 'NAV_Offline', 'Send Offline'), _defineProperty(_en$data, 'NAV_SendEther', 'Use Wallet'), _defineProperty(_en$data, 'NAV_SendTokens', 'Use Wallet'), _defineProperty(_en$data, 'NAV_SignMsg', 'Sign Message'), _defineProperty(_en$data, 'NAV_Swap', 'Swap'), _defineProperty(_en$data, 'NAV_TxStatus', 'TX Status'), _defineProperty(_en$data, 'NAV_ViewWallet', 'View Wallet Info'), _defineProperty(_en$data, 'NAV_YourWallets', 'Your Wallets'), _defineProperty(_en$data, 'NODE_CTA', 'Save & Use Custom Node'), _defineProperty(_en$data, 'NODE_Name', 'Node Name'), _defineProperty(_en$data, 'NODE_Port', 'Node Port'), _defineProperty(_en$data, 'NODE_Subtitle', 'To connect to a local node...'), _defineProperty(_en$data, 'NODE_Title', 'Set Up Your Custom Node'), _defineProperty(_en$data, 'NODE_Warning', 'Your node must be HTTPS in order to connect to it via MyEtherWallet.com. You can [download the MyEtherWallet repo & run it locally](https://github.com/kvhnuke/etherwallet/releases/latest) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)'), _defineProperty(_en$data, 'NONCE_Desc', 'The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.'), _defineProperty(_en$data, 'OFFLINE_Desc', 'Generating offline transactions can be done in three steps. You will complete steps 1 and 3 on an online computer, and step 2 on an offline/airgapped computer. This ensures your private keys do not touch an internet-connected device.'), _defineProperty(_en$data, 'OFFLINE_Step1_Button', 'Generate Information'), _defineProperty(_en$data, 'OFFLINE_Step1_Label_1', 'From Address'), _defineProperty(_en$data, 'OFFLINE_Step1_Label_2', 'Note: This is the FROM address, not the TO address. Nonce is generated from the originating account. If using an airgapped computer, it would be the address of the cold-storage account.'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_1', 'To Address'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_2', 'Value / Amount to Send'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_3', 'NRG Price'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_3b', 'This was displayed in Step 1 on your online computer.'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_4', 'Gas Limit'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_4b', '21000 is the default gas limit. When you send contracts or add\'l data, this may need to be different. Any unused gas will be returned to you.'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_5', 'Nonce'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_5b', 'This was displayed in Step 1 on your online computer.'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_6', 'Data'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_6b', 'This is optional. Data is often used when you send transactions to contracts.'), _defineProperty(_en$data, 'OFFLINE_Step2_Label_7', 'Enter / Select your Private Key / JSON.'), _defineProperty(_en$data, 'OFFLINE_Step2_Title', 'Step 2: Generate Transaction (Offline Computer)'), _defineProperty(_en$data, 'OFFLINE_Step3_Label_1', 'Paste the signed transaction from Step 2 here and press the "SEND TRANSACTION" button.'), _defineProperty(_en$data, 'OFFLINE_Step3_Title', 'Step 3: Send / Publish Transaction (Online Computer)'), _defineProperty(_en$data, 'OFFLINE_Title', 'Generate & Send Offline Transaction'), _defineProperty(_en$data, 'OFFLLINE_Step1_Title', 'Step 1: Generate Information (Online Computer)'), _defineProperty(_en$data, 'SEND_addr', 'To Address'), _defineProperty(_en$data, 'SEND_amount', 'Amount to Send'), _defineProperty(_en$data, 'SEND_amount_short', 'Amount'), _defineProperty(_en$data, 'SEND_custom', 'Add Custom Token'), _defineProperty(_en$data, 'SEND_gas', 'Gas'), _defineProperty(_en$data, 'SEND_generate', 'Generate Transaction'), _defineProperty(_en$data, 'SEND_raw', 'Raw Transaction'), _defineProperty(_en$data, 'SEND_signed', 'Signed Transaction'), _defineProperty(_en$data, 'SEND_trans', 'Send Transaction'), _defineProperty(_en$data, 'SEND_TransferTotal', 'Send Entire Balance'), _defineProperty(_en$data, 'SENDModal_Content_1', 'You are about to send'), _defineProperty(_en$data, 'SENDModal_Content_2', 'to address'), _defineProperty(_en$data, 'SENDModal_Content_3', 'Are you sure you want to do this?'), _defineProperty(_en$data, 'SENDModal_Content_4', 'NOTE: If you encounter an error, you most likely need to add ether to your account to cover the gas cost of sending tokens. Gas is paid in ether.'), _defineProperty(_en$data, 'SENDModal_No', 'No, get me out of here!'), _defineProperty(_en$data, 'SENDModal_Title', 'Warning!'), _defineProperty(_en$data, 'SENDModal_Yes', 'Yes, I am sure! Make transaction.'), _defineProperty(_en$data, 'sidebar_AccountAddr', 'Account Address'), _defineProperty(_en$data, 'sidebar_AccountBal', 'Account Balance'), _defineProperty(_en$data, 'sidebar_AccountInfo', 'Account Information'), _defineProperty(_en$data, 'sidebar_DisplayOnLedger', 'Display address on Ledger'), _defineProperty(_en$data, 'sidebar_DisplayOnTrezor', 'Display address on TREZOR'), _defineProperty(_en$data, 'sidebar_donate', 'Donate'), _defineProperty(_en$data, 'sidebar_donation', 'MyEtherWallet is a free, open-source service dedicated to your privacy and security. The more donations we receive, the more time we spend creating new features, listening to your feedback, and giving you what you want. We are just two people trying to change the world. Help us?'), _defineProperty(_en$data, 'sidebar_Equiv', 'Transaction Status'), _defineProperty(_en$data, 'sidebar_thanks', 'THANK YOU!!!'), _defineProperty(_en$data, 'sidebar_TokenBal', 'Token Balances'), _defineProperty(_en$data, 'sidebar_TransHistory', 'Transaction History'), _defineProperty(_en$data, 'SUCCESS_1', 'Valid address'), _defineProperty(_en$data, 'SUCCESS_2', 'Wallet successfully decrypted'), _defineProperty(_en$data, 'SUCCESS_3', 'Your TX has been broadcast to the network. This does not mean it has been mined & sent. During times of extreme volume, it may take 3+ hours to send. 1) Check your TX below, log on to dashboard.aion.network to check your transaction 2) Save your TX Hash in case you need it later:  '), _defineProperty(_en$data, 'SUCCESS_4', 'Your wallet was successfully added'), _defineProperty(_en$data, 'SUCCESS_5', 'File Selected'), _defineProperty(_en$data, 'SUCCESS_6', 'You are successfully connected'), _defineProperty(_en$data, 'SUCCESS_7', 'Message Signature Verified'), _defineProperty(_en$data, 'SWAP_elapsed', "Time elapsed since sent "), _defineProperty(_en$data, 'SWAP_information', "Your Information "), _defineProperty(_en$data, 'SWAP_init_1', "I want to swap my "), _defineProperty(_en$data, 'SWAP_init_2', " for "), _defineProperty(_en$data, 'SWAP_init_CTA', "Let's do this! "), _defineProperty(_en$data, 'SWAP_order_CTA', "Please send "), _defineProperty(_en$data, 'SWAP_progress_1', "Order Initiated "), _defineProperty(_en$data, 'SWAP_progress_2', "Waiting for your "), _defineProperty(_en$data, 'SWAP_progress_3', "Received! "), _defineProperty(_en$data, 'SWAP_progress_4', "Sending your {{orderResult.output.currency}} "), _defineProperty(_en$data, 'SWAP_progress_5', "Order Complete "), _defineProperty(_en$data, 'SWAP_rates', "Current Rates "), _defineProperty(_en$data, 'SWAP_rec_add', "Your Receiving Address "), _defineProperty(_en$data, 'SWAP_rec_amt', "Amount to receive "), _defineProperty(_en$data, 'SWAP_ref_num', "Your reference number "), _defineProperty(_en$data, 'SWAP_send_amt', "Amount to send "), _defineProperty(_en$data, 'SWAP_start_CTA', "Start Swap "), _defineProperty(_en$data, 'SWAP_time', "Time remaining to send "), _defineProperty(_en$data, 'SWAP_unlock', "Unlock your wallet to send ETH or Tokens directly from this page. "), _defineProperty(_en$data, 'SWAP_your_rate', "Your rate "), _defineProperty(_en$data, 'TOKEN_Addr', 'Token Contract Address'), _defineProperty(_en$data, 'TOKEN_Dec', 'Decimals'), _defineProperty(_en$data, 'TOKEN_hide', 'Hide Tokens'), _defineProperty(_en$data, 'TOKEN_show', 'Show All Tokens'), _defineProperty(_en$data, 'TOKEN_Symbol', 'Token Symbol'), _defineProperty(_en$data, 'TRANS_advanced', '+Advanced: Add Data'), _defineProperty(_en$data, 'TRANS_data', 'Data'), _defineProperty(_en$data, 'TRANS_desc', 'If you want to send Tokens, please use the "Send Token" page instead.'), _defineProperty(_en$data, 'TRANS_gas', 'NRG Limit'), _defineProperty(_en$data, 'TRANS_sendInfo', 'A standard transaction using 21000 gas will cost 0.000441 ETH. We do not take a transaction fee.'), _defineProperty(_en$data, 'translate_version', '0.5'), _defineProperty(_en$data, 'Translator_Desc', ''), _defineProperty(_en$data, 'TranslatorAddr_1', ''), _defineProperty(_en$data, 'TranslatorAddr_2', ''), _defineProperty(_en$data, 'TranslatorAddr_3', ''), _defineProperty(_en$data, 'TranslatorAddr_4', ''), _defineProperty(_en$data, 'TranslatorAddr_5', ''), _defineProperty(_en$data, 'TranslatorName_1', ''), _defineProperty(_en$data, 'TranslatorName_2', ''), _defineProperty(_en$data, 'TranslatorName_3', ''), _defineProperty(_en$data, 'TranslatorName_4', ''), _defineProperty(_en$data, 'TranslatorName_5', ''), _defineProperty(_en$data, 'tx_Details', 'Transaction Details'), _defineProperty(_en$data, 'tx_foundInPending', 'Pending Transaction Found'), _defineProperty(_en$data, 'tx_foundInPending_1', 'Your transaction was located in the TX Pool of the node you are connected to.'), _defineProperty(_en$data, 'tx_foundInPending_2', 'It is currently pending (waiting to be mined).'), _defineProperty(_en$data, 'tx_foundInPending_3', 'There is a chance you can "cancel" or replace this transaction. Unlock your wallet below.'), _defineProperty(_en$data, 'tx_FoundOnChain', 'Transaction Found'), _defineProperty(_en$data, 'tx_FoundOnChain_1', 'Your transaction was successfully mined and is on the blockchain.'), _defineProperty(_en$data, 'tx_FoundOnChain_2', '**If you see a red `( ! )`, a `BAD INSTRUCTION` or `OUT OF GAS` error message**, it means that the transaction was not successfully *sent*. You cannot cancel or replace this transaction. Instead, send a new transaction. If you received an "Out of Gas" error, you should double the gas limit you specified originally.'), _defineProperty(_en$data, 'tx_FoundOnChain_3', '**If you do not see any errors, your transaction was successfully sent.** Your ETH or Tokens are where you sent them. If you cannot see this ETH or Tokens credited in your other wallet / exchange account, and it has been 24+ hours since you sent, please [contact that service](https://myetherwallet.github.io/knowledge-base/diving-deeper/ethereum-list-of-support-and-communities.html). Send them the *link* to your transaction and ask them, nicely, to look into your situation.'), _defineProperty(_en$data, 'tx_notFound', 'Transaction Not Found'), _defineProperty(_en$data, 'tx_notFound_1', 'This TX cannot be found in the TX Pool of the node you are connected to.'), _defineProperty(_en$data, 'tx_notFound_2', 'If you just sent the transaction, please wait 15 seconds and press the "Check TX Status" button again.'), _defineProperty(_en$data, 'tx_notFound_3', 'It could still be in the TX Pool of a different node, waiting to be mined.'), _defineProperty(_en$data, 'tx_notFound_4', 'Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.'), _defineProperty(_en$data, 'tx_Summary', 'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.github.io/knowledge-base/transactions/check-status-of-ethereum-transaction.html)**'), _defineProperty(_en$data, 'TXFEE_Desc', 'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)'), _defineProperty(_en$data, 'VIEWWALLET_HidePrivKey', '(hide)'), _defineProperty(_en$data, 'VIEWWALLET_ShowPrivKey', '(show)'), _defineProperty(_en$data, 'VIEWWALLET_Subtitle', 'This allows you to download different versions of private keys and re-print your paper wallet. You may want to do this in order to [import your account into Geth/Mist](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). If you want to check your balance, we recommend using a blockchain explorer like [etherscan.io](https://etherscan.io/).'), _defineProperty(_en$data, 'VIEWWALLET_Subtitle_Short', 'This allows you to download different versions of private keys and re-print your paper wallet.'), _defineProperty(_en$data, 'VIEWWALLET_SuccessMsg', 'Success! Here are your wallet details.'), _defineProperty(_en$data, 'WARN_Send_Link', 'You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started.'), _defineProperty(_en$data, 'x_Access', 'Access'), _defineProperty(_en$data, 'x_AddessDesc', 'Your Address can also be known as your `Account #` or your `Public Key`. It is what you share with people so they can send you Aions. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere.'), _defineProperty(_en$data, 'x_Address', 'Your Address'), _defineProperty(_en$data, 'x_Cancel', 'Cancel'), _defineProperty(_en$data, 'x_CancelReplaceTx', 'Cancel or Replace Transaction'), _defineProperty(_en$data, 'x_CancelTx', 'Cancel Transaction'), _defineProperty(_en$data, 'x_CSV', 'CSV file (unencrypted)'), _defineProperty(_en$data, 'x_DigitalBitbox', 'Digital Bitbox'), _defineProperty(_en$data, 'x_Download', 'Download'), _defineProperty(_en$data, 'x_Json', 'JSON File (unencrypted)'), _defineProperty(_en$data, 'x_JsonDesc', 'This is the unencrypted, JSON format of your private key. This means you do not need the password but anyone who finds your JSON can access your wallet & Ether without the password.'), _defineProperty(_en$data, 'x_Keystore', 'Keystore File (Recommended · Encrypted)'), _defineProperty(_en$data, 'x_Keystore2', 'Keystore File '), _defineProperty(_en$data, 'x_KeystoreDesc', 'This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up.'), _defineProperty(_en$data, 'x_Ledger', 'Ledger Wallet'), _defineProperty(_en$data, 'x_MetaMask', 'MetaMask / Mist'), _defineProperty(_en$data, 'x_Mnemonic', 'Mnemonic Phrase'), _defineProperty(_en$data, 'x_ParityPhrase', 'Parity Phrase'), _defineProperty(_en$data, 'x_Password', 'Password'), _defineProperty(_en$data, 'x_PasswordDesc', 'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**'), _defineProperty(_en$data, 'x_Print', 'Print Paper Wallet'), _defineProperty(_en$data, 'x_PrintDesc', 'ProTip: If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!'), _defineProperty(_en$data, 'x_PrintShort', 'Print'), _defineProperty(_en$data, 'x_PrivKey', 'Private Key (unencrypted)'), _defineProperty(_en$data, 'x_PrivKey2', 'Private Key'), _defineProperty(_en$data, 'x_PrivKeyDesc', 'This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended.'), _defineProperty(_en$data, 'x_ReadMore', 'Read More'), _defineProperty(_en$data, 'x_ReplaceTx', 'Replace Transaction'), _defineProperty(_en$data, 'x_Save', 'Save'), _defineProperty(_en$data, 'x_TransHash', 'Transaction Hash'), _defineProperty(_en$data, 'x_Trezor', 'TREZOR'), _defineProperty(_en$data, 'x_TXFee', 'TX Fee'), _defineProperty(_en$data, 'x_TxHash', 'TX Hash'), _defineProperty(_en$data, 'x_TXT', 'TXT file (unencrypted)'), _defineProperty(_en$data, 'x_Wallet', 'Wallet'), _defineProperty(_en$data, 'HELP_0_Desc_1', 'MyEtherWallet gives you the ability to generate new wallets so you can store your Ether yourself, not on an exchange. This process happens entirely on your computer, not our servers. Therefore, when you generate a new wallet, **you are responsible for safely backing it up**.'), _defineProperty(_en$data, 'HELP_0_Desc_2', 'Create a new wallet.'), _defineProperty(_en$data, 'HELP_0_Desc_3', 'Back the wallet up.'), _defineProperty(_en$data, 'HELP_0_Desc_4', 'Verify you have access to this new wallet and have correctly saved all necessary information.'), _defineProperty(_en$data, 'HELP_0_Desc_5', 'Transfer Ether to this new wallet.'), _defineProperty(_en$data, 'HELP_0_Title', '0) I\'m new. What do I do?'), _defineProperty(_en$data, 'HELP_10_Desc_1', 'Navigate to the "Offline Transaction" page via your online computer.'), _defineProperty(_en$data, 'HELP_10_Desc_10', 'The data field below this button will populate with your signed transaction. Copy this and move it back to your online computer.'), _defineProperty(_en$data, 'HELP_10_Desc_11', 'On your online computer, paste the signed transaction into the text field in step #3 and click send. This will broadcast your transaction.'), _defineProperty(_en$data, 'HELP_10_Desc_2', 'Enter the "From Address". Please note, this is the address you are sending FROM, not TO. This generates the nonce and gas price.'), _defineProperty(_en$data, 'HELP_10_Desc_3', 'Move to your offline computer. Enter the "TO ADDRESS" and the "AMOUNT" you wish to send.'), _defineProperty(_en$data, 'HELP_10_Desc_4', 'Enter the "GAS PRICE" as it was displayed to you on your online computer in step #1.'), _defineProperty(_en$data, 'HELP_10_Desc_5', 'Enter the "NONCE" as it was displayed to you on your online computer in step #1.'), _defineProperty(_en$data, 'HELP_10_Desc_6', 'The "GAS LIMIT" has a default value of 21000. This will cover a standard transaction. If you are sending to a contract or are including additional data with your transaction, you will need to increase the gas limit. Any excess gas will be returned to you.'), _defineProperty(_en$data, 'HELP_10_Desc_7', 'If you wish, enter some data. If you enter data, you will need to include more than the 21000 default gas limit. All data is in HEX format.'), _defineProperty(_en$data, 'HELP_10_Desc_8', 'Select your wallet file -or- your private key and unlock your wallet.'), _defineProperty(_en$data, 'HELP_10_Desc_9', 'Press the "GENERATE SIGNED TRANSACTION" button.'), _defineProperty(_en$data, 'HELP_10_Title', '10) How do I make an offline transaction?'), _defineProperty(_en$data, 'HELP_12_Desc_1', 'Using an Geth/Mist JSON file from MyEtherWallet v2+....'), _defineProperty(_en$data, 'HELP_12_Desc_10', 'Your account should show up immediately under "Accounts."'), _defineProperty(_en$data, 'HELP_12_Desc_11', 'Using your unencrypted private key...'), _defineProperty(_en$data, 'HELP_12_Desc_12', 'If you do not already have your unencrypted private key, navigate to the "View Wallet Details" page.'), _defineProperty(_en$data, 'HELP_12_Desc_13', 'Select your wallet file -or- enter/paste your private key to unlock your wallet.'), _defineProperty(_en$data, 'HELP_12_Desc_14', 'Copy Your Private Key (unencrypted).'), _defineProperty(_en$data, 'HELP_12_Desc_15', 'If you are on a Mac'), _defineProperty(_en$data, 'HELP_12_Desc_15b', 'If you are on a PC'), _defineProperty(_en$data, 'HELP_12_Desc_16', 'Open Text Edit and paste this private key.'), _defineProperty(_en$data, 'HELP_12_Desc_17', 'Go to the menu bar and click "Format" -> "Make Plain Text".'), _defineProperty(_en$data, 'HELP_12_Desc_18', 'Save this file to your `desktop/` as `nothing_special_delete_me.txt`. Make sure it says "UTF-8" and "If no extension is provided use .txt" in the save dialog.'), _defineProperty(_en$data, 'HELP_12_Desc_19', 'Open terminal and run the following command: `geth account import ~/Desktop/nothing_special_delete_me.txt`'), _defineProperty(_en$data, 'HELP_12_Desc_2', 'Go to the "View Wallet Info" page.'), _defineProperty(_en$data, 'HELP_12_Desc_20', 'This will prompt you to make a new password. This is the password you will use in geth / Ethereum Wallet / Mist whenever you send a transaction, so don\'t forget it.'), _defineProperty(_en$data, 'HELP_12_Desc_21', 'After successful import, delete `nothing_special_delete_me.txt`'), _defineProperty(_en$data, 'HELP_12_Desc_22', 'The next time you open the Ethereum Wallet application, your account will be listed under "Accounts".'), _defineProperty(_en$data, 'HELP_12_Desc_23', 'Open Notepad & paste the private key'), _defineProperty(_en$data, 'HELP_12_Desc_24', 'Save the file as `nothing_special_delete_me.txt` at `C:`'), _defineProperty(_en$data, 'HELP_12_Desc_25', 'Run the command, `geth account import C:\\nothing_special_delete_me.txt`'), _defineProperty(_en$data, 'HELP_12_Desc_26', 'This will prompt you to make a new password. This is the password you will use in geth / Ethereum Wallet / Mist whenever you send a transaction, so don\'t forget it.'), _defineProperty(_en$data, 'HELP_12_Desc_27', 'After successful import, delete `nothing_special_delete_me.txt`'), _defineProperty(_en$data, 'HELP_12_Desc_28', 'The next time you open the Ethereum Wallet application, your account will be listed under "Accounts".'), _defineProperty(_en$data, 'HELP_12_Desc_3', 'Unlock your wallet using your **encrypted** private key or JSON file.'), _defineProperty(_en$data, 'HELP_12_Desc_4', 'Go to the "My Wallets" page.'), _defineProperty(_en$data, 'HELP_12_Desc_5', 'Select the wallet you want to import into Mist, click the "View" icon, enter your password, and access your wallet.'), _defineProperty(_en$data, 'HELP_12_Desc_6', 'Find the "Download JSON file - Geth/Mist Format (encrypted)" section. Press the "Download" button below that. You now have your keystore file.'), _defineProperty(_en$data, 'HELP_12_Desc_7', 'Open the Ethereum Wallet application.'), _defineProperty(_en$data, 'HELP_12_Desc_8', 'In the menu bar, go "Accounts" -> "Backup" -> "Accounts"'), _defineProperty(_en$data, 'HELP_12_Desc_9', 'This will open your keystore folder. Copy the file you just downloaded (`UTC--2016-04-14......../`) into that keystore folder.'), _defineProperty(_en$data, 'HELP_12_Title', '12) How do I import a wallet created with MyEtherWallet into geth / Ethereum Wallet / Mist?'), _defineProperty(_en$data, 'HELP_13_Desc_1', 'This means you do not have enough Ether in your account to cover the cost of gas. Each transaction (including token and contract transactions) require gas and that gas is paid in Ether. The number displayed is the amount required to cover the cost of the transaction in Wei. Take that number, divide by `1000000000000000000`, and subtract the amount of Ether you were trying to send (if you were attempting to send Ether). This will give you the amount of Ether you need to send to that account to make the transaction.'), _defineProperty(_en$data, 'HELP_13_Title', '13) What does "Insufficient funds. Account you try to send transaction from does not have enough funds. Required XXXXXXXXXXXXXXXXXXX and got: XXXXXXXXXXXXXXXX." Mean?'), _defineProperty(_en$data, 'HELP_14_Desc_1', 'While the mouse moving thing is clever and we understand why people like it, the reality is window.crypto ensures more entropy than your mouse movements. The mouse movements aren\'t unsafe, it\'s just that we (and tons of other crypto experiments) believe in window.crypto. In addition, MyEtherWallet.com can be used on touch devices. Here\'s a [conversation between an angry redditor and Vitalik Buterin regarding mouse movements v. window.crypto](https://www.reddit.com/r/ethereum/comments/2bilqg/note_there_is_a_paranoid_highsecurity_way_to/cj5sgrm) and here is the [the window.crypto w3 spec](https://dvcs.w3.org/hg/webcrypto-api/raw-file/tip/spec/Overview.html#dfn-GlobalCrypto).'), _defineProperty(_en$data, 'HELP_14_Title', '14) Some sites randomize (seed) the private key generation via mouse movements. MyEtherWallet.com doesn\'t do this. Is the random number generation for MyEtherWallet safe?'), _defineProperty(_en$data, 'HELP_15_Desc_1', 'Accounts will only show up in a blockchain explorer once the account has activity on it&mdash;for example, once you have transferred some Ether to it.'), _defineProperty(_en$data, 'HELP_15_Title', '15) Why hasn\'t the account I just created show up in the blockchain explorer? (ie: etherchain, etherscan)'), _defineProperty(_en$data, 'HELP_16_Desc_1', 'You can use a blockchain explorer like [etherscan.io](https://etherscan.io/). Paste your address into the search bar and it will pull up your address and transaction history. For example, here\'s what our [donation account](https://etherscan.io/address/0x7cb57b5a97eabe94205c07890be4c1ad31e486a8) looks like on etherscan.io'), _defineProperty(_en$data, 'HELP_16_Title', '16) How do I check the balance of my account?'), _defineProperty(_en$data, 'HELP_17_Desc_1', 'This is most likely due to the fact that you are behind a firewall. The API that we use to get the balance and convert said balance is often blocked by firewalls for whatever reason. You will still be able to send transactions, you just need to use a different method to see said balance, like etherscan.io'), _defineProperty(_en$data, 'HELP_17_Title', '17) Why isn\'t my balance showing up when I unlock my wallet?'), _defineProperty(_en$data, 'HELP_18_Title', '18) Where is my geth wallet file?'), _defineProperty(_en$data, 'HELP_19_Desc_1', 'Mist files are typically found in the file locations above, but it\'s much easier to open Mist, select "Accounts" in the top bar, select "Backup", and select "Accounts". This will open the folder where your files are stored.'), _defineProperty(_en$data, 'HELP_19_Title', '19) Where is my Mist wallet file?'), _defineProperty(_en$data, 'HELP_1_Desc_1', 'Go to the "Generate Wallet" page.'), _defineProperty(_en$data, 'HELP_1_Desc_2', 'Go to the "Add Wallet" page & select "Generate New Wallet"'), _defineProperty(_en$data, 'HELP_1_Desc_3', 'Enter a strong password. If you think you may forget it, save it somewhere safe. You will need this password to send transactions.'), _defineProperty(_en$data, 'HELP_1_Desc_4', 'Click "GENERATE".'), _defineProperty(_en$data, 'HELP_1_Desc_5', 'Your wallet has now been generated.'), _defineProperty(_en$data, 'HELP_1_Title', '1) How do I create a new wallet?'), _defineProperty(_en$data, 'HELP_20_Desc_1', 'Wherever you saved it. ;) It also was emailed to you, so check there. Look for the file called `"ethereum_wallet_backup.json"` and select that file. This wallet file will be encrypted with a password that you created during the purchase of the pre-sale.'), _defineProperty(_en$data, 'HELP_20_Title', '20) Where is my pre-sale wallet file?'), _defineProperty(_en$data, 'HELP_21_Desc_1', 'Short version: yes, but finding an account with a balance would take longer than the universe...so...no.'), _defineProperty(_en$data, 'HELP_21_Desc_2', 'Long ELI5 Version: So Ethereum is based on [Public Key Cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography), specifically [Elliptic curve cryptography](https://eprint.iacr.org/2013/734.pdf) which is very widely used, not just in Ethereum. Most servers are protected via ECC. Bitcoin uses the same, as well as SSH and TLS and a lot of other stuff. The Ethereum keys specifically are 256-bit keys, which are stronger than 128-bit and 192-bit, which are also widely used and still considered secure by experts.'), _defineProperty(_en$data, 'HELP_21_Desc_3', 'In this you have a private key and a public key. The private key can derive the public key, but the public key cannot be turned back into the private key. The fact that the internet and the world’s secrets are using this cryptography means that if there is a way to go from public key to private key, your lost ether is the least of everyone’s problems.'), _defineProperty(_en$data, 'HELP_21_Desc_4', 'Now, that said, YES if someone else has your private key then they can indeed send ether from your account. Just like if someone has your password to your email, they can read and send your email, or the password to your bank account, they could make transfers. You could download the Keystore version of your private key which is the private key that is encrypted with a password. This is like having a password that is also protected by another password.'), _defineProperty(_en$data, 'HELP_21_Desc_5', 'And YES, in theory you could just type in a string of 64 hexadecimal characters until you got one that matched. In fact, smart people could write a program to very quickly check random private keys. This is known as "brute-forcing" or "mining" private keys. People have thought about this long and hard. With a few very high end servers, they may be able to check 1M+ keys / second. However, even checking that many per second would not yield access to make the cost of running those servers even close to worthwhile - it is more likely you, and your great-grandchildren, will die before getting a match.'), _defineProperty(_en$data, 'HELP_21_Desc_6', 'If you know anything about Bitcoin, [this will put it in perspective:](http://bitcoin.stackexchange.com/questions/32331/two-people-with-same-public-address-how-will-people-network-know-how-to-deliver) *To illustrate how unlikely this is: suppose every satoshi of every bitcoin ever to be generated was sent to its own unique private keys. The probability that among those keys there could be two that would correspond to the same address is roughly one in 100 quintillion.'), _defineProperty(_en$data, 'HELP_21_Desc_7', '[If you want something a bit more technical:](http://security.stackexchange.com/questions/25375/why-not-use-larger-cipher-keys/25392#25392) *These numbers have nothing to do with the technology of the devices; they are the maximums that thermodynamics will allow. And they strongly imply that brute-force attacks against 256-bit keys will be infeasible until computers are built from something other than matter and occupy something other than space.'), _defineProperty(_en$data, 'HELP_21_Desc_8', 'Of course, this all assumes that keys are generated in a truly random way & with sufficient entropy. The keys generated here meet that criteria, as do Jaxx and Mist/geth. The Ethereum wallets are all pretty good. Keys generated by brainwallets do not, as a person\'s brain is not capable of creating a truly random seed. There have been a number of other issues regarding lack of entropy or seeds not being generated in a truly random way in Bitcoin-land, but that\'s a separate issue that can wait for another day.'), _defineProperty(_en$data, 'HELP_21_Title', '21) Couldn\'t everybody put in random private keys, look for a balance, and send to their own address?'), _defineProperty(_en$data, 'HELP_2a_Desc_1', 'You should always back up your wallet externally and in multiple physical locations - like on a USB drive and/or a piece of paper.'), _defineProperty(_en$data, 'HELP_2a_Desc_2', 'Save the address. You can keep it to yourself or share it with others. That way, others can transfer ether to you.'), _defineProperty(_en$data, 'HELP_2a_Desc_3', 'Save versions of the private key. Do not share it with anyone else. Your private key is necessary when you want to access your Ether to send it! There are 3 types of private keys'), _defineProperty(_en$data, 'HELP_2a_Desc_4', 'Place your address, versions of the private key, and the PDF version of your paper wallet in a folder. Save this on your computer and a USB drive.'), _defineProperty(_en$data, 'HELP_2a_Desc_5', 'Print the wallet if you have a printer. Otherwise, write down your private key and address on a piece of paper. Store this as a secure location, separate from your computer and the USB drive.'), _defineProperty(_en$data, 'HELP_2a_Desc_6', 'Keep in mind, you must prevent loss of the keys and password due to loss or failure of you hard drive failure, or USB drive, or piece of paper. You also must keep in mind physical loss / damage of an entire area (think fire or flood).'), _defineProperty(_en$data, 'HELP_2a_Title', 'How do I save/backup my wallet?'), _defineProperty(_en$data, 'HELP_2b_Desc_1', 'Go to [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest).'), _defineProperty(_en$data, 'HELP_2b_Desc_2', 'Click on `etherwallet-vX.X.X.X.zip`.'), _defineProperty(_en$data, 'HELP_2b_Desc_3', 'Move zip to an airgapped computer.'), _defineProperty(_en$data, 'HELP_2b_Desc_4', 'Unzip it and double-click `index.html`.'), _defineProperty(_en$data, 'HELP_2b_Desc_5', 'Generate a wallet with a strong password.'), _defineProperty(_en$data, 'HELP_2b_Desc_6', 'Save the address. Save versions of the private key. Save the password if you might not remember it forever.'), _defineProperty(_en$data, 'HELP_2b_Desc_7', 'Store these papers / USBs in multiple physically separate locations.'), _defineProperty(_en$data, 'HELP_2b_Desc_8', 'Go to the "View Wallet Info" page and type in your private key / password to ensure they are correct and access your wallet. Check that the address you wrote down is the same.'), _defineProperty(_en$data, 'HELP_2b_Title', '2b) How do I safely / offline / cold storage with MyEtherWallet?'), _defineProperty(_en$data, 'HELP_3_Desc_1', '**Before you send any Ether to your new wallet**, you should ensure you have access to it.'), _defineProperty(_en$data, 'HELP_3_Desc_2', 'Navigate to the "View Wallet Info" page.'), _defineProperty(_en$data, 'HELP_3_Desc_3', 'Navigate to the MyEtherWallet.com "View Wallet Info" page.'), _defineProperty(_en$data, 'HELP_3_Desc_4', 'Select your wallet file -or- your private key and unlock your wallet.'), _defineProperty(_en$data, 'HELP_3_Desc_5', 'If the wallet is encrypted, a text box will automatically appear. Enter the password.'), _defineProperty(_en$data, 'HELP_3_Desc_6', 'Click the "Unlock Wallet" button.'), _defineProperty(_en$data, 'HELP_3_Desc_7', 'Your wallet information should show up. Find your account address, next to a colorful, circular icon. This icon visually represents your address. Be certain that the address is the address you have saved to your text document and is on your paper wallet.'), _defineProperty(_en$data, 'HELP_3_Desc_8', 'If you are planning on holding a large amount of ether, we recommend that send a small amount of ether from new wallet before depositing a large amount. Send 0.001 ether to your new wallet, access that wallet, send that 0.001 ether to another address, and ensure everything works smoothly.'), _defineProperty(_en$data, 'HELP_3_Title', '3) How do I verify I have access to my new wallet?'), _defineProperty(_en$data, 'HELP_4_Desc_1', 'If you plan to move a large amount of ether, you should test sending a small amount to your wallet first to ensure everything goes as planned.'), _defineProperty(_en$data, 'HELP_4_Desc_10', 'A couple more fields will appear. This is your browser generating the transaction.'), _defineProperty(_en$data, 'HELP_4_Desc_11', 'Click the blue "Send Transaction" button below that.'), _defineProperty(_en$data, 'HELP_4_Desc_12', 'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button.'), _defineProperty(_en$data, 'HELP_4_Desc_13', 'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain.'), _defineProperty(_en$data, 'HELP_4_Desc_2', 'Navigate to the "Send Ether & Tokens" page.'), _defineProperty(_en$data, 'HELP_4_Desc_3', 'Select your wallet file -or- your private key and unlock your wallet.'), _defineProperty(_en$data, 'HELP_4_Desc_4', 'If the wallet is encrypted, a text box will automatically appear. Enter the password.'), _defineProperty(_en$data, 'HELP_4_Desc_5', 'Click the "Unlock Wallet" button.'), _defineProperty(_en$data, 'HELP_4_Desc_6', 'Enter the address you would like to send to in the "To Address:" field.'), _defineProperty(_en$data, 'HELP_4_Desc_7', 'Enter the amount you would like to send. You can also click the "Send Entire Balance" link if you would like the transfer the entire balance.'), _defineProperty(_en$data, 'HELP_4_Desc_9', 'Click "Generate Transaction".'), _defineProperty(_en$data, 'HELP_4_Title', '4) How do I send Ether from one wallet to another?'), _defineProperty(_en$data, 'HELP_4CX_Desc_1', 'First, you need to add a wallet. Once you have done that, you have 2 options: the "QuickSend" functionality from the Chrome Extension icon or the "Send Ether & Tokens" page.'), _defineProperty(_en$data, 'HELP_4CX_Desc_10', 'Enter the password for that wallet.'), _defineProperty(_en$data, 'HELP_4CX_Desc_11', 'Click "Send Transaction."'), _defineProperty(_en$data, 'HELP_4CX_Desc_12', 'Using "Send Ether & Tokens" Page'), _defineProperty(_en$data, 'HELP_4CX_Desc_2', 'QuickSend'), _defineProperty(_en$data, 'HELP_4CX_Desc_3', 'Click the Chrome Extension Icon.'), _defineProperty(_en$data, 'HELP_4CX_Desc_4', 'Click the "QuickSend" button.'), _defineProperty(_en$data, 'HELP_4CX_Desc_5', 'Select the wallet you wish to send from.'), _defineProperty(_en$data, 'HELP_4CX_Desc_6', 'Enter the address you would like to send to in the "To Address:" field.'), _defineProperty(_en$data, 'HELP_4CX_Desc_7', 'Enter the amount you would like to send. You can also click the "Send Entire Balance" link if you would like the transfer the entire balance.'), _defineProperty(_en$data, 'HELP_4CX_Desc_8', 'Click "Send Transaction".'), _defineProperty(_en$data, 'HELP_4CX_Desc_9', 'Verify the address and the amount you are sending is correct.'), _defineProperty(_en$data, 'HELP_4CX_Title', '4) How do I send Ether using MyEtherWallet CX?'), _defineProperty(_en$data, 'HELP_5_Desc_1', 'You can run MyEtherWallet.com on your computer instead of from the GitHub servers. You can generate a wallet completely offline and send transactions from the "Offline Transaction" page.'), _defineProperty(_en$data, 'HELP_5_Desc_7', 'MyEtherWallet.com is now running entirely on your computer.'), _defineProperty(_en$data, 'HELP_5_Desc_8', 'In case you are not familiar, you need to keep the entire folder in order to run the website, not just `index.html`. Don\'t touch or move anything around in the folder. If you are storing a backup of the MyEtherWallet repo for the future, we recommend just storing the ZIP so you can be sure the folder contents stay intact.'), _defineProperty(_en$data, 'HELP_5_Desc_9', 'As we are constantly updating MyEtherWallet.com, we recommend you periodically update your saved version of the repo.'), _defineProperty(_en$data, 'HELP_5_Title', '5) How do I run MyEtherWallet.com offline/locally?'), _defineProperty(_en$data, 'HELP_5CX_Desc_2', 'Click on `chrome-extension-vX.X.X.X.zip` and unzip it.'), _defineProperty(_en$data, 'HELP_5CX_Desc_3', 'Go to Google Chrome and find you settings (in the menu in the upper right).'), _defineProperty(_en$data, 'HELP_5CX_Desc_4', 'Click "Extensions" on the left.'), _defineProperty(_en$data, 'HELP_5CX_Desc_5', 'Check the "Developer Mode" button at the top of that page.'), _defineProperty(_en$data, 'HELP_5CX_Desc_6', 'Click the "Load unpacked extension..." button.'), _defineProperty(_en$data, 'HELP_5CX_Desc_7', 'Navigate to the now-unzipped folder that you downloaded earlier. Click "select".'), _defineProperty(_en$data, 'HELP_5CX_Desc_8', 'The extension should now show up in your extensions and in your Chrome Extension bar.'), _defineProperty(_en$data, 'HELP_5CX_Title', '5) How can I install this extension from the repo instead of the Chrome Store?'), _defineProperty(_en$data, 'HELP_7_Desc_0', '[Ethplorer.io](https://ethplorer.io/) is a great way to explore tokens and find the decimals of a token.'), _defineProperty(_en$data, 'HELP_7_Desc_1', 'Navigate to the "Send Ether & Tokens" page.'), _defineProperty(_en$data, 'HELP_7_Desc_10', 'You can now send that token as well as see it\'s balance in the sidebar.'), _defineProperty(_en$data, 'HELP_7_Desc_11', 'Click "Generate Transaction".'), _defineProperty(_en$data, 'HELP_7_Desc_12', 'A couple more fields will appear. This is your browser generating the transaction.'), _defineProperty(_en$data, 'HELP_7_Desc_13', 'Click the blue "Send Transaction" button below that.'), _defineProperty(_en$data, 'HELP_7_Desc_14', 'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button.'), _defineProperty(_en$data, 'HELP_7_Desc_15', 'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain.'), _defineProperty(_en$data, 'HELP_7_Desc_2', 'Unlock your wallet.'), _defineProperty(_en$data, 'HELP_7_Desc_3', 'Enter the address you would like to send to in the "To Address:" field.'), _defineProperty(_en$data, 'HELP_7_Desc_4', 'Enter the amount you would like to send.'), _defineProperty(_en$data, 'HELP_7_Desc_5', 'Select which token you would like to send.'), _defineProperty(_en$data, 'HELP_7_Desc_6', 'If you do not see the token listed'), _defineProperty(_en$data, 'HELP_7_Desc_7', 'Click "Custom".'), _defineProperty(_en$data, 'HELP_7_Desc_8', 'Enter the address, name, and decimals of the token. These are provided by the developers of the token and are also needed when you "Add a Watch Token" to Mist.'), _defineProperty(_en$data, 'HELP_7_Desc_9', 'Click "Save".'), _defineProperty(_en$data, 'HELP_7_Title', '7) How do I send tokens & add custom tokens?'), _defineProperty(_en$data, 'HELP_8_Desc_1', 'MyEtherWallet is not a web wallet. You don\'t have a login and nothing ever gets saved to our servers. It is simply an interface that allows you interact with the blockchain.'), _defineProperty(_en$data, 'HELP_8_Desc_2', 'If MyEtherWallet.com goes down, you would have to find another way (like geth or Ethereum Wallet / Mist) to do what we are doing. But you wouldn\'t have to "get" your Ether out of MyEtherWallet because it\'s not in MyEtherWallet. It\'s in whatever wallet your generated via our site.'), _defineProperty(_en$data, 'HELP_8_Desc_3', 'You can import your unencrypted private key and your Geth/Mist Format (encrypted) files directly into geth / Ethereum Wallet / Mist very easily now. See question #12 below.'), _defineProperty(_en$data, 'HELP_8_Desc_4', 'In addition, the likelihood of us taking MyEtherWallet down is slim to none. It costs us almost nothing to maintain as we aren\'t storing any information. If we do take the domain down, it still is, and always will be, publicly available at [https://github.com/kvhnuke/etherwallet](https://github.com/kvhnuke/etherwallet/tree/gh-pages). You can download the ZIP there and run it locally.'), _defineProperty(_en$data, 'HELP_8_Title', '8) What happens if your site goes down?'), _defineProperty(_en$data, 'HELP_8CX_Desc_1', 'First, all data is saved on your computer, not our servers. I know it can be confusing, but when you look at the Chrome Extension, you are NOT looking at stuff saved on our servers somewhere - it\'s all saved on your own computer.'), _defineProperty(_en$data, 'HELP_8CX_Desc_2', 'That said, it is **very important** that you back up all your information for any new wallets generated with MyEtherWallet CX. That way if anything happens to MyEtherWallet CX or your computer, you still have all the information necessary to access your Ether. See the #2a for how to back up your wallets.'), _defineProperty(_en$data, 'HELP_8CX_Desc_3', 'If for some reason MyEtherWallet CX disappears from the Chrome Store, you can find the source on Github and load it manually. See #5 above.'), _defineProperty(_en$data, 'HELP_8CX_Title', '8) What happens if MyEtherWallet CX disappears?'), _defineProperty(_en$data, 'HELP_9_Desc_1', 'No. It needs the internet in order to get the current gas price, nonce of your account, and broadcast the transaction (aka "send"). However, it only sends the signed transaction. Your private key safely stays with you. We also now provide an "Offline Transaction" page so that you can ensure your private keys are on an offline/airgapped computer at all times.'), _defineProperty(_en$data, 'HELP_9_Title', '9) Is the "Send Ether & Tokens" page offline?'), _defineProperty(_en$data, 'HELP_Contact_Title', 'Ways to Get in Touch'), _defineProperty(_en$data, 'HELP_Desc', 'Do you see something missing? Have another question? [Get in touch with us](mailto:support@myetherwallet.com), and we will not only answer your question, we will update this page to be more useful to people in the future!'), _defineProperty(_en$data, 'HELP_FAQ_Title', 'More Helpful Answers to Frequent Questions'), _defineProperty(_en$data, 'HELP_Remind_Desc_1', '**Ethereum, MyEtherWallet.com & MyEtherWallet CX, and some of the underlying Javascript libraries we use are under active development.** While we have thoroughly tested & tens of thousands of wallets have been successfully created by people all over the globe, there is always the remote possibility that something unexpected happens that causes your ETH to be lost. Please do not invest more than you are willing to lose, and please be careful. If something were to happen, we are sorry, but **we are not responsible for the lost Ether**.'), _defineProperty(_en$data, 'HELP_Remind_Desc_2', 'MyEtherWallet.com & MyEtherWallet CX are not "web wallets". You do not create an account or give us your Ether to hold onto. All data never leaves your computer/your browser. We make it easy for you to create, save, and access your information and interact with the blockchain.'), _defineProperty(_en$data, 'HELP_Remind_Desc_3', 'If you do not save your private key & password, there is no way to recover access to your wallet or the funds it holds.  Back them up in multiple physical locations &ndash; not just on your computer!'), _defineProperty(_en$data, 'HELP_Remind_Title', 'Some reminders'), _defineProperty(_en$data, 'HELP_Sec_Desc_1', 'If one of your first questions is "Why should I trust these people?", that is a good thing. Hopefully the following will help ease your fears.'), _defineProperty(_en$data, 'HELP_Sec_Desc_2', 'We\'ve been up and running since August 2015. If you search for ["myetherwallet" on reddit](https://www.reddit.com/search?q=myetherwallet), you can see numerous people who use us with great success.'), _defineProperty(_en$data, 'HELP_Sec_Desc_3', 'We aren\'t going to take your money or steal your private key(s). There is no malicious code on this site. In fact the "GENERATE WALLET" pages are completely client-side. That means that all the code is executed on ** your computer** and it is never saved and transmitted anywhere.'), _defineProperty(_en$data, 'HELP_Sec_Desc_4', 'Check the URL -- This site is being served through GitHub and you can see the source code here: [https://github.com/kvhnuke/etherwallet/tree/gh-pages](https://github.com/kvhnuke/etherwallet/tree/gh-pages) to [https://www.myetherwallet.com](https://www.myetherwallet.com).'), _defineProperty(_en$data, 'HELP_Sec_Desc_5', 'For generating wallets, you can download the [source code and run it locally](https://github.com/kvhnuke/etherwallet/releases/latest). See #5 above.'), _defineProperty(_en$data, 'HELP_Sec_Desc_6', 'Generate a test wallet and check and see what network activity is happening. The easiest way for you to do this is to right click on the page and click "inspect element". Go to the "Network" tab. Generate a test wallet. You will see there is no network activity. You may see something happening that looks like data:image/gif and data:image/png. Those are the QR codes being generated...on your computer...by your computer. No bytes were transferred.'), _defineProperty(_en$data, 'HELP_Sec_Desc_8', 'If you do not feel comfortable using this tool, then by all means, do not use it. We created this tool as a helpful way for people to generate wallets and make transactions without needing to dive into command line or run a full node. Again, feel free to reach out if you have concerns and we will respond as quickly as possible. Thanks!'), _defineProperty(_en$data, 'HELP_Sec_Title', 'Security'), _defineProperty(_en$data, 'HELP_SecCX_Desc_1', 'Where is this extension saving my information?'), _defineProperty(_en$data, 'HELP_SecCX_Desc_2', 'The information you store in this Chrome Extension is saved via [chrome.storage](http://chrome.storage/). - this is the same place your passwords are saved when you save your password in Chrome.'), _defineProperty(_en$data, 'HELP_SecCX_Desc_3', 'What information is saved?'), _defineProperty(_en$data, 'HELP_SecCX_Desc_4', 'The address, nickname, private key is stored in chrome.storage. The private key is encrypted using the password you set when you added the wallet. The nickname and wallet address is not encrypted.'), _defineProperty(_en$data, 'HELP_SecCX_Desc_5', 'Why aren\'t the nickname and wallet address encrypted?'), _defineProperty(_en$data, 'HELP_SecCX_Desc_6', 'If we were to encrypt these items, you would need to enter a password each time you wanted to view your account balance or view the nicknames. If this concerns you, we recommend you use MyEtherWallet.com instead of this Chrome Extension.'), _defineProperty(_en$data, 'HELP_SecCX_Title', 'Security - MyEtherWallet CX'), _defineProperty(_en$data, 'HELP_Warning', 'If you created a wallet -or- downloaded the repo before **Dec. 31st, 2015**, please check your wallets &amp; download a new version of the repo. Click for details.'), _en$data);
+  decrypt_Access: 'How would you like to access your wallet?',
+  decrypt_Select: 'Select a Wallet',
+  decrypt_Title: 'Select the format of your private key',
+
+  ERROR_0: '(error_01) Please enter a valid amount.',
+  ERROR_1: '(error_02) Your password must be at least 9 characters. Please ensure it is a strong password.',
+  ERROR_2: '(error_03) Sorry! We don\'t recognize this type of wallet file.',
+  ERROR_3: '(error_04) This is not a valid wallet file.',
+  ERROR_4: '(error_05) This unit doesn\'t exists, please use the one of the following units',
+  ERROR_5: '(error_06) Please enter a valid address.',
+  ERROR_6: '(error_07) Please enter a valid password.',
+  ERROR_7: '(error_08) Please enter valid decimals     (Must be an integer. Try 0-18.)',
+  ERROR_8: '(error_09) Please enter a valid gas limit  (Must be an integer. Try 21000-4000000.)',
+  ERROR_9: '(error_10) Please enter a valid data value (Must be hex.)',
+  ERROR_10: '(error_11) Please enter a valid gas price. (Must be an integer. Try 20 PLAT / 20000000000 WEI.)',
+  ERROR_11: '(error_12) Please enter a valid nonce (Must be an integer.)',
+  ERROR_12: '(error_13) Invalid signed transaction.',
+  ERROR_13: '(error_14) A wallet with this nickname already exists.',
+  ERROR_14: '(error_15) Wallet not found.',
+  ERROR_15: '(error_16) Whoops. It doesn\'t look like a proposal with this ID exists yet or there is an error reading this proposal.',
+  ERROR_16: '(error_17) A wallet with this address already exists in storage. Please check your wallets page.',
+  ERROR_17: '(error_18) Insufficient balance. Your gas limit * gas price + amount to send exceeds your current balance. Send more ETH to your account or use the "Send Entire Balance" button. If you believe this is in error, try pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)',
+  ERROR_18: '(error_19) All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.',
+  ERROR_19: '(error_20) Please enter a valid symbol',
+  ERROR_20: '(error_21) Not a valid ERC-20 token',
+  ERROR_21: '(error_22) Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.',
+  ERROR_22: '(error_23) Please enter a valid node name',
+  ERROR_23: '(error_24) Please enter a valid URL. If you are on https, your URL must be https',
+  ERROR_24: '(error_25) Please enter a valid port.',
+  ERROR_25: '(error_26) Please enter a valid chain ID.',
+  ERROR_26: '(error_27) Please enter a valid ABI.',
+  ERROR_27: '(error_28) Minimum amount: 0.01. Max amount:',
+  ERROR_28: '(error_29) You need this `Keystore File + Password` or the `Private Key` (next page) to access this wallet in the future. ',
+  ERROR_29: '(error_30) Please enter a valid user and password.',
+  ERROR_30: '(error_31) Please enter a valid name (7+ characters, limited punctuation)',
+  ERROR_31: '(error_32) Please enter a valid secret phrase.',
+  ERROR_32: '(error_33) Could not connect to the node. Refresh your page, try a different node (top-right corner), check your firewall settings. If custom node, check your configs.',
+  ERROR_33: '(error_34) The wallet you have unlocked does not match the owner\'s address.',
+  ERROR_34: '(error_35) The name you are attempting to reveal does not match the name you have entered.',
+  ERROR_35: '(error_36) Input address is not checksummed. <a href="https://myetherwallet.github.io/knowledge-base/addresses/not-checksummed-shows-when-i-enter-an-address.html" target="_blank" rel="noopener noreferrer">What does that mean?</a>',
+  ERROR_36: '(error_37) Please enter a valid TX hash',
+  ERROR_37: '(error_38) Please enter valid hex string. Hex only contains: 0x, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, a, b, c, d, e, f',
+  ERROR_38: '(error_39) Offer must have either price or reserve set to more than 0',
+  ERROR_39: '(error_40) Bid must be more than the specified minimum',
+  ERROR_40: '(error_41) Your password and re-typed password do not match!',
+
+  GEN_desc: 'If you want to generate multiple wallets, you can do so here',
+  GEN_Help_1: 'Use your',
+  GEN_Help_10: 'Right click & save file as. Filename:',
+  GEN_Help_11: 'Don\'t open this file on your computer',
+  GEN_Help_12: 'Use it to unlock your wallet via Aion Wallet',
+  GEN_Help_13: 'How to Back Up Your Keystore File',
+  GEN_Help_14: 'What are these Different Formats?',
+  GEN_Help_15: 'Preventing loss &amp; theft of your funds.',
+  GEN_Help_16: 'What are these Different Formats?',
+  GEN_Help_17: 'Why Should I?',
+  GEN_Help_18: 'To have a secondary backup.',
+  GEN_Help_19: 'In case you ever forget your password.',
+  GEN_Help_2: 'to access your account.',
+  GEN_Help_20: 'Cold Storage',
+  GEN_Help_3: 'Your device * is * your wallet.',
+  GEN_Help_4: 'Guides & FAQ',
+  GEN_Help_5: 'How to Create a Wallet',
+  GEN_Help_6: 'Getting Started',
+  GEN_Help_7: 'Keep it safe · Make a backup · Don\'t share it with anyone · Don\'t lose it · It cannot be recovered if you lose it.',
+  GEN_Help_8: 'Not Downloading a File?',
+  GEN_Help_9: 'Try using Google Chrome',
+  GEN_Label_1: 'Enter a password',
+  GEN_Label_2: 'Save your `Keystore` File.',
+  GEN_Label_3: 'Continue to Wallet',
+  GEN_Label_4: 'Print paper wallet or a QR code.',
+  GEN_Label_5: 'Save Your `Private Key`.',
+  GEN_Placeholder_1: 'Do NOT forget to save this!',
+  GEN_Placeholder_2: 'Retype your password!',
+  GEN_SuccessMsg: 'Success! Your wallet has been generated.',
+  GEN_Unlock: 'Unlock your wallet to see your address',
+  GET_ConfButton: 'I understand. Continue.',
+
+  MSG_date: 'Date',
+  MSG_info1: 'Include the current date so the signature cannot be reused on a different date.',
+  MSG_info2: 'Include your nickname and where you use the nickname so someone else cannot use it.',
+  MSG_info3: 'Include a specific reason for the message so it cannot be reused for a different purpose.',
+  MSG_message: 'Message',
+  MSG_signature: 'Signature',
+  MSG_verify: 'Verify Message',
+
+  NAV_AddWallet: 'Add Wallet',
+  NAV_BulkGenerate: 'Bulk Generate',
+  NAV_CheckTxStatus: 'Check TX Status',
+  NAV_Contact: 'Contact',
+  NAV_Contracts: 'Contracts',
+  NAV_DeployContract: 'Deploy Contract',
+  NAV_DomainSale: 'DomainSale',
+  NAV_ENS: 'ENS',
+  NAV_GenerateWallet: 'Create New Wallet',
+  NAV_GenerateWallet_alt: 'New Wallet',
+  NAV_Help: 'Help',
+  NAV_InteractContract: 'Interact with Contract',
+  NAV_Multisig: 'Multisig',
+  NAV_MyWallets: 'My Wallets',
+  NAV_Offline: 'Send Offline',
+  NAV_SendEther: 'Use Wallet',
+  NAV_SendTokens: 'Use Wallet',
+  NAV_SignMsg: 'Sign Message',
+  NAV_Swap: 'Swap',
+  NAV_TxStatus: 'TX Status',
+  NAV_ViewWallet: 'View Wallet Info',
+  NAV_YourWallets: 'Your Wallets',
+
+  NONCE_Desc: 'The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.',
+
+  SEND_addr: 'To Address',
+  SEND_amount: 'Amount to Send',
+  SEND_amount_short: 'Amount',
+  SEND_custom: 'Add Custom Token',
+  SEND_gas: 'Gas',
+  SEND_generate: 'Generate Transaction',
+  SEND_raw: 'Raw Transaction',
+  SEND_signed: 'Signed Transaction',
+  SEND_trans: 'Send Transaction',
+  SEND_TransferTotal: 'Send Entire Balance',
+  SENDModal_Content_1: 'You are about to send',
+  SENDModal_Content_2: 'to address',
+  SENDModal_Content_3: 'Are you sure you want to do this?',
+  SENDModal_Content_4: 'NOTE: If you encounter an error, you most likely need to add ether to your account to cover the gas cost of sending tokens. Gas is paid in ether.',
+  SENDModal_No: 'No, get me out of here!',
+  SENDModal_Title: 'Warning!',
+  SENDModal_Yes: 'Yes, I am sure! Make transaction.',
+
+  sidebar_AccountAddr: 'Account Address',
+  sidebar_AccountBal: 'Account Balance',
+  sidebar_AccountInfo: 'Account Information',
+  sidebar_DisplayOnLedger: 'Display address on Ledger',
+  sidebar_DisplayOnTrezor: 'Display address on TREZOR',
+  sidebar_donate: 'Donate',
+  sidebar_donation: 'MyEtherWallet is a free, open-source service dedicated to your privacy and security. The more donations we receive, the more time we spend creating new features, listening to your feedback, and giving you what you want. We are just two people trying to change the world. Help us?',
+  sidebar_Equiv: 'Transaction Status',
+  sidebar_thanks: 'THANK YOU!!!',
+  sidebar_TokenBal: 'Token Balances',
+  sidebar_TransHistory: 'Transaction History',
+
+  SUCCESS_1: 'Valid address',
+  SUCCESS_2: 'Wallet successfully decrypted',
+  SUCCESS_3: 'Your TX has been broadcast to the network. This does not mean it has been mined & sent. During times of extreme volume, it may take 3+ hours to send. 1) Check your TX below, log on to dashboard.aion.network to check your transaction 2) Save your TX Hash in case you need it later:  ',
+  SUCCESS_4: 'Your wallet was successfully added',
+  SUCCESS_5: 'File Selected',
+  SUCCESS_6: 'You are successfully connected',
+  SUCCESS_7: 'Message Signature Verified',
+
+  TRANS_advanced: '+Advanced: Add Data',
+  TRANS_data: 'Data',
+  TRANS_desc: 'If you want to send Tokens, please use the "Send Token" page instead.',
+  TRANS_gas: 'NRG Limit',
+  TRANS_sendInfo: 'A standard transaction using 21000 gas will cost 0.000441 ETH. We do not take a transaction fee.',
+
+  TXFEE_Desc: 'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)',
+
+  WARN_Send_Link: 'You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started.',
+
+  x_Access: 'Access',
+  x_AddessDesc: 'Your Address can also be known as your `Account #` or your `Public Key`. It is what you share with people so they can send you AION. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere.',
+  x_Address: 'Your Address',
+  x_Cancel: 'Cancel',
+  x_CancelReplaceTx: 'Cancel or Replace Transaction',
+  x_CancelTx: 'Cancel Transaction',
+  x_CSV: 'CSV file (unencrypted)',
+  x_DigitalBitbox: 'Digital Bitbox',
+  x_Download: 'Download',
+  x_Json: 'JSON File (unencrypted)',
+  x_JsonDesc: 'This is the unencrypted, JSON format of your private key. This means you do not need the password but anyone who finds your JSON can access your wallet & Ether without the password.',
+  x_Keystore: 'Keystore File (Recommended · Encrypted)',
+  x_Keystore2: 'Keystore File ',
+  x_KeystoreDesc: 'This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up.',
+  x_Ledger: 'Ledger Wallet',
+  x_MetaMask: 'MetaMask / Mist',
+  x_Mnemonic: 'Mnemonic Phrase',
+  x_ParityPhrase: 'Parity Phrase',
+  x_Password: 'Password',
+  x_PasswordDesc: 'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+  x_Print: 'Print Paper Wallet',
+  x_PrintDesc: 'ProTip: If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!',
+  x_PrintShort: 'Print',
+  x_PrivKey: 'Private Key (unencrypted)',
+  x_PrivKey2: 'Private Key',
+  x_PrivKeyDesc: 'This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended.',
+  x_ReadMore: 'Read More',
+  x_ReplaceTx: 'Replace Transaction',
+  x_Save: 'Save',
+  x_TransHash: 'Transaction Hash',
+  x_Trezor: 'TREZOR',
+  x_TXFee: 'TX Fee',
+  x_TxHash: 'TX Hash',
+  x_TXT: 'TXT file (unencrypted)',
+  x_Wallet: 'Wallet'
+
+};
 
 module.exports = en;
 
-},{}],135:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 var en = require('./en');
@@ -22617,7 +20167,7 @@ translate.marked = function (data) {
 };
 module.exports = translate;
 
-},{"./en":134}],136:[function(require,module,exports){
+},{"./en":117}],119:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -22765,6 +20315,9 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
     }
     try {
         uiFuncs.isTxDataValid(txData);
+
+        txData.gasprice = 1;
+
         var genTxWithInfo = function genTxWithInfo(data) {
 
             var rawTx = {
@@ -22780,56 +20333,9 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
 
             txData.gasprice = 1;
 
-            //var rawTxArray= ["0x00", txData.to,txData.value, '0x'+txData.data, Date.now()*1000,  txData.gasLimit, 1, "0x01"];
             var rawTxArray = [ethFuncs.sanitizeHex('0x' + aionweb3.eth.getTransactionCount('0x' + $scope.wallet.getPublicKeyString())), ethFuncs.sanitizeHex(txData.to), ethFuncs.sanitizeHex((txData.value * Math.pow(10, 18)).toString(16)), ethFuncs.sanitizeHex('0x' + txData.data), ethFuncs.sanitizeHex('0x' + (Date.now() * 1000).toString(16)), ethFuncs.sanitizeHex('0x' + txData.gasLimit.toString(16)), ethFuncs.sanitizeHex('0x' + txData.gasprice.toString(16)), "0x01"];
 
-            console.log(rawTxArray);
-
-            //if (ajaxReq.eip155) rawTx.chainId = ajaxReq.chainId;
-            //var eTx = new ethUtil.Tx(rawTx);
-            /*
-            if ((typeof txData.hwType != "undefined") && (txData.hwType == "ledger")) {
-                var app = new ledgerEth(txData.hwTransport);
-                var EIP155Supported = false;
-                var localCallback = function(result, error) {
-                    if (typeof error != "undefined") {
-                        if (callback !== undefined) callback({
-                            isError: true,
-                            error: error
-                        });
-                        return;
-                    }
-                    var splitVersion = result['version'].split('.');
-                    if (parseInt(splitVersion[0]) > 1) {
-                        EIP155Supported = true;
-                    } else
-                    if (parseInt(splitVersion[1]) > 0) {
-                        EIP155Supported = true;
-                    } else
-                    if (parseInt(splitVersion[2]) > 2) {
-                        EIP155Supported = true;
-                    }
-                    uiFuncs.signTxLedger(app, eTx, rawTx, txData, !EIP155Supported, callback);
-                }
-                app.getAppConfiguration(localCallback);
-            } else if ((typeof txData.hwType != "undefined") && (txData.hwType == "trezor")) {
-                uiFuncs.signTxTrezor(rawTx, txData, callback);
-            } else if ((typeof txData.hwType != "undefined") && (txData.hwType == "web3")) { 
-              // for web3, we dont actually sign it here
-              // instead we put the final params in the "signedTx" field and
-              // wait for the confirmation dialogue / sendTx method
-              var txParams = Object.assign({ from: txData.from }, rawTx)
-              rawTx.rawTx = JSON.stringify(rawTx);
-              rawTx.signedTx = JSON.stringify(txParams);
-              rawTx.isError = false;
-              callback(rawTx)
-            } else if ((typeof txData.hwType != "undefined") && (txData.hwType == "digitalBitbox")) {
-                uiFuncs.signTxDigitalBitbox(eTx, rawTx, txData, callback);
-            } else {
-              //  eTx.sign(new Buffer(txData.privKey, 'hex'));
-               // rawTx.rawTx = JSON.stringify(rawTx);
-               // rawTx.signedTx = '0x' + eTx.serialize().toString('hex');
-            */var RAWTX = RLP.encode(rawTxArray);
+            var RAWTX = RLP.encode(rawTxArray);
             console.log("transactionRaw serialized " + RAWTX.toString('hex'));
 
             var SIG = Buffer.concat([new Buffer(hexStringToByte($scope.wallet.getPublicKeyString())), new Buffer(nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX, "", 32)), hexStringToByte($scope.wallet.getPrivateKeyString())))]);
@@ -22842,8 +20348,8 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
             rawTx.rawTx = JSON.stringify(rawTx);
             rawTx.isError = false;
             if (callback !== undefined) callback(rawTx);
-            // }
         };
+
         if (txData.nonce || txData.gasPrice) {
             var data = {
                 nonce: txData.nonce,
@@ -22852,18 +20358,8 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
             data.isOffline = txData.isOffline ? txData.isOffline : false;
             genTxWithInfo(data);
         } else {
-            ajaxReq.getTransactionData(txData.from, function (data) {
-                /*if (data.error && callback !== undefined) {
-                    callback({
-                        isError: true,
-                        error: es
-                    });
-                } else */{
-                    data = data.data;
-                    // data.isOffline = txData.isOffline ? txData.isOffline : false;
-                    genTxWithInfo(data);
-                }
-            });
+
+            genTxWithInfo(data);
         }
     } catch (e) {
         if (callback !== undefined) callback({
@@ -22879,7 +20375,7 @@ uiFuncs.sendTx = function (signedTx, callback) {
         var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
     } catch (err) {
         console.log("not connected");
-        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+        uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
     }
 
     aionweb3.eth.sendRawTransaction('0x' + signedTx, function (err, txHash) {
@@ -22898,29 +20394,7 @@ uiFuncs.sendTx = function (signedTx, callback) {
         if (callback !== undefined) callback(resp);
     });
 };
-/*
-uiFuncs.transferAllBalance = function(fromAdd, gasLimit, callback) {
-    try {
-        ajaxReq.getTransactionData(fromAdd, function(data) {
-            if (data.error) throw data.msg;
-            data = data.data;
-            //var gasPrice = new BigNumber(ethFuncs.sanitizeHex(ethFuncs.addTinyMoreToGas(data.gasprice))).times(gasLimit);
-            var maxVal = new BigNumber(data.balance)//.minus(gasPrice);
-            maxVal = etherUnits.toEther(maxVal, 'wei') < 0 ? 0 : etherUnits.toEther(maxVal, 'wei');
-            if (callback !== undefined) callback({
-                isError: false,
-                unit: "ether",
-                value: maxVal
-            });
-        });
-    } catch (e) {
-        if (callback !== undefined) callback({
-            isError: true,
-            error: e
-        });
-    }
-}
-*/
+
 uiFuncs.notifier = {
     alerts: {},
     warning: function warning(msg) {
@@ -22938,7 +20412,6 @@ uiFuncs.notifier = {
 
         msg = msg.message ? msg.message : msg;
         // Danger messages can be translated based on the type of node
-        msg = globalFuncs.getEthNodeMsg(msg);
         this.addAlert("danger", msg, duration);
     },
     success: function success(msg) {
@@ -22978,7 +20451,7 @@ uiFuncs.kernelRunning = true;
 module.exports = uiFuncs;
 
 }).call(this,require("buffer").Buffer)
-},{"./RLPlib.js":1,"./aionWeb3/index":2,"./blakejs/blake2b":89,"./nacl.js":115,"buffer":196}],137:[function(require,module,exports){
+},{"./RLPlib.js":1,"./aionWeb3/index":2,"./blakejs/blake2b":89,"./nacl.js":113,"buffer":179}],120:[function(require,module,exports){
 'use strict';
 
 var validator = function validator() {};
@@ -22993,9 +20466,7 @@ validator.isValidAddress = function (address) {
 validator.isChecksumAddress = function (address) {
     return ethFuncs.isChecksumAddress(address);
 };
-validator.isValidENSorEtherAddress = function (address) {
-    return validator.isValidAddress(address) || validator.isValidENSAddress(address);
-};
+
 validator.isValidENSName = function (str) {
     try {
         return str.length > 6 && ens.normalise(str) != '' && str.substring(0, 2) != '0x';
@@ -23006,12 +20477,7 @@ validator.isValidENSName = function (str) {
 validator.isValidTxHash = function (txHash) {
     return txHash.substring(0, 2) == "0x" && txHash.length == 66 && this.isValidHex(txHash);
 };
-/*
-validator.isValidENSAddress = function(address) {
-    address = ens.normalise(address);
-    return address.lastIndexOf(".") != -1;
-}
-*/
+
 validator.isValidBTCAddress = function (address) {
     return ethUtil.WAValidator.validate(address, 'BTC');
 };
@@ -23050,7 +20516,7 @@ validator.isValidURL = function (str) {
 };
 module.exports = validator;
 
-},{}],138:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 
 var Wallet = require('./myetherwallet.js');
@@ -23069,15 +20535,6 @@ Web3Wallet.prototype.getAddress = function () {
     return this.addressBuffer;
 };
 
-// Web3Wallet.prototype.getPath = function() {
-//     throw new Error('Web3Wallet - method not supported')
-// }
-// Web3Wallet.prototype.getHWType = function() {
-//     throw new Error('Web3Wallet - method not supported')
-// }
-// Web3Wallet.prototype.getHWTransport = function() {
-//     throw new Error('Web3Wallet - method not supported')
-// }
 Web3Wallet.prototype.getPrivateKey = function () {
     throw new Error('Web3Wallet - method not supported');
 };
@@ -23106,7 +20563,7 @@ Web3Wallet.prototype.getV3Filename = function (timestamp) {
 
 module.exports = Web3Wallet;
 
-},{"./myetherwallet.js":114}],139:[function(require,module,exports){
+},{"./myetherwallet.js":112}],122:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
@@ -27266,11 +24723,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],140:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":139}],141:[function(require,module,exports){
+},{"./angular-animate":122}],124:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
@@ -28073,11 +25530,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],142:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":141}],143:[function(require,module,exports){
+},{"./angular-sanitize":124}],126:[function(require,module,exports){
 /*!
  * angular-translate - v2.17.0 - 2017-12-21
  * 
@@ -28129,7 +25586,7 @@ return 'pascalprecht.translate';
 
 }));
 
-},{}],144:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 /*!
  * angular-translate - v2.17.0 - 2017-12-21
  * 
@@ -31914,7 +29371,7 @@ return 'pascalprecht.translate';
 
 }));
 
-},{}],145:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 /**
  * @license AngularJS v1.6.9
  * (c) 2010-2018 Google, Inc. http://angularjs.org
@@ -66274,11 +63731,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],146:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":145}],147:[function(require,module,exports){
+},{"./angular":128}],130:[function(require,module,exports){
 var asn1 = exports;
 
 asn1.bignum = require('bn.js');
@@ -66289,7 +63746,7 @@ asn1.constants = require('./asn1/constants');
 asn1.decoders = require('./asn1/decoders');
 asn1.encoders = require('./asn1/encoders');
 
-},{"./asn1/api":148,"./asn1/base":150,"./asn1/constants":154,"./asn1/decoders":156,"./asn1/encoders":159,"bn.js":165}],148:[function(require,module,exports){
+},{"./asn1/api":131,"./asn1/base":133,"./asn1/constants":137,"./asn1/decoders":139,"./asn1/encoders":142,"bn.js":148}],131:[function(require,module,exports){
 var asn1 = require('../asn1');
 var inherits = require('inherits');
 
@@ -66352,7 +63809,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   return this._getEncoder(enc).encode(data, reporter);
 };
 
-},{"../asn1":147,"inherits":257,"vm":339}],149:[function(require,module,exports){
+},{"../asn1":130,"inherits":240,"vm":321}],132:[function(require,module,exports){
 var inherits = require('inherits');
 var Reporter = require('../base').Reporter;
 var Buffer = require('buffer').Buffer;
@@ -66470,7 +63927,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
   return out;
 };
 
-},{"../base":150,"buffer":196,"inherits":257}],150:[function(require,module,exports){
+},{"../base":133,"buffer":179,"inherits":240}],133:[function(require,module,exports){
 var base = exports;
 
 base.Reporter = require('./reporter').Reporter;
@@ -66478,7 +63935,7 @@ base.DecoderBuffer = require('./buffer').DecoderBuffer;
 base.EncoderBuffer = require('./buffer').EncoderBuffer;
 base.Node = require('./node');
 
-},{"./buffer":149,"./node":151,"./reporter":152}],151:[function(require,module,exports){
+},{"./buffer":132,"./node":134,"./reporter":135}],134:[function(require,module,exports){
 var Reporter = require('../base').Reporter;
 var EncoderBuffer = require('../base').EncoderBuffer;
 var DecoderBuffer = require('../base').DecoderBuffer;
@@ -67114,7 +64571,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
   return /^[A-Za-z0-9 '\(\)\+,\-\.\/:=\?]*$/.test(str);
 };
 
-},{"../base":150,"minimalistic-assert":272}],152:[function(require,module,exports){
+},{"../base":133,"minimalistic-assert":255}],135:[function(require,module,exports){
 var inherits = require('inherits');
 
 function Reporter(options) {
@@ -67237,7 +64694,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
   return this;
 };
 
-},{"inherits":257}],153:[function(require,module,exports){
+},{"inherits":240}],136:[function(require,module,exports){
 var constants = require('../constants');
 
 exports.tagClass = {
@@ -67281,7 +64738,7 @@ exports.tag = {
 };
 exports.tagByName = constants._reverse(exports.tag);
 
-},{"../constants":154}],154:[function(require,module,exports){
+},{"../constants":137}],137:[function(require,module,exports){
 var constants = exports;
 
 // Helper
@@ -67302,7 +64759,7 @@ constants._reverse = function reverse(map) {
 
 constants.der = require('./der');
 
-},{"./der":153}],155:[function(require,module,exports){
+},{"./der":136}],138:[function(require,module,exports){
 var inherits = require('inherits');
 
 var asn1 = require('../../asn1');
@@ -67628,13 +65085,13 @@ function derDecodeLen(buf, primitive, fail) {
   return len;
 }
 
-},{"../../asn1":147,"inherits":257}],156:[function(require,module,exports){
+},{"../../asn1":130,"inherits":240}],139:[function(require,module,exports){
 var decoders = exports;
 
 decoders.der = require('./der');
 decoders.pem = require('./pem');
 
-},{"./der":155,"./pem":157}],157:[function(require,module,exports){
+},{"./der":138,"./pem":140}],140:[function(require,module,exports){
 var inherits = require('inherits');
 var Buffer = require('buffer').Buffer;
 
@@ -67685,7 +65142,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
   return DERDecoder.prototype.decode.call(this, input, options);
 };
 
-},{"./der":155,"buffer":196,"inherits":257}],158:[function(require,module,exports){
+},{"./der":138,"buffer":179,"inherits":240}],141:[function(require,module,exports){
 var inherits = require('inherits');
 var Buffer = require('buffer').Buffer;
 
@@ -67982,13 +65439,13 @@ function encodeTag(tag, primitive, cls, reporter) {
   return res;
 }
 
-},{"../../asn1":147,"buffer":196,"inherits":257}],159:[function(require,module,exports){
+},{"../../asn1":130,"buffer":179,"inherits":240}],142:[function(require,module,exports){
 var encoders = exports;
 
 encoders.der = require('./der');
 encoders.pem = require('./pem');
 
-},{"./der":158,"./pem":160}],160:[function(require,module,exports){
+},{"./der":141,"./pem":143}],143:[function(require,module,exports){
 var inherits = require('inherits');
 
 var DEREncoder = require('./der');
@@ -68011,7 +65468,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
   return out.join('\n');
 };
 
-},{"./der":158,"inherits":257}],161:[function(require,module,exports){
+},{"./der":141,"inherits":240}],144:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -68505,7 +65962,7 @@ var objectKeys = Object.keys || function (obj) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"util/":333}],162:[function(require,module,exports){
+},{"util/":315}],145:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -68623,7 +66080,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],163:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 /*! bignumber.js v4.1.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
 ;(function (globalObj) {
@@ -71359,7 +68816,7 @@ function fromByteArray (uint8) {
     }
 })(this);
 
-},{}],164:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 // Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
 // Format: 0x30 [total-length] 0x02 [R-length] [R] 0x02 [S-length] [S]
 // NOTE: SIGHASH byte ignored AND restricted, truncate before use
@@ -71474,7 +68931,7 @@ module.exports = {
   encode: encode
 }
 
-},{"safe-buffer":309}],165:[function(require,module,exports){
+},{"safe-buffer":292}],148:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -74903,7 +72360,7 @@ module.exports = {
   };
 })(typeof module === 'undefined' || module, this);
 
-},{"buffer":167}],166:[function(require,module,exports){
+},{"buffer":150}],149:[function(require,module,exports){
 var r;
 
 module.exports = function rand(len) {
@@ -74970,9 +72427,9 @@ if (typeof self === 'object') {
   }
 }
 
-},{"crypto":167}],167:[function(require,module,exports){
+},{"crypto":150}],150:[function(require,module,exports){
 
-},{}],168:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 // based on the aes implimentation in triple sec
 // https://github.com/keybase/triplesec
 // which is in turn based on the one from crypto-js
@@ -75202,7 +72659,7 @@ AES.prototype.scrub = function () {
 
 module.exports.AES = AES
 
-},{"safe-buffer":309}],169:[function(require,module,exports){
+},{"safe-buffer":292}],152:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -75321,7 +72778,7 @@ StreamCipher.prototype.setAAD = function setAAD (buf) {
 
 module.exports = StreamCipher
 
-},{"./aes":168,"./ghash":173,"./incr32":174,"buffer-xor":195,"cipher-base":197,"inherits":257,"safe-buffer":309}],170:[function(require,module,exports){
+},{"./aes":151,"./ghash":156,"./incr32":157,"buffer-xor":178,"cipher-base":180,"inherits":240,"safe-buffer":292}],153:[function(require,module,exports){
 var ciphers = require('./encrypter')
 var deciphers = require('./decrypter')
 var modes = require('./modes/list.json')
@@ -75336,7 +72793,7 @@ exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"./decrypter":171,"./encrypter":172,"./modes/list.json":182}],171:[function(require,module,exports){
+},{"./decrypter":154,"./encrypter":155,"./modes/list.json":165}],154:[function(require,module,exports){
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
 var MODES = require('./modes')
@@ -75459,7 +72916,7 @@ function createDecipher (suite, password) {
 exports.createDecipher = createDecipher
 exports.createDecipheriv = createDecipheriv
 
-},{"./aes":168,"./authCipher":169,"./modes":181,"./streamCipher":184,"cipher-base":197,"evp_bytestokey":240,"inherits":257,"safe-buffer":309}],172:[function(require,module,exports){
+},{"./aes":151,"./authCipher":152,"./modes":164,"./streamCipher":167,"cipher-base":180,"evp_bytestokey":223,"inherits":240,"safe-buffer":292}],155:[function(require,module,exports){
 var MODES = require('./modes')
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
@@ -75575,7 +73032,7 @@ function createCipher (suite, password) {
 exports.createCipheriv = createCipheriv
 exports.createCipher = createCipher
 
-},{"./aes":168,"./authCipher":169,"./modes":181,"./streamCipher":184,"cipher-base":197,"evp_bytestokey":240,"inherits":257,"safe-buffer":309}],173:[function(require,module,exports){
+},{"./aes":151,"./authCipher":152,"./modes":164,"./streamCipher":167,"cipher-base":180,"evp_bytestokey":223,"inherits":240,"safe-buffer":292}],156:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var ZEROES = Buffer.alloc(16, 0)
 
@@ -75666,7 +73123,7 @@ GHASH.prototype.final = function (abl, bl) {
 
 module.exports = GHASH
 
-},{"safe-buffer":309}],174:[function(require,module,exports){
+},{"safe-buffer":292}],157:[function(require,module,exports){
 function incr32 (iv) {
   var len = iv.length
   var item
@@ -75683,7 +73140,7 @@ function incr32 (iv) {
 }
 module.exports = incr32
 
-},{}],175:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 var xor = require('buffer-xor')
 
 exports.encrypt = function (self, block) {
@@ -75702,7 +73159,7 @@ exports.decrypt = function (self, block) {
   return xor(out, pad)
 }
 
-},{"buffer-xor":195}],176:[function(require,module,exports){
+},{"buffer-xor":178}],159:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var xor = require('buffer-xor')
 
@@ -75737,7 +73194,7 @@ exports.encrypt = function (self, data, decrypt) {
   return out
 }
 
-},{"buffer-xor":195,"safe-buffer":309}],177:[function(require,module,exports){
+},{"buffer-xor":178,"safe-buffer":292}],160:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -75781,7 +73238,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":309}],178:[function(require,module,exports){
+},{"safe-buffer":292}],161:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -75808,7 +73265,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":309}],179:[function(require,module,exports){
+},{"safe-buffer":292}],162:[function(require,module,exports){
 var xor = require('buffer-xor')
 var Buffer = require('safe-buffer').Buffer
 var incr32 = require('../incr32')
@@ -75840,7 +73297,7 @@ exports.encrypt = function (self, chunk) {
   return xor(chunk, pad)
 }
 
-},{"../incr32":174,"buffer-xor":195,"safe-buffer":309}],180:[function(require,module,exports){
+},{"../incr32":157,"buffer-xor":178,"safe-buffer":292}],163:[function(require,module,exports){
 exports.encrypt = function (self, block) {
   return self._cipher.encryptBlock(block)
 }
@@ -75849,7 +73306,7 @@ exports.decrypt = function (self, block) {
   return self._cipher.decryptBlock(block)
 }
 
-},{}],181:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 var modeModules = {
   ECB: require('./ecb'),
   CBC: require('./cbc'),
@@ -75869,7 +73326,7 @@ for (var key in modes) {
 
 module.exports = modes
 
-},{"./cbc":175,"./cfb":176,"./cfb1":177,"./cfb8":178,"./ctr":179,"./ecb":180,"./list.json":182,"./ofb":183}],182:[function(require,module,exports){
+},{"./cbc":158,"./cfb":159,"./cfb1":160,"./cfb8":161,"./ctr":162,"./ecb":163,"./list.json":165,"./ofb":166}],165:[function(require,module,exports){
 module.exports={
   "aes-128-ecb": {
     "cipher": "AES",
@@ -76062,7 +73519,7 @@ module.exports={
   }
 }
 
-},{}],183:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 (function (Buffer){
 var xor = require('buffer-xor')
 
@@ -76082,7 +73539,7 @@ exports.encrypt = function (self, chunk) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"buffer-xor":195}],184:[function(require,module,exports){
+},{"buffer":179,"buffer-xor":178}],167:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -76111,7 +73568,7 @@ StreamCipher.prototype._final = function () {
 
 module.exports = StreamCipher
 
-},{"./aes":168,"cipher-base":197,"inherits":257,"safe-buffer":309}],185:[function(require,module,exports){
+},{"./aes":151,"cipher-base":180,"inherits":240,"safe-buffer":292}],168:[function(require,module,exports){
 var ebtk = require('evp_bytestokey')
 var aes = require('browserify-aes/browser')
 var DES = require('browserify-des')
@@ -76186,7 +73643,7 @@ function getCiphers () {
 }
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"browserify-aes/browser":170,"browserify-aes/modes":181,"browserify-des":186,"browserify-des/modes":187,"evp_bytestokey":240}],186:[function(require,module,exports){
+},{"browserify-aes/browser":153,"browserify-aes/modes":164,"browserify-des":169,"browserify-des/modes":170,"evp_bytestokey":223}],169:[function(require,module,exports){
 (function (Buffer){
 var CipherBase = require('cipher-base')
 var des = require('des.js')
@@ -76233,7 +73690,7 @@ DES.prototype._final = function () {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"cipher-base":197,"des.js":206,"inherits":257}],187:[function(require,module,exports){
+},{"buffer":179,"cipher-base":180,"des.js":189,"inherits":240}],170:[function(require,module,exports){
 exports['des-ecb'] = {
   key: 8,
   iv: 0
@@ -76259,7 +73716,7 @@ exports['des-ede'] = {
   iv: 0
 }
 
-},{}],188:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 (function (Buffer){
 var bn = require('bn.js');
 var randomBytes = require('randombytes');
@@ -76303,10 +73760,10 @@ function getr(priv) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":196,"randombytes":292}],189:[function(require,module,exports){
+},{"bn.js":148,"buffer":179,"randombytes":275}],172:[function(require,module,exports){
 module.exports = require('./browser/algorithms.json')
 
-},{"./browser/algorithms.json":190}],190:[function(require,module,exports){
+},{"./browser/algorithms.json":173}],173:[function(require,module,exports){
 module.exports={
   "sha224WithRSAEncryption": {
     "sign": "rsa",
@@ -76460,7 +73917,7 @@ module.exports={
   }
 }
 
-},{}],191:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 module.exports={
   "1.3.132.0.10": "secp256k1",
   "1.3.132.0.33": "p224",
@@ -76470,7 +73927,7 @@ module.exports={
   "1.3.132.0.35": "p521"
 }
 
-},{}],192:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('create-hash')
 var stream = require('stream')
@@ -76565,7 +74022,7 @@ module.exports = {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./algorithms.json":190,"./sign":193,"./verify":194,"buffer":196,"create-hash":200,"inherits":257,"stream":325}],193:[function(require,module,exports){
+},{"./algorithms.json":173,"./sign":176,"./verify":177,"buffer":179,"create-hash":183,"inherits":240,"stream":308}],176:[function(require,module,exports){
 (function (Buffer){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var createHmac = require('create-hmac')
@@ -76714,7 +74171,7 @@ module.exports.getKey = getKey
 module.exports.makeKey = makeKey
 
 }).call(this,require("buffer").Buffer)
-},{"./curves.json":191,"bn.js":165,"browserify-rsa":188,"buffer":196,"create-hmac":203,"elliptic":219,"parse-asn1":278}],194:[function(require,module,exports){
+},{"./curves.json":174,"bn.js":148,"browserify-rsa":171,"buffer":179,"create-hmac":186,"elliptic":202,"parse-asn1":261}],177:[function(require,module,exports){
 (function (Buffer){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var BN = require('bn.js')
@@ -76801,7 +74258,7 @@ function checkValue (b, q) {
 module.exports = verify
 
 }).call(this,require("buffer").Buffer)
-},{"./curves.json":191,"bn.js":165,"buffer":196,"elliptic":219,"parse-asn1":278}],195:[function(require,module,exports){
+},{"./curves.json":174,"bn.js":148,"buffer":179,"elliptic":202,"parse-asn1":261}],178:[function(require,module,exports){
 (function (Buffer){
 module.exports = function xor (a, b) {
   var length = Math.min(a.length, b.length)
@@ -76815,7 +74272,7 @@ module.exports = function xor (a, b) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196}],196:[function(require,module,exports){
+},{"buffer":179}],179:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -78553,7 +76010,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":162,"ieee754":255}],197:[function(require,module,exports){
+},{"base64-js":145,"ieee754":238}],180:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
 var StringDecoder = require('string_decoder').StringDecoder
@@ -78654,7 +76111,7 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 
 module.exports = CipherBase
 
-},{"inherits":257,"safe-buffer":309,"stream":325,"string_decoder":327}],198:[function(require,module,exports){
+},{"inherits":240,"safe-buffer":292,"stream":308,"string_decoder":310}],181:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -78765,7 +76222,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":258}],199:[function(require,module,exports){
+},{"../../is-buffer/index.js":241}],182:[function(require,module,exports){
 (function (Buffer){
 var elliptic = require('elliptic');
 var BN = require('bn.js');
@@ -78891,7 +76348,7 @@ function formatReturnValue(bn, enc, len) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":196,"elliptic":219}],200:[function(require,module,exports){
+},{"bn.js":148,"buffer":179,"elliptic":202}],183:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var inherits = require('inherits')
@@ -78947,7 +76404,7 @@ module.exports = function createHash (alg) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./md5":202,"buffer":196,"cipher-base":197,"inherits":257,"ripemd160":307,"sha.js":318}],201:[function(require,module,exports){
+},{"./md5":185,"buffer":179,"cipher-base":180,"inherits":240,"ripemd160":290,"sha.js":301}],184:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var intSize = 4
@@ -78981,7 +76438,7 @@ module.exports = function hash (buf, fn) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196}],202:[function(require,module,exports){
+},{"buffer":179}],185:[function(require,module,exports){
 'use strict'
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
@@ -79134,7 +76591,7 @@ module.exports = function md5 (buf) {
   return makeHash(buf, core_md5)
 }
 
-},{"./make-hash":201}],203:[function(require,module,exports){
+},{"./make-hash":184}],186:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Legacy = require('./legacy')
@@ -79198,7 +76655,7 @@ module.exports = function createHmac (alg, key) {
   return new Hmac(alg, key)
 }
 
-},{"./legacy":204,"cipher-base":197,"create-hash/md5":202,"inherits":257,"ripemd160":307,"safe-buffer":309,"sha.js":318}],204:[function(require,module,exports){
+},{"./legacy":187,"cipher-base":180,"create-hash/md5":185,"inherits":240,"ripemd160":290,"safe-buffer":292,"sha.js":301}],187:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Buffer = require('safe-buffer').Buffer
@@ -79246,7 +76703,7 @@ Hmac.prototype._final = function () {
 }
 module.exports = Hmac
 
-},{"cipher-base":197,"inherits":257,"safe-buffer":309}],205:[function(require,module,exports){
+},{"cipher-base":180,"inherits":240,"safe-buffer":292}],188:[function(require,module,exports){
 'use strict'
 
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require('randombytes')
@@ -79345,7 +76802,7 @@ exports.constants = {
   'POINT_CONVERSION_HYBRID': 6
 }
 
-},{"browserify-cipher":185,"browserify-sign":192,"browserify-sign/algos":189,"create-ecdh":199,"create-hash":200,"create-hmac":203,"diffie-hellman":215,"pbkdf2":279,"public-encrypt":286,"randombytes":292,"randomfill":293}],206:[function(require,module,exports){
+},{"browserify-cipher":168,"browserify-sign":175,"browserify-sign/algos":172,"create-ecdh":182,"create-hash":183,"create-hmac":186,"diffie-hellman":198,"pbkdf2":262,"public-encrypt":269,"randombytes":275,"randomfill":276}],189:[function(require,module,exports){
 'use strict';
 
 exports.utils = require('./des/utils');
@@ -79354,7 +76811,7 @@ exports.DES = require('./des/des');
 exports.CBC = require('./des/cbc');
 exports.EDE = require('./des/ede');
 
-},{"./des/cbc":207,"./des/cipher":208,"./des/des":209,"./des/ede":210,"./des/utils":211}],207:[function(require,module,exports){
+},{"./des/cbc":190,"./des/cipher":191,"./des/des":192,"./des/ede":193,"./des/utils":194}],190:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -79421,7 +76878,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
   }
 };
 
-},{"inherits":257,"minimalistic-assert":272}],208:[function(require,module,exports){
+},{"inherits":240,"minimalistic-assert":255}],191:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -79564,7 +77021,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
   return this._unpad(out);
 };
 
-},{"minimalistic-assert":272}],209:[function(require,module,exports){
+},{"minimalistic-assert":255}],192:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -79709,7 +77166,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
   utils.rip(l, r, out, off);
 };
 
-},{"../des":206,"inherits":257,"minimalistic-assert":272}],210:[function(require,module,exports){
+},{"../des":189,"inherits":240,"minimalistic-assert":255}],193:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -79766,7 +77223,7 @@ EDE.prototype._update = function _update(inp, inOff, out, outOff) {
 EDE.prototype._pad = DES.prototype._pad;
 EDE.prototype._unpad = DES.prototype._unpad;
 
-},{"../des":206,"inherits":257,"minimalistic-assert":272}],211:[function(require,module,exports){
+},{"../des":189,"inherits":240,"minimalistic-assert":255}],194:[function(require,module,exports){
 'use strict';
 
 exports.readUInt32BE = function readUInt32BE(bytes, off) {
@@ -80024,7 +77481,7 @@ exports.padSplit = function padSplit(num, size, group) {
   return out.join(' ');
 };
 
-},{}],212:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 var detectBrowser = require('./lib/detectBrowser');
 
 var agent;
@@ -80035,7 +77492,7 @@ if (typeof navigator !== 'undefined' && navigator) {
 
 module.exports = detectBrowser(agent);
 
-},{"./lib/detectBrowser":213}],213:[function(require,module,exports){
+},{"./lib/detectBrowser":196}],196:[function(require,module,exports){
 var detectOS = require('./detectOS.js');
 
 module.exports = function detectBrowser(userAgentString) {
@@ -80080,7 +77537,7 @@ module.exports = function detectBrowser(userAgentString) {
   }).filter(Boolean).shift();
 };
 
-},{"./detectOS.js":214}],214:[function(require,module,exports){
+},{"./detectOS.js":197}],197:[function(require,module,exports){
 module.exports = function detectOS(userAgentString) {
   var operatingSystems = [
     {
@@ -80194,7 +77651,7 @@ module.exports = function detectOS(userAgentString) {
   return detected && detected[0] ? detected[0].name : null;
 };
 
-},{}],215:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 (function (Buffer){
 var generatePrime = require('./lib/generatePrime')
 var primes = require('./lib/primes.json')
@@ -80240,7 +77697,7 @@ exports.DiffieHellmanGroup = exports.createDiffieHellmanGroup = exports.getDiffi
 exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/dh":216,"./lib/generatePrime":217,"./lib/primes.json":218,"buffer":196}],216:[function(require,module,exports){
+},{"./lib/dh":199,"./lib/generatePrime":200,"./lib/primes.json":201,"buffer":179}],199:[function(require,module,exports){
 (function (Buffer){
 var BN = require('bn.js');
 var MillerRabin = require('miller-rabin');
@@ -80408,7 +77865,7 @@ function formatReturnValue(bn, enc) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./generatePrime":217,"bn.js":165,"buffer":196,"miller-rabin":271,"randombytes":292}],217:[function(require,module,exports){
+},{"./generatePrime":200,"bn.js":148,"buffer":179,"miller-rabin":254,"randombytes":275}],200:[function(require,module,exports){
 var randomBytes = require('randombytes');
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
@@ -80515,7 +77972,7 @@ function findPrime(bits, gen) {
 
 }
 
-},{"bn.js":165,"miller-rabin":271,"randombytes":292}],218:[function(require,module,exports){
+},{"bn.js":148,"miller-rabin":254,"randombytes":275}],201:[function(require,module,exports){
 module.exports={
     "modp1": {
         "gen": "02",
@@ -80550,7 +78007,7 @@ module.exports={
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dbe115974a3926f12fee5e438777cb6a932df8cd8bec4d073b931ba3bc832b68d9dd300741fa7bf8afc47ed2576f6936ba424663aab639c5ae4f5683423b4742bf1c978238f16cbe39d652de3fdb8befc848ad922222e04a4037c0713eb57a81a23f0c73473fc646cea306b4bcbc8862f8385ddfa9d4b7fa2c087e879683303ed5bdd3a062b3cf5b3a278a66d2a13f83f44f82ddf310ee074ab6a364597e899a0255dc164f31cc50846851df9ab48195ded7ea1b1d510bd7ee74d73faf36bc31ecfa268359046f4eb879f924009438b481c6cd7889a002ed5ee382bc9190da6fc026e479558e4475677e9aa9e3050e2765694dfc81f56e880b96e7160c980dd98edd3dfffffffffffffffff"
     }
 }
-},{}],219:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 'use strict';
 
 var elliptic = exports;
@@ -80565,7 +78022,7 @@ elliptic.curves = require('./elliptic/curves');
 elliptic.ec = require('./elliptic/ec');
 elliptic.eddsa = require('./elliptic/eddsa');
 
-},{"../package.json":234,"./elliptic/curve":222,"./elliptic/curves":225,"./elliptic/ec":226,"./elliptic/eddsa":229,"./elliptic/utils":233,"brorand":166}],220:[function(require,module,exports){
+},{"../package.json":217,"./elliptic/curve":205,"./elliptic/curves":208,"./elliptic/ec":209,"./elliptic/eddsa":212,"./elliptic/utils":216,"brorand":149}],203:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -80942,7 +78399,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   return r;
 };
 
-},{"../../elliptic":219,"bn.js":165}],221:[function(require,module,exports){
+},{"../../elliptic":202,"bn.js":148}],204:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -81377,7 +78834,7 @@ Point.prototype.eqXToP = function eqXToP(x) {
 Point.prototype.toP = Point.prototype.normalize;
 Point.prototype.mixedAdd = Point.prototype.add;
 
-},{"../../elliptic":219,"../curve":222,"bn.js":165,"inherits":257}],222:[function(require,module,exports){
+},{"../../elliptic":202,"../curve":205,"bn.js":148,"inherits":240}],205:[function(require,module,exports){
 'use strict';
 
 var curve = exports;
@@ -81387,7 +78844,7 @@ curve.short = require('./short');
 curve.mont = require('./mont');
 curve.edwards = require('./edwards');
 
-},{"./base":220,"./edwards":221,"./mont":223,"./short":224}],223:[function(require,module,exports){
+},{"./base":203,"./edwards":204,"./mont":206,"./short":207}],206:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -81569,7 +79026,7 @@ Point.prototype.getX = function getX() {
   return this.x.fromRed();
 };
 
-},{"../../elliptic":219,"../curve":222,"bn.js":165,"inherits":257}],224:[function(require,module,exports){
+},{"../../elliptic":202,"../curve":205,"bn.js":148,"inherits":240}],207:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -82509,7 +79966,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   return this.z.cmpn(0) === 0;
 };
 
-},{"../../elliptic":219,"../curve":222,"bn.js":165,"inherits":257}],225:[function(require,module,exports){
+},{"../../elliptic":202,"../curve":205,"bn.js":148,"inherits":240}],208:[function(require,module,exports){
 'use strict';
 
 var curves = exports;
@@ -82716,7 +80173,7 @@ defineCurve('secp256k1', {
   ]
 });
 
-},{"../elliptic":219,"./precomputed/secp256k1":232,"hash.js":242}],226:[function(require,module,exports){
+},{"../elliptic":202,"./precomputed/secp256k1":215,"hash.js":225}],209:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -82958,7 +80415,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   throw new Error('Unable to find valid recovery factor');
 };
 
-},{"../../elliptic":219,"./key":227,"./signature":228,"bn.js":165,"hmac-drbg":254}],227:[function(require,module,exports){
+},{"../../elliptic":202,"./key":210,"./signature":211,"bn.js":148,"hmac-drbg":237}],210:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -83079,7 +80536,7 @@ KeyPair.prototype.inspect = function inspect() {
          ' pub: ' + (this.pub && this.pub.inspect()) + ' >';
 };
 
-},{"../../elliptic":219,"bn.js":165}],228:[function(require,module,exports){
+},{"../../elliptic":202,"bn.js":148}],211:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -83216,7 +80673,7 @@ Signature.prototype.toDER = function toDER(enc) {
   return utils.encode(res, enc);
 };
 
-},{"../../elliptic":219,"bn.js":165}],229:[function(require,module,exports){
+},{"../../elliptic":202,"bn.js":148}],212:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -83336,7 +80793,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   return val instanceof this.pointClass;
 };
 
-},{"../../elliptic":219,"./key":230,"./signature":231,"hash.js":242}],230:[function(require,module,exports){
+},{"../../elliptic":202,"./key":213,"./signature":214,"hash.js":225}],213:[function(require,module,exports){
 'use strict';
 
 var elliptic = require('../../elliptic');
@@ -83434,7 +80891,7 @@ KeyPair.prototype.getPublic = function getPublic(enc) {
 
 module.exports = KeyPair;
 
-},{"../../elliptic":219}],231:[function(require,module,exports){
+},{"../../elliptic":202}],214:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -83502,7 +80959,7 @@ Signature.prototype.toHex = function toHex() {
 
 module.exports = Signature;
 
-},{"../../elliptic":219,"bn.js":165}],232:[function(require,module,exports){
+},{"../../elliptic":202,"bn.js":148}],215:[function(require,module,exports){
 module.exports = {
   doubles: {
     step: 4,
@@ -84284,7 +81741,7 @@ module.exports = {
   }
 };
 
-},{}],233:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -84406,7 +81863,7 @@ function intFromLE(bytes) {
 utils.intFromLE = intFromLE;
 
 
-},{"bn.js":165,"minimalistic-assert":272,"minimalistic-crypto-utils":273}],234:[function(require,module,exports){
+},{"bn.js":148,"minimalistic-assert":255,"minimalistic-crypto-utils":256}],217:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -84531,7 +81988,7 @@ module.exports={
   "version": "6.4.0"
 }
 
-},{}],235:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 module.exports={
   "genesisGasLimit": {
     "v": 5000,
@@ -84768,7 +82225,7 @@ module.exports={
   }
 }
 
-},{}],236:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -85096,7 +82553,7 @@ var Transaction = function () {
 
 module.exports = Transaction;
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"ethereum-common/params.json":235,"ethereumjs-util":237}],237:[function(require,module,exports){
+},{"buffer":179,"ethereum-common/params.json":218,"ethereumjs-util":220}],220:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -85789,7 +83246,7 @@ exports.defineProperties = function (self, fields, data) {
     }
   }
 };
-},{"assert":161,"bn.js":165,"create-hash":200,"ethjs-util":238,"keccak":262,"rlp":308,"safe-buffer":309,"secp256k1":311}],238:[function(require,module,exports){
+},{"assert":144,"bn.js":148,"create-hash":183,"ethjs-util":221,"keccak":245,"rlp":291,"safe-buffer":292,"secp256k1":294}],221:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -86012,7 +83469,7 @@ module.exports = {
   isHexString: isHexString
 };
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"is-hex-prefixed":259,"strip-hex-prefix":328}],239:[function(require,module,exports){
+},{"buffer":179,"is-hex-prefixed":242,"strip-hex-prefix":311}],222:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -86316,7 +83773,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],240:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var MD5 = require('md5.js')
 
@@ -86363,7 +83820,7 @@ function EVP_BytesToKey (password, salt, keyBits, ivLen) {
 
 module.exports = EVP_BytesToKey
 
-},{"md5.js":269,"safe-buffer":309}],241:[function(require,module,exports){
+},{"md5.js":252,"safe-buffer":292}],224:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var Transform = require('stream').Transform
@@ -86450,7 +83907,7 @@ HashBase.prototype._digest = function () {
 module.exports = HashBase
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"inherits":257,"stream":325}],242:[function(require,module,exports){
+},{"buffer":179,"inherits":240,"stream":308}],225:[function(require,module,exports){
 var hash = exports;
 
 hash.utils = require('./hash/utils');
@@ -86467,7 +83924,7 @@ hash.sha384 = hash.sha.sha384;
 hash.sha512 = hash.sha.sha512;
 hash.ripemd160 = hash.ripemd.ripemd160;
 
-},{"./hash/common":243,"./hash/hmac":244,"./hash/ripemd":245,"./hash/sha":246,"./hash/utils":253}],243:[function(require,module,exports){
+},{"./hash/common":226,"./hash/hmac":227,"./hash/ripemd":228,"./hash/sha":229,"./hash/utils":236}],226:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -86561,7 +84018,7 @@ BlockHash.prototype._pad = function pad() {
   return res;
 };
 
-},{"./utils":253,"minimalistic-assert":272}],244:[function(require,module,exports){
+},{"./utils":236,"minimalistic-assert":255}],227:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -86610,7 +84067,7 @@ Hmac.prototype.digest = function digest(enc) {
   return this.outer.digest(enc);
 };
 
-},{"./utils":253,"minimalistic-assert":272}],245:[function(require,module,exports){
+},{"./utils":236,"minimalistic-assert":255}],228:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -86758,7 +84215,7 @@ var sh = [
   8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
 ];
 
-},{"./common":243,"./utils":253}],246:[function(require,module,exports){
+},{"./common":226,"./utils":236}],229:[function(require,module,exports){
 'use strict';
 
 exports.sha1 = require('./sha/1');
@@ -86767,7 +84224,7 @@ exports.sha256 = require('./sha/256');
 exports.sha384 = require('./sha/384');
 exports.sha512 = require('./sha/512');
 
-},{"./sha/1":247,"./sha/224":248,"./sha/256":249,"./sha/384":250,"./sha/512":251}],247:[function(require,module,exports){
+},{"./sha/1":230,"./sha/224":231,"./sha/256":232,"./sha/384":233,"./sha/512":234}],230:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -86843,7 +84300,7 @@ SHA1.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":243,"../utils":253,"./common":252}],248:[function(require,module,exports){
+},{"../common":226,"../utils":236,"./common":235}],231:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -86875,7 +84332,7 @@ SHA224.prototype._digest = function digest(enc) {
 };
 
 
-},{"../utils":253,"./256":249}],249:[function(require,module,exports){
+},{"../utils":236,"./256":232}],232:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -86982,7 +84439,7 @@ SHA256.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":243,"../utils":253,"./common":252,"minimalistic-assert":272}],250:[function(require,module,exports){
+},{"../common":226,"../utils":236,"./common":235,"minimalistic-assert":255}],233:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -87019,7 +84476,7 @@ SHA384.prototype._digest = function digest(enc) {
     return utils.split32(this.h.slice(0, 12), 'big');
 };
 
-},{"../utils":253,"./512":251}],251:[function(require,module,exports){
+},{"../utils":236,"./512":234}],234:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -87351,7 +84808,7 @@ function g1_512_lo(xh, xl) {
   return r;
 }
 
-},{"../common":243,"../utils":253,"minimalistic-assert":272}],252:[function(require,module,exports){
+},{"../common":226,"../utils":236,"minimalistic-assert":255}],235:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -87402,7 +84859,7 @@ function g1_256(x) {
 }
 exports.g1_256 = g1_256;
 
-},{"../utils":253}],253:[function(require,module,exports){
+},{"../utils":236}],236:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -87657,7 +85114,7 @@ function shr64_lo(ah, al, num) {
 }
 exports.shr64_lo = shr64_lo;
 
-},{"inherits":257,"minimalistic-assert":272}],254:[function(require,module,exports){
+},{"inherits":240,"minimalistic-assert":255}],237:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -87772,7 +85229,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   return utils.encode(res, enc);
 };
 
-},{"hash.js":242,"minimalistic-assert":272,"minimalistic-crypto-utils":273}],255:[function(require,module,exports){
+},{"hash.js":225,"minimalistic-assert":255,"minimalistic-crypto-utils":256}],238:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -87858,7 +85315,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],256:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -87869,7 +85326,7 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}],257:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -87894,7 +85351,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],258:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -87917,7 +85374,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],259:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 /**
  * Returns a `Boolean` on whether or not the a `String` starts with '0x'
  * @param {String} str the string input value
@@ -87932,14 +85389,14 @@ module.exports = function isHexPrefixed(str) {
   return str.slice(0, 2) === '0x';
 }
 
-},{}],260:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],261:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 /*
  A JavaScript implementation of the SHA family of hashes, as
  defined in FIPS PUB 180-2 as well as the corresponding HMAC implementation
@@ -87977,11 +85434,11 @@ new g(1203062813,d[7])]:[new g(f[0],4089235720),new g(f[1],2227873595),new g(f[2
 z(G(B[t-2]),B[t-7],F(B[t-15]),B[t-16]),s=A(u,I(h),J(h,p,r),l[t],B[t]),y=v(H(b),K(b,e,f)),u=r,r=p,p=h,h=v(k,s),k=f,f=e,e=b,b=v(s,y);d[0]=v(b,d[0]);d[1]=v(e,d[1]);d[2]=v(f,d[2]);d[3]=v(k,d[3]);d[4]=v(h,d[4]);d[5]=v(p,d[5]);d[6]=v(r,d[6]);d[7]=v(u,d[7])}if("SHA-224"===c)a=[d[0],d[1],d[2],d[3],d[4],d[5],d[6]];else if("SHA-256"===c)a=d;else if("SHA-384"===c)a=[d[0].a,d[0].b,d[1].a,d[1].b,d[2].a,d[2].b,d[3].a,d[3].b,d[4].a,d[4].b,d[5].a,d[5].b];else if("SHA-512"===c)a=[d[0].a,d[0].b,d[1].a,d[1].b,d[2].a,
 d[2].b,d[3].a,d[3].b,d[4].a,d[4].b,d[5].a,d[5].b,d[6].a,d[6].b,d[7].a,d[7].b];else throw"Unexpected error in SHA-2 implementation";return a}"function"===typeof define&&define.amd?define(function(){return z}):"undefined"!==typeof exports?"undefined"!==typeof module&&module.exports?module.exports=exports=z:exports=z:U.jsSHA=z})(this);
 
-},{}],262:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 'use strict'
 module.exports = require('./lib/api')(require('./lib/keccak'))
 
-},{"./lib/api":263,"./lib/keccak":267}],263:[function(require,module,exports){
+},{"./lib/api":246,"./lib/keccak":250}],246:[function(require,module,exports){
 'use strict'
 var createKeccak = require('./keccak')
 var createShake = require('./shake')
@@ -88011,7 +85468,7 @@ module.exports = function (KeccakState) {
   }
 }
 
-},{"./keccak":264,"./shake":265}],264:[function(require,module,exports){
+},{"./keccak":247,"./shake":248}],247:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -88097,7 +85554,7 @@ module.exports = function (KeccakState) {
   return Keccak
 }
 
-},{"inherits":257,"safe-buffer":309,"stream":325}],265:[function(require,module,exports){
+},{"inherits":240,"safe-buffer":292,"stream":308}],248:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -88174,7 +85631,7 @@ module.exports = function (KeccakState) {
   return Shake
 }
 
-},{"inherits":257,"safe-buffer":309,"stream":325}],266:[function(require,module,exports){
+},{"inherits":240,"safe-buffer":292,"stream":308}],249:[function(require,module,exports){
 'use strict'
 var P1600_ROUND_CONSTANTS = [1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648]
 
@@ -88363,7 +85820,7 @@ exports.p1600 = function (s) {
   }
 }
 
-},{}],267:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var keccakState = require('./keccak-state-unroll')
@@ -88435,7 +85892,7 @@ Keccak.prototype.copy = function (dest) {
 
 module.exports = Keccak
 
-},{"./keccak-state-unroll":266,"safe-buffer":309}],268:[function(require,module,exports){
+},{"./keccak-state-unroll":249,"safe-buffer":292}],251:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -89822,7 +87279,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 })(this || (typeof window !== 'undefined' ? window : global));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],269:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var inherits = require('inherits')
@@ -89971,7 +87428,7 @@ function fnI (a, b, c, d, m, k, s) {
 module.exports = MD5
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"hash-base":270,"inherits":257}],270:[function(require,module,exports){
+},{"buffer":179,"hash-base":253,"inherits":240}],253:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -90068,7 +87525,7 @@ HashBase.prototype._digest = function () {
 
 module.exports = HashBase
 
-},{"inherits":257,"safe-buffer":309,"stream":325}],271:[function(require,module,exports){
+},{"inherits":240,"safe-buffer":292,"stream":308}],254:[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
 
@@ -90185,7 +87642,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
   return false;
 };
 
-},{"bn.js":165,"brorand":166}],272:[function(require,module,exports){
+},{"bn.js":148,"brorand":149}],255:[function(require,module,exports){
 module.exports = assert;
 
 function assert(val, msg) {
@@ -90198,7 +87655,7 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
-},{}],273:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -90258,7 +87715,7 @@ utils.encode = function encode(arr, enc) {
     return arr;
 };
 
-},{}],274:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
@@ -90272,7 +87729,7 @@ module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.43": "aes-256-ofb",
 "2.16.840.1.101.3.4.1.44": "aes-256-cfb"
 }
-},{}],275:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
 // Fedor, you are amazing.
 'use strict'
@@ -90396,7 +87853,7 @@ exports.signature = asn1.define('signature', function () {
   )
 })
 
-},{"./certificate":276,"asn1.js":147}],276:[function(require,module,exports){
+},{"./certificate":259,"asn1.js":130}],259:[function(require,module,exports){
 // from https://github.com/Rantanen/node-dtls/blob/25a7dc861bda38cfeac93a723500eea4f0ac2e86/Certificate.js
 // thanks to @Rantanen
 
@@ -90486,7 +87943,7 @@ var X509Certificate = asn.define('X509Certificate', function () {
 
 module.exports = X509Certificate
 
-},{"asn1.js":147}],277:[function(require,module,exports){
+},{"asn1.js":130}],260:[function(require,module,exports){
 (function (Buffer){
 // adapted from https://github.com/apatil/pemstrip
 var findProc = /Proc-Type: 4,ENCRYPTED\n\r?DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)\n\r?\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?/m
@@ -90520,7 +87977,7 @@ module.exports = function (okey, password) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"browserify-aes":170,"buffer":196,"evp_bytestokey":240}],278:[function(require,module,exports){
+},{"browserify-aes":153,"buffer":179,"evp_bytestokey":223}],261:[function(require,module,exports){
 (function (Buffer){
 var asn1 = require('./asn1')
 var aesid = require('./aesid.json')
@@ -90630,13 +88087,13 @@ function decrypt (data, password) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./aesid.json":274,"./asn1":275,"./fixProc":277,"browserify-aes":170,"buffer":196,"pbkdf2":279}],279:[function(require,module,exports){
+},{"./aesid.json":257,"./asn1":258,"./fixProc":260,"browserify-aes":153,"buffer":179,"pbkdf2":262}],262:[function(require,module,exports){
 
 exports.pbkdf2 = require('./lib/async')
 
 exports.pbkdf2Sync = require('./lib/sync')
 
-},{"./lib/async":280,"./lib/sync":283}],280:[function(require,module,exports){
+},{"./lib/async":263,"./lib/sync":266}],263:[function(require,module,exports){
 (function (process,global){
 var checkParameters = require('./precondition')
 var defaultEncoding = require('./default-encoding')
@@ -90738,7 +88195,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./default-encoding":281,"./precondition":282,"./sync":283,"_process":285,"safe-buffer":309}],281:[function(require,module,exports){
+},{"./default-encoding":264,"./precondition":265,"./sync":266,"_process":268,"safe-buffer":292}],264:[function(require,module,exports){
 (function (process){
 var defaultEncoding
 /* istanbul ignore next */
@@ -90752,7 +88209,7 @@ if (process.browser) {
 module.exports = defaultEncoding
 
 }).call(this,require('_process'))
-},{"_process":285}],282:[function(require,module,exports){
+},{"_process":268}],265:[function(require,module,exports){
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 module.exports = function (iterations, keylen) {
   if (typeof iterations !== 'number') {
@@ -90772,7 +88229,7 @@ module.exports = function (iterations, keylen) {
   }
 }
 
-},{}],283:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 var md5 = require('create-hash/md5')
 var rmd160 = require('ripemd160')
 var sha = require('sha.js')
@@ -90875,7 +88332,7 @@ function pbkdf2 (password, salt, iterations, keylen, digest) {
 
 module.exports = pbkdf2
 
-},{"./default-encoding":281,"./precondition":282,"create-hash/md5":202,"ripemd160":307,"safe-buffer":309,"sha.js":318}],284:[function(require,module,exports){
+},{"./default-encoding":264,"./precondition":265,"create-hash/md5":185,"ripemd160":290,"safe-buffer":292,"sha.js":301}],267:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -90923,7 +88380,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 
 }).call(this,require('_process'))
-},{"_process":285}],285:[function(require,module,exports){
+},{"_process":268}],268:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -91109,7 +88566,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],286:[function(require,module,exports){
+},{}],269:[function(require,module,exports){
 exports.publicEncrypt = require('./publicEncrypt');
 exports.privateDecrypt = require('./privateDecrypt');
 
@@ -91120,7 +88577,7 @@ exports.privateEncrypt = function privateEncrypt(key, buf) {
 exports.publicDecrypt = function publicDecrypt(key, buf) {
   return exports.privateDecrypt(key, buf, true);
 };
-},{"./privateDecrypt":288,"./publicEncrypt":289}],287:[function(require,module,exports){
+},{"./privateDecrypt":271,"./publicEncrypt":272}],270:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('create-hash');
 module.exports = function (seed, len) {
@@ -91139,7 +88596,7 @@ function i2ops(c) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"create-hash":200}],288:[function(require,module,exports){
+},{"buffer":179,"create-hash":183}],271:[function(require,module,exports){
 (function (Buffer){
 var parseKeys = require('parse-asn1');
 var mgf = require('./mgf');
@@ -91250,7 +88707,7 @@ function compare(a, b){
   return dif;
 }
 }).call(this,require("buffer").Buffer)
-},{"./mgf":287,"./withPublic":290,"./xor":291,"bn.js":165,"browserify-rsa":188,"buffer":196,"create-hash":200,"parse-asn1":278}],289:[function(require,module,exports){
+},{"./mgf":270,"./withPublic":273,"./xor":274,"bn.js":148,"browserify-rsa":171,"buffer":179,"create-hash":183,"parse-asn1":261}],272:[function(require,module,exports){
 (function (Buffer){
 var parseKeys = require('parse-asn1');
 var randomBytes = require('randombytes');
@@ -91348,7 +88805,7 @@ function nonZero(len, crypto) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"./mgf":287,"./withPublic":290,"./xor":291,"bn.js":165,"browserify-rsa":188,"buffer":196,"create-hash":200,"parse-asn1":278,"randombytes":292}],290:[function(require,module,exports){
+},{"./mgf":270,"./withPublic":273,"./xor":274,"bn.js":148,"browserify-rsa":171,"buffer":179,"create-hash":183,"parse-asn1":261,"randombytes":275}],273:[function(require,module,exports){
 (function (Buffer){
 var bn = require('bn.js');
 function withPublic(paddedMsg, key) {
@@ -91361,7 +88818,7 @@ function withPublic(paddedMsg, key) {
 
 module.exports = withPublic;
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":196}],291:[function(require,module,exports){
+},{"bn.js":148,"buffer":179}],274:[function(require,module,exports){
 module.exports = function xor(a, b) {
   var len = a.length;
   var i = -1;
@@ -91370,7 +88827,7 @@ module.exports = function xor(a, b) {
   }
   return a
 };
-},{}],292:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
@@ -91412,7 +88869,7 @@ function randomBytes (size, cb) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":285,"safe-buffer":309}],293:[function(require,module,exports){
+},{"_process":268,"safe-buffer":292}],276:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
@@ -91524,10 +88981,10 @@ function randomFillSync (buf, offset, size) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":285,"randombytes":292,"safe-buffer":309}],294:[function(require,module,exports){
+},{"_process":268,"randombytes":275,"safe-buffer":292}],277:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":295}],295:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":278}],278:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -91652,7 +89109,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":297,"./_stream_writable":299,"core-util-is":198,"inherits":257,"process-nextick-args":284}],296:[function(require,module,exports){
+},{"./_stream_readable":280,"./_stream_writable":282,"core-util-is":181,"inherits":240,"process-nextick-args":267}],279:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -91700,7 +89157,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":298,"core-util-is":198,"inherits":257}],297:[function(require,module,exports){
+},{"./_stream_transform":281,"core-util-is":181,"inherits":240}],280:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -92718,7 +90175,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":295,"./internal/streams/BufferList":300,"./internal/streams/destroy":301,"./internal/streams/stream":302,"_process":285,"core-util-is":198,"events":239,"inherits":257,"isarray":260,"process-nextick-args":284,"safe-buffer":309,"string_decoder/":327,"util":167}],298:[function(require,module,exports){
+},{"./_stream_duplex":278,"./internal/streams/BufferList":283,"./internal/streams/destroy":284,"./internal/streams/stream":285,"_process":268,"core-util-is":181,"events":222,"inherits":240,"isarray":243,"process-nextick-args":267,"safe-buffer":292,"string_decoder/":310,"util":150}],281:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -92933,7 +90390,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":295,"core-util-is":198,"inherits":257}],299:[function(require,module,exports){
+},{"./_stream_duplex":278,"core-util-is":181,"inherits":240}],282:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -93613,7 +91070,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":295,"./internal/streams/destroy":301,"./internal/streams/stream":302,"_process":285,"core-util-is":198,"inherits":257,"process-nextick-args":284,"safe-buffer":309,"util-deprecate":330}],300:[function(require,module,exports){
+},{"./_stream_duplex":278,"./internal/streams/destroy":284,"./internal/streams/stream":285,"_process":268,"core-util-is":181,"inherits":240,"process-nextick-args":267,"safe-buffer":292,"util-deprecate":312}],283:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -93693,7 +91150,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":309,"util":167}],301:[function(require,module,exports){
+},{"safe-buffer":292,"util":150}],284:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -93768,13 +91225,13 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":284}],302:[function(require,module,exports){
+},{"process-nextick-args":267}],285:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":239}],303:[function(require,module,exports){
+},{"events":222}],286:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":304}],304:[function(require,module,exports){
+},{"./readable":287}],287:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -93783,13 +91240,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":295,"./lib/_stream_passthrough.js":296,"./lib/_stream_readable.js":297,"./lib/_stream_transform.js":298,"./lib/_stream_writable.js":299}],305:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":278,"./lib/_stream_passthrough.js":279,"./lib/_stream_readable.js":280,"./lib/_stream_transform.js":281,"./lib/_stream_writable.js":282}],288:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":304}],306:[function(require,module,exports){
+},{"./readable":287}],289:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":299}],307:[function(require,module,exports){
+},{"./lib/_stream_writable.js":282}],290:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var inherits = require('inherits')
@@ -94084,7 +91541,7 @@ function fn5 (a, b, c, d, e, m, k, s) {
 module.exports = RIPEMD160
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"hash-base":241,"inherits":257}],308:[function(require,module,exports){
+},{"buffer":179,"hash-base":224,"inherits":240}],291:[function(require,module,exports){
 (function (Buffer){
 const assert = require('assert')
 /**
@@ -94317,7 +91774,7 @@ function toBuffer (v) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"assert":161,"buffer":196}],309:[function(require,module,exports){
+},{"assert":144,"buffer":179}],292:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -94381,7 +91838,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":196}],310:[function(require,module,exports){
+},{"buffer":179}],293:[function(require,module,exports){
 (function (Buffer){
 var crypto = require('crypto')
 /* eslint-disable camelcase */
@@ -94565,11 +92022,11 @@ function arraycopy (src, srcPos, dest, destPos, length) {
 module.exports = scrypt
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":196,"crypto":205}],311:[function(require,module,exports){
+},{"buffer":179,"crypto":188}],294:[function(require,module,exports){
 'use strict'
 module.exports = require('./lib')(require('./lib/elliptic'))
 
-},{"./lib":315,"./lib/elliptic":314}],312:[function(require,module,exports){
+},{"./lib":298,"./lib/elliptic":297}],295:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var toString = Object.prototype.toString
@@ -94617,7 +92074,7 @@ exports.isNumberInInterval = function (number, x, y, message) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":258}],313:[function(require,module,exports){
+},{"../../is-buffer/index.js":241}],296:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var bip66 = require('bip66')
@@ -94812,7 +92269,7 @@ exports.signatureImportLax = function (sig) {
   return { r: r, s: s }
 }
 
-},{"bip66":164,"safe-buffer":309}],314:[function(require,module,exports){
+},{"bip66":147,"safe-buffer":292}],297:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var createHash = require('create-hash')
@@ -95074,7 +92531,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
   return Buffer.from(pair.pub.mul(scalar).encode(true, compressed))
 }
 
-},{"../messages.json":316,"bn.js":165,"create-hash":200,"elliptic":219,"safe-buffer":309}],315:[function(require,module,exports){
+},{"../messages.json":299,"bn.js":148,"create-hash":183,"elliptic":202,"safe-buffer":292}],298:[function(require,module,exports){
 'use strict'
 var assert = require('./assert')
 var der = require('./der')
@@ -95321,7 +92778,7 @@ module.exports = function (secp256k1) {
   }
 }
 
-},{"./assert":312,"./der":313,"./messages.json":316}],316:[function(require,module,exports){
+},{"./assert":295,"./der":296,"./messages.json":299}],299:[function(require,module,exports){
 module.exports={
   "COMPRESSED_TYPE_INVALID": "compressed should be a boolean",
   "EC_PRIVATE_KEY_TYPE_INVALID": "private key should be a Buffer",
@@ -95360,7 +92817,7 @@ module.exports={
   "TWEAK_LENGTH_INVALID": "tweak length is invalid"
 }
 
-},{}],317:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 // prototype class for hash functions
@@ -95443,7 +92900,7 @@ Hash.prototype._update = function () {
 
 module.exports = Hash
 
-},{"safe-buffer":309}],318:[function(require,module,exports){
+},{"safe-buffer":292}],301:[function(require,module,exports){
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -95460,7 +92917,7 @@ exports.sha256 = require('./sha256')
 exports.sha384 = require('./sha384')
 exports.sha512 = require('./sha512')
 
-},{"./sha":319,"./sha1":320,"./sha224":321,"./sha256":322,"./sha384":323,"./sha512":324}],319:[function(require,module,exports){
+},{"./sha":302,"./sha1":303,"./sha224":304,"./sha256":305,"./sha384":306,"./sha512":307}],302:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
  * in FIPS PUB 180-1
@@ -95556,7 +93013,7 @@ Sha.prototype._hash = function () {
 
 module.exports = Sha
 
-},{"./hash":317,"inherits":257,"safe-buffer":309}],320:[function(require,module,exports){
+},{"./hash":300,"inherits":240,"safe-buffer":292}],303:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -95657,7 +93114,7 @@ Sha1.prototype._hash = function () {
 
 module.exports = Sha1
 
-},{"./hash":317,"inherits":257,"safe-buffer":309}],321:[function(require,module,exports){
+},{"./hash":300,"inherits":240,"safe-buffer":292}],304:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -95712,7 +93169,7 @@ Sha224.prototype._hash = function () {
 
 module.exports = Sha224
 
-},{"./hash":317,"./sha256":322,"inherits":257,"safe-buffer":309}],322:[function(require,module,exports){
+},{"./hash":300,"./sha256":305,"inherits":240,"safe-buffer":292}],305:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -95849,7 +93306,7 @@ Sha256.prototype._hash = function () {
 
 module.exports = Sha256
 
-},{"./hash":317,"inherits":257,"safe-buffer":309}],323:[function(require,module,exports){
+},{"./hash":300,"inherits":240,"safe-buffer":292}],306:[function(require,module,exports){
 var inherits = require('inherits')
 var SHA512 = require('./sha512')
 var Hash = require('./hash')
@@ -95908,7 +93365,7 @@ Sha384.prototype._hash = function () {
 
 module.exports = Sha384
 
-},{"./hash":317,"./sha512":324,"inherits":257,"safe-buffer":309}],324:[function(require,module,exports){
+},{"./hash":300,"./sha512":307,"inherits":240,"safe-buffer":292}],307:[function(require,module,exports){
 var inherits = require('inherits')
 var Hash = require('./hash')
 var Buffer = require('safe-buffer').Buffer
@@ -96170,7 +93627,7 @@ Sha512.prototype._hash = function () {
 
 module.exports = Sha512
 
-},{"./hash":317,"inherits":257,"safe-buffer":309}],325:[function(require,module,exports){
+},{"./hash":300,"inherits":240,"safe-buffer":292}],308:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -96299,7 +93756,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":239,"inherits":257,"readable-stream/duplex.js":294,"readable-stream/passthrough.js":303,"readable-stream/readable.js":304,"readable-stream/transform.js":305,"readable-stream/writable.js":306}],326:[function(require,module,exports){
+},{"events":222,"inherits":240,"readable-stream/duplex.js":277,"readable-stream/passthrough.js":286,"readable-stream/readable.js":287,"readable-stream/transform.js":288,"readable-stream/writable.js":289}],309:[function(require,module,exports){
 // Generated by CoffeeScript 1.8.0
 (function() {
   var ValueError, create, explicitToImplicit, format, implicitToExplicit, lookup, resolve,
@@ -96405,7 +93862,7 @@ Stream.prototype.pipe = function(dest, options) {
 
 }).call(this);
 
-},{}],327:[function(require,module,exports){
+},{}],310:[function(require,module,exports){
 'use strict';
 
 var Buffer = require('safe-buffer').Buffer;
@@ -96678,7 +94135,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":309}],328:[function(require,module,exports){
+},{"safe-buffer":292}],311:[function(require,module,exports){
 var isHexPrefixed = require('is-hex-prefixed');
 
 /**
@@ -96694,9 +94151,7 @@ module.exports = function stripHexPrefix(str) {
   return isHexPrefixed(str) ? str.slice(2) : str;
 }
 
-},{"is-hex-prefixed":259}],329:[function(require,module,exports){
-arguments[4][87][0].apply(exports,arguments)
-},{"dup":87}],330:[function(require,module,exports){
+},{"is-hex-prefixed":242}],312:[function(require,module,exports){
 (function (global){
 
 /**
@@ -96767,16 +94222,16 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],331:[function(require,module,exports){
-arguments[4][257][0].apply(exports,arguments)
-},{"dup":257}],332:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
+arguments[4][240][0].apply(exports,arguments)
+},{"dup":240}],314:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],333:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -97366,7 +94821,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":332,"_process":285,"inherits":331}],334:[function(require,module,exports){
+},{"./support/isBuffer":314,"_process":268,"inherits":313}],316:[function(require,module,exports){
 var v1 = require('./v1');
 var v4 = require('./v4');
 
@@ -97376,7 +94831,7 @@ uuid.v4 = v4;
 
 module.exports = uuid;
 
-},{"./v1":337,"./v4":338}],335:[function(require,module,exports){
+},{"./v1":319,"./v4":320}],317:[function(require,module,exports){
 /**
  * Convert array of 16 byte values to UUID string format of the form:
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
@@ -97401,7 +94856,7 @@ function bytesToUuid(buf, offset) {
 
 module.exports = bytesToUuid;
 
-},{}],336:[function(require,module,exports){
+},{}],318:[function(require,module,exports){
 // Unique ID creation requires a high quality random # generator.  In the
 // browser this is a little complicated due to unknown quality of Math.random()
 // and inconsistent support for the `crypto` API.  We do the best we can via
@@ -97435,7 +94890,7 @@ if (getRandomValues) {
   };
 }
 
-},{}],337:[function(require,module,exports){
+},{}],319:[function(require,module,exports){
 var rng = require('./lib/rng');
 var bytesToUuid = require('./lib/bytesToUuid');
 
@@ -97546,7 +95001,7 @@ function v1(options, buf, offset) {
 
 module.exports = v1;
 
-},{"./lib/bytesToUuid":335,"./lib/rng":336}],338:[function(require,module,exports){
+},{"./lib/bytesToUuid":317,"./lib/rng":318}],320:[function(require,module,exports){
 var rng = require('./lib/rng');
 var bytesToUuid = require('./lib/bytesToUuid');
 
@@ -97577,7 +95032,7 @@ function v4(options, buf, offset) {
 
 module.exports = v4;
 
-},{"./lib/bytesToUuid":335,"./lib/rng":336}],339:[function(require,module,exports){
+},{"./lib/bytesToUuid":317,"./lib/rng":318}],321:[function(require,module,exports){
 var indexOf = require('indexof');
 
 var Object_keys = function (obj) {
@@ -97717,7 +95172,7 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
-},{"indexof":256}],340:[function(require,module,exports){
+},{"indexof":239}],322:[function(require,module,exports){
 // Base58 encoding/decoding
 // Originally written by Mike Hearn for BitcoinJ
 // Copyright (c) 2011 Google Inc
@@ -97775,7 +95230,7 @@ exports.createContext = Script.createContext = function (context) {
 })(typeof module !== 'undefined' && typeof module.exports !== 'undefined');
 
 
-},{}],341:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 (function (isNode) {
     var jsSHA = isNode ? require('jssha') : window.jsSHA;
 
@@ -97811,7 +95266,7 @@ exports.createContext = Script.createContext = function (context) {
         window.WAValidator.__imports.cryptoUtils = cryptoUtils;
     }
 })(typeof module !== 'undefined' && typeof module.exports !== 'undefined');
-},{"jssha":261}],342:[function(require,module,exports){
+},{"jssha":244}],324:[function(require,module,exports){
 (function (isNode) {
     // defines P2PKH and P2SH address types for standard (prod) and testnet networks
     var CURRENCIES = [{
@@ -97889,7 +95344,7 @@ exports.createContext = Script.createContext = function (context) {
     }
 })(typeof module !== 'undefined' && typeof module.exports !== 'undefined');
 
-},{}],343:[function(require,module,exports){
+},{}],325:[function(require,module,exports){
 (function (isNode) {
     var base58, cryptoUtils, currencies;
 
@@ -97959,4 +95414,4 @@ exports.createContext = Script.createContext = function (context) {
 
 
 
-},{"./base58":340,"./crypto_utils":341,"./currencies":342}]},{},[113]);
+},{"./base58":322,"./crypto_utils":323,"./currencies":324}]},{},[111]);

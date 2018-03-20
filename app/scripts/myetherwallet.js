@@ -64,83 +64,11 @@ var Wallet = function(priv, pub, path, hwType, hwTransport) {
     this.type = "default";
 }
 
-/*
-Wallet.generate = function(icapDirect) {
-    if (icapDirect) {
-        while (true) {
-            var privKey = ethUtil.crypto.randomBytes(32)
-            if (ethUtil.privateToAddress(privKey)[0] === 0) {
-                return new Wallet(privKey)
-            }
-        }
-    } else {
-        return new Wallet(ethUtil.crypto.randomBytes(32))
-    }
-}
-*/
 
 Wallet.generate = function(icapDirect) {
-    //if (icapDirect) {
-     //   while (true) {
-      //      var privKey = ethUtil.crypto.randomBytes(32)
-       //     if (ethUtil.privateToAddress(privKey)[0] === 0) {
-        //        return new Wallet(privKey)
-         //   }
-       // }
-    //} else {
-        var keys = nacl.sign.keyPair();
-        return new Wallet(keys.secretKey, keys.publicKey);
-   // }
+    var keys = nacl.sign.keyPair();
+    return new Wallet(keys.secretKey, keys.publicKey);
 }
-/*
-Wallet.prototype.setTokens = function () {
-    this.tokenObjs = [];
-    var defaultTokensAndNetworkType = globalFuncs.getDefaultTokensAndNetworkType();
-    var tokens = Token.popTokens;
-
-    for (var i = 0; i < tokens.length; i++) {
-      this.tokenObjs.push(
-        new Token(
-          tokens[i].address,
-          this.getAddressString(),
-          tokens[i].symbol,
-          tokens[i].decimal,
-          tokens[i].type
-        )
-      );
-
-      var autoTokens = globalFuncs.localStorage.getItem('autoLoadTokens')
-      var autoLoadTokens = autoTokens ? autoTokens : [];
-      var thisAddr = tokens[i].address
-
-      if ( autoLoadTokens.indexOf( thisAddr ) > -1 ) {
-        this.tokenObjs[this.tokenObjs.length - 1].setBalance();
-      }
-    }
-
-    var storedTokens = globalFuncs.localStorage.getItem('localTokens', null) != null ? JSON.parse(globalFuncs.localStorage.getItem('localTokens')) : [];
-
-    var conflictWithDefaultTokens = [];
-    for (var e = 0; e < storedTokens.length; e++) {
-        if (globalFuncs.doesTokenExistInDefaultTokens(storedTokens[e], defaultTokensAndNetworkType)) {
-            conflictWithDefaultTokens.push(storedTokens[e]);
-            // don't push to tokenObjs if token is default; continue to next element
-            continue;
-        }
-
-        this.tokenObjs.push(
-          new Token(
-            storedTokens[e].contractAddress,
-            this.getAddressString(),
-            globalFuncs.stripTags(storedTokens[e].symbol),
-            storedTokens[e].decimal,
-            storedTokens[e].type,
-          )
-        );
-        this.tokenObjs[this.tokenObjs.length - 1].setBalance();
-    }
-    removeAllTokenConflicts(conflictWithDefaultTokens, storedTokens)
-};*/
 
 function saveToLocalStorage(key, value) {
   globalFuncs.localStorage.setItem(key, JSON.stringify(value))
@@ -184,30 +112,6 @@ Wallet.prototype.setBalance = function(callback) {
     var parentObj = this;
     this.balance = this.usdBalance = this.eurBalance = this.btcBalance = this.chfBalance = this.repBalance =  this.gbpBalance = 'loading';
 
-/*
-    ajaxReq.getBalance(parentObj.getPublicKeyString (), function(data) {
-    
-        if (data.error) parentObj.balance = data.msg;
-        else {
-            parentObj.balance = etherUnits.toEther(data.data.balance, 'wei');
-            ajaxReq.getETHvalue(function(data) {
-                parentObj.usdPrice   = etherUnits.toFiat('1', 'ether', data.usd);
-                parentObj.gbpPrice   = etherUnits.toFiat('1', 'ether', data.gbp);
-                parentObj.eurPrice   = etherUnits.toFiat('1', 'ether', data.eur);
-                parentObj.btcPrice   = etherUnits.toFiat('1', 'ether', data.btc);
-                parentObj.chfPrice   = etherUnits.toFiat('1', 'ether', data.chf);
-                parentObj.repPrice   = etherUnits.toFiat('1', 'ether', data.rep);
-
-                parentObj.usdBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.usd);
-                parentObj.gbpBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.gbp);
-                parentObj.eurBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.eur);
-                parentObj.btcBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.btc);
-                parentObj.chfBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.chf);
-                parentObj.repBalance = etherUnits.toFiat(parentObj.balance, 'ether', data.rep);
-                if(callback) callback();
-            });
-        }
-    });*/
     try {   
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         const AionWeb3 = require('./aionWeb3/lib/web3.js');
@@ -215,13 +119,10 @@ Wallet.prototype.setBalance = function(callback) {
         this.balance = aionweb3.eth.getBalance('0x'+this.pubKey);
     } catch (err) {
         console.log("not connected");
-        uiFuncs.notifier.danger("You are not conneted to a node, please connect to a functional node from the drop down menu");
+        uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
     } 
 }
 Wallet.prototype.getBalance = function() {
-
-    //if (!$scope.connectStatus) return "You are not currently connected to a node for";
-
     return this.balance/Math.pow(10,18);
 }
 Wallet.prototype.getPath = function() {
@@ -244,28 +145,12 @@ Wallet.prototype.getPrivateKeyString = function() {
     }
 }
 Wallet.prototype.getPublicKey = function() {
-  //  if (typeof this.pubKey == "undefined") {
-        //return ethUtil.privateToPublic(this.privKey)
-       // return nacl.sign.keyPair.fromSecretKey(this.privKey);
-   // } else {
         return this.pubKey;
- //   }
 }
 Wallet.prototype.getPublicKeyString = function() {
-  //  if (typeof this.pubKey == "undefined") {
-   //     return '0x' + this.getPublicKey().toString('hex')
-  //  } else {
-        //return "0x" + this.pubKey.toString('hex')
         return this.pubKey;
-  //  }
 }
 Wallet.prototype.getAddress = function() {
-    /*
-    if (typeof this.pubKey == "undefined") {
-        return ethUtil.privateToAddress(this.privKey)
-    } else {
-        return ethUtil.publicToAddress(this.pubKey, true)
-    }*/
     return this.pubKey;
 }
 Wallet.prototype.getAddressString = function() {
@@ -315,27 +200,7 @@ Wallet.prototype.toV3 = function(password, opts) {
     }
     var ciphertext = Buffer.concat([cipher.update(this.privKey), cipher.final()])
 
-    //var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]))
     var mac = blake2bHex(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
-
-    /*
-    return {
-        version: 3,
-        id: ethUtil.uuid.v4({
-            random: opts.uuid || ethUtil.crypto.randomBytes(16)
-        }),
-        address: this.getAddress().toString('hex'),
-        Crypto: {
-            ciphertext: ciphertext.toString('hex'),
-            cipherparams: {
-                iv: iv.toString('hex')
-            },
-            cipher: opts.cipher || 'aes-128-ctr',
-            kdf: kdf,
-            kdfparams: kdfparams,
-            mac: mac.toString('hex')
-        }
-    }*/
 
     var returnData = [
         ethUtil.uuid.v4({
@@ -354,14 +219,10 @@ Wallet.prototype.toV3 = function(password, opts) {
         mac.toString('hex') //11       
     ]; 
     console.log ("return data is "+hexToBinary(RLP.encode(returnData).toString('hex')));
-    //return hexToBinary(RLP.encode(returnData).toString('hex'));
     return RLP.encode(returnData);
 }
 
 Wallet.fromV3 = function(input, password, nonStrict) {
-   
-    //var hexx =bin2hex(input);
-    //var keyStoreContents = RLP.decode(new Buffer(hexx,'hex')).toString().split(',');
 
     console.log("input is: "+hexToBinary(input));
     var keyStoreContents = RLP.decode(input);
@@ -382,7 +243,6 @@ Wallet.fromV3 = function(input, password, nonStrict) {
     }
     var ciphertext = new Buffer(keyStoreContent[2], 'hex')
     
-    //var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))    
     var mac = blake2bHex(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
 
     if (mac.toString('hex') !== keyStoreContent[11]) {
@@ -406,8 +266,6 @@ Wallet.fromV3 = function(input, password, nonStrict) {
 Wallet.prototype.toJSON = function() {
 
     return {
-       // address: this.getAddressString(),
-       // checksumAddress: this.getChecksumAddressString(),
         privKey: this.getPrivateKeyString(),
         pubKey: this.getPublicKeyString(),
         publisher: "AionWallet",
@@ -478,45 +336,6 @@ Wallet.fromMyEtherWalletKey = function(input, password) {
     privKey = new Buffer((privKey.toString()), 'hex')
     return new Wallet(privKey)
 }
-/*
-Wallet.fromV3 = function(input, password, nonStrict) {
-    var json = (typeof input === 'object') ? input : JSON.parse(nonStrict ? input.toLowerCase() : input)
-    if (json.version !== 3) {
-        throw new Error('Not a V3 wallet')
-    }
-    var derivedKey
-    var kdfparams
-    if (json.crypto.kdf === 'scrypt') {
-        kdfparams = json.crypto.kdfparams
-        derivedKey = ethUtil.scrypt(new Buffer(password), new Buffer(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dklen)
-    } else if (json.crypto.kdf === 'pbkdf2') {
-        kdfparams = json.crypto.kdfparams
-        if (kdfparams.prf !== 'hmac-sha256') {
-            throw new Error('Unsupported parameters to PBKDF2')
-        }
-        derivedKey = ethUtil.crypto.pbkdf2Sync(new Buffer(password), new Buffer(kdfparams.salt, 'hex'), kdfparams.c, kdfparams.dklen, 'sha256')
-    } else {
-        throw new Error('Unsupported key derivation scheme')
-    }
-    var ciphertext = new Buffer(json.crypto.ciphertext, 'hex')
-    
-    //var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))    
-    var mac = blake2bHex(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
-
-    if (mac.toString('hex') !== json.crypto.mac) {
-        throw new Error('Key derivation failed - possibly wrong passphrase')
-    }
-    var decipher = ethUtil.crypto.createDecipheriv(json.crypto.cipher, derivedKey.slice(0, 16), new Buffer(json.crypto.cipherparams.iv, 'hex'))
-    var seed = Wallet.decipherBuffer(decipher, ciphertext, 'hex')
-    while (seed.length < 32) {
-        var nullBuff = new Buffer([0x00]);
-        seed = Buffer.concat([nullBuff, seed]);
-    }
-    return new Wallet(seed)
-}
-*/
-
-
 
 Wallet.prototype.toV3String = function(password, opts) {
     return JSON.stringify(this.toV3(password, opts))

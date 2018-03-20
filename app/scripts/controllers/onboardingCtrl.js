@@ -30,7 +30,6 @@ var onboardingCtrl = function($scope, globalService, $translate, $sce) {
   $scope.setOnboardStatus = function( slideNum ) {
     $scope.showOnboardSlide = slideNum                                            // show the slide indicated
     globalFuncs.localStorage.setItem("onboardStatus", JSON.stringify( slideNum )) // save number to localStorage for later
-    //console.log( "setOnboardStatus " + slideNum )
   }
 
   $scope.setOnboardStatus( $scope.onboardStatus )

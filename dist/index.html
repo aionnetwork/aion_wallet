@@ -202,8 +202,6 @@
 
   <div class="tab-content" >
 
-    
-
     <main class="tab-pane block--container active"
       ng-if="globalService.currentTab==globalService.tabs.generateWallet.id"
       ng-controller='walletGenCtrl'
@@ -236,8 +234,6 @@
                   Getting Started
                 </a>
               </li>
-              <!-- &nbsp;&nbsp;&middot;&nbsp;&nbsp; -->
-              <!-- <br/> -->
           </ul>
         </div>
         <div class="stage">
@@ -292,10 +288,6 @@
 
       </div>
       </div>
-
-
-      
-
 
       <a tabindex="0"
         role="button"
@@ -375,11 +367,6 @@
              aria-describedby="x_KeystoreDesc"
              ng-click="downloaded()"
              target="_blank" rel="noopener noreferrer">
-            <!-- <span translate="x_Download"> -->
-            <!-- <span>
-              Click to Download
-            </span>
-            <br/> -->
             <span translate="x_Keystore2">
               Download: Keystore File
             </span>
@@ -517,7 +504,7 @@
       <div class="account-help-icon">
         <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
-          You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
+          You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you AION. That icon is an easy way to recognize your address.
         </p>
         <h5 translate="x_Address">
           Your Address:
@@ -541,10 +528,10 @@
       <div class="account-help-icon">
         <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
-          This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
+          This Keystore matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
         <h5 translate="x_Keystore">
-          Keystore/JSON File (Recommended • Encrypted • Mist/Geth Format)
+          Keystore
         </h5>
       </div>
       <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{encFileName}}" translate="x_Download">
@@ -677,33 +664,7 @@
   
      <!-- Sidebar -->
 <section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
-       style="background: #12364c;
-           color: #fff;
-           border: 2px solid #2bc0ec;">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
   <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
 </section>
 <!-- / Sidebar -->
 
@@ -769,7 +730,7 @@
 
     <!-- To Address -->
     <div class="row form-group">
-      <address-field placeholder="0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8" var-name="tx.to"></address-field>
+      <address-field placeholder="0xd2f5aa1eefc77d91d5bcb563e039d2c07be1a9ed0dd0851c189c50b5172635c1" var-name="tx.to"></address-field>
     </div>
 
 
@@ -830,7 +791,7 @@
     </section>
 
     <!-- Advanced Option Panel -->
-    <a ng-click="showAdvance=true"
+    <a ng-click="showAdvance=!showAdvance"
        ng-show='globalService.currentTab==globalService.tabs.sendTransaction.id'>
       <p class="strong" translate="TRANS_advanced">
         + Advanced: Add Data
@@ -843,12 +804,7 @@
 
       <!-- Data -->
       <section class="row form-group">
-        <div class="col-sm-11 clearfix" ng-show="tx.sendMode=='ether'">
-          <span class="account-help-icon">
-            <p class="account-help-text" translate="OFFLINE_Step2_Label_6b">
-              This is optional.
-            </p>
-          </span>
+        <div class="col-sm-11 clearfix" >
 
           <label translate="TRANS_data"> Data: </label>
 
@@ -862,65 +818,7 @@
         </div>
       </section>
 
-
-      <!-- Nonce -->
-      <section class="row form-group" ng-show="checkTxPage">
-        <div class="col-sm-11 clearfix">
-
-          <label translate="OFFLINE_Step2_Label_5">
-            Nonce
-          </label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="2"
-                 ng-model="tx.nonce"
-                 ng-disabled="checkTxReadOnly"
-                 ng-class="Validator.isPositiveNumber(tx.nonce) ? 'is-valid' : 'is-invalid'" />
-
-        </div>
-      </section>
-
-
-      <!-- Gas Price -->
-      <section class="row form-group" ng-show="checkTxPage">
-        <div class="col-sm-11 clearfix">
-
-          <label translate="OFFLINE_Step2_Label_3">
-            Gas Price:
-          </label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="50"
-                 ng-model="tx.gasPrice"
-                 ng-disabled="checkTxReadOnly"
-                 ng-class="Validator.isPositiveNumber(tx.gasPrice) ? 'is-valid' : 'is-invalid'" />
-
-        </div>
-      </section>
-
     </div>
-    <!-- / Advanced Option Panel -->
-
-
-
-
-
-    <div class="clearfix form-group">
-      <div class="well" ng-show="wallet!=null && customGasMsg!=''">
-        <p>
-          <span translate="SEND_CustomAddrMsg">
-            A message regarding
-          </span>
-          {{tx.to}}
-          <br />
-          <strong>
-            {{customGasMsg}}
-          </strong>
-        </p>
-      </div>
-    </div>
-
-
 
     <div class="row form-group">
       <div class="col-xs-12 clearfix">
@@ -1007,21 +905,8 @@
                   {{tx.value}} <!--{{unitReadable}}--> Aion
                 </h4>
               </td>
-              <td ng-show="tx.sendMode=='ether'">
+              <td>
                 <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{tx.to}}" watch-var="tx.to"></div>
-                <p>
-                  <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
-                   <!-- {{tx.to}} -->
-                  </strong>
-                </p>
-              </td>
-              <td ng-show="tx.sendMode!=='ether'">
-                <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{tokenTx.to}}" watch-var="tokenTx.to"></div>
-                <p>
-                  <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
-                   <!-- {{tokenTx.to}}-->
-                  </strong>
-                </p>
               </td>
             </tr>
           </tbody>
@@ -1119,7 +1004,6 @@
 
     <div ng-click="wd = !wd">
       <a class="collapse-button">
-        <!-- <span ng-show="wd">+</span><span ng-show="!wd">-</span> -->
       </a>
       <h1 translate="NAV_ViewWallet">
         View Wallet Details
@@ -1150,7 +1034,7 @@
       <div class="account-help-icon">
         <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_AddessDesc">
-          You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you ETH. That icon is an easy way to recognize your address.
+          You may know this as your "Account #" or your "Public Key". It's what you send people so they can send you AION. That icon is an easy way to recognize your address.
         </p>
         <h5 translate="x_Address">
           Your Address:
@@ -1174,10 +1058,10 @@
       <div class="account-help-icon">
         <img src="images/icons/small-logo.png" class="help-icon aion-help" />
         <p class="account-help-text" translate="x_KeystoreDesc">
-          This Keystore / JSON file matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
+          This Keystore matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
         </p>
         <h5 translate="x_Keystore">
-          Keystore/JSON File (Recommended • Encrypted • Mist/Geth Format)
+          Keystore
         </h5>
       </div>
       <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{encFileName}}" translate="x_Download">
@@ -1278,187 +1162,6 @@
 
     <main class="tab-pane block--container active" ng-if="globalService.currentTab==globalService.tabs.txStatus.id" ng-controller='txStatusCtrl' role="main" ng-cloak>
 
-  <!-- Section 1 -->
-  <section class="block txstatus__1">
-    <article class="row">
-      <section class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
-        <h1 translate="NAV_CheckTxStatus">
-          Check TX Status
-        </h1>
-        <p translate="tx_Summary"></p>
-      </section>
-
-      <section class="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
-          <input
-             class="form-control"
-             type="text"
-             placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c"
-             ng-model="txInfo.hash"
-             ng-keyup="$event.keyCode == 13 && checkTxStatus()"
-             aria-label="{{'x_TxHash' | translate}}" ng-class="Validator.isValidTxHash(txInfo.hash) ? 'is-valid' : 'is-invalid'"/>
-          <button tabindex="0"
-                  role="button"
-                  class="btn btn-primary"
-                  ng-click="checkTxStatus()"
-                  translate="NAV_CheckTxStatus"> Check TX Status </button>
-      </section>
-    </article>
-  </section>
-  <!-- / Section 1 -->
-
-
-  <!-- Section 2: Current State -->
-  <section class="block txstatus__2" ng-show="txInfo.status==txStatus.mined || txInfo.status==txStatus.notFound || txInfo.status==txStatus.found">
-
-    <div class="cont-md" ng-show="txInfo.status == txStatus.mined">
-      <h3 class="text-success" translate="tx_FoundOnChain"> Transaction Found </h3>
-      <h5> <a href="https://etherscan.io/tx/{{ tx.hash }}" target="_blank" rel="noopener noreferrer"> {{ tx.hash }} </a> </h5>
-      <p><strong translate="tx_FoundOnChain_1"></strong></p>
-      <ul>
-        <li translate="tx_FoundOnChain_2"></li>
-        <li translate="tx_FoundOnChain_3"></li>
-      </ul>
-    </div>
-
-    <div class="cont-md" ng-show="txInfo.status == txStatus.notFound">
-      <h3 class="text-danger" translate="tx_notFound">
-        Transaction Not Found
-      </h3>
-      <p>
-        <strong translate="tx_notFound_1"></strong>
-      </p>
-      <ul>
-        <li translate="tx_notFound_2"></li>
-        <li translate="tx_notFound_3"></li>
-        <li translate="tx_notFound_4"></li>
-      </ul>
-    </div>
-
-    <div class="cont-md" ng-show="txInfo.status == txStatus.found">
-      <h3 class="text-warning" translate="tx_foundInPending">
-        Pending Transaction Found
-      </h3>
-      <ul>
-        <li translate="tx_foundInPending_1"></li>
-        <li translate="tx_foundInPending_2"></li>
-        <li translate="tx_foundInPending_3"></li>
-      </ul>
-    </div>
-
-    <div ng-show="txInfo.status == txStatus.found || txInfo.status == txStatus.mined">
-      <h4 translate="tx_Details" class="cont-md">
-        Transaction Details
-      </h4>
-      <br />
-      <table class="table table-striped txstatus__2 cont-md"> <!-- ng-show="tx.status=='foundOnChain' || foundInPending'"-->
-        <tbody>
-          <tr>
-            <td translate="x_TxHash">
-              TX Hash
-            </td>
-            <td>
-              <a href="https://etherscan.io/tx/{{ txInfo.hash }}" target="_blank" rel="noopener noreferrer">
-                {{ txInfo.hash }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td translate="OFFLINE_Step1_Label_1">
-              From Address
-            </td>
-            <td>
-              <a href="https://etherscan.io/address/{{ txInfo.from }}" target="_blank" rel="noopener noreferrer">
-                {{ txInfo.from }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td translate="OFFLINE_Step2_Label_1">
-              To Address
-            </td>
-            <td>
-              <a href="https://etherscan.io/address/{{ txInfo.to }}" target="_blank" rel="noopener noreferrer">
-                {{ txInfo.to }}
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td translate="SEND_amount_short">
-              Amount
-            </td>
-            <td>
-              {{ txInfo.valueStr }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a class="account-help-icon"
-                 href="https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html"
-                 target="_blank"
-                 rel="noopener noreferrer">
-                   <img src="images/icon-help.svg" class="help-icon" />
-                  <p class="account-help-text" translate="NONCE_Desc"></p>
-              </a>
-              <span translate="OFFLINE_Step2_Label_5">
-                Nonce
-              </span>
-            </td>
-            <td>
-              {{ txInfo.nonce }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a class="account-help-icon"
-                 href="https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html"
-                 target="_blank"
-                 rel="noopener noreferrer">
-                    <img src="images/icon-help.svg" class="help-icon" />
-                    <p class="account-help-text" translate="GAS_LIMIT_Desc"></p>
-              </a>
-              <span translate="OFFLINE_Step2_Label_4">
-                Gas Limit
-              </span>
-            </td>
-            <td>
-              {{ txInfo.gasLimit }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a class="account-help-icon"
-                 href="https://myetherwallet.github.io/knowledge-base/gas/what-is-gas-ethereum.html"
-                 target="_blank"
-                 rel="noopener noreferrer">
-                   <img src="images/icon-help.svg" class="help-icon" />
-                   <p class="account-help-text" translate="GAS_PRICE_Desc"></p>
-              </a>
-              <span translate="OFFLINE_Step2_Label_3">
-                Gas Price
-              </span>
-            </td>
-            <td>
-              {{ txInfo.gasPrice.gwei }} GWEI
-              <small>
-                ({{ txInfo.gasPrice.wei }} WEI)
-              </small>
-            </td>
-          </tr>
-          <tr>
-            <td translate="OFFLINE_Step2_Label_6">
-              Data
-            </td>
-            <td>
-              {{ txInfo.data }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <!-- / Section 2: Current State -->
-
-
   <!-- Section 3:  Unlock -->
   <section class="txstatus__3" ng-show="txInfo.status == txStatus.found">
 
@@ -1487,33 +1190,7 @@
     <div ng-show="wallet.getChecksumAddressString() == txInfo.from">
        <!-- Sidebar -->
 <section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
-       style="background: #12364c;
-           color: #fff;
-           border: 2px solid #2bc0ec;">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
   <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
 </section>
 <!-- / Sidebar -->
 
@@ -1579,7 +1256,7 @@
 
     <!-- To Address -->
     <div class="row form-group">
-      <address-field placeholder="0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8" var-name="tx.to"></address-field>
+      <address-field placeholder="0xd2f5aa1eefc77d91d5bcb563e039d2c07be1a9ed0dd0851c189c50b5172635c1" var-name="tx.to"></address-field>
     </div>
 
 
@@ -1640,7 +1317,7 @@
     </section>
 
     <!-- Advanced Option Panel -->
-    <a ng-click="showAdvance=true"
+    <a ng-click="showAdvance=!showAdvance"
        ng-show='globalService.currentTab==globalService.tabs.sendTransaction.id'>
       <p class="strong" translate="TRANS_advanced">
         + Advanced: Add Data
@@ -1653,12 +1330,7 @@
 
       <!-- Data -->
       <section class="row form-group">
-        <div class="col-sm-11 clearfix" ng-show="tx.sendMode=='ether'">
-          <span class="account-help-icon">
-            <p class="account-help-text" translate="OFFLINE_Step2_Label_6b">
-              This is optional.
-            </p>
-          </span>
+        <div class="col-sm-11 clearfix" >
 
           <label translate="TRANS_data"> Data: </label>
 
@@ -1672,65 +1344,7 @@
         </div>
       </section>
 
-
-      <!-- Nonce -->
-      <section class="row form-group" ng-show="checkTxPage">
-        <div class="col-sm-11 clearfix">
-
-          <label translate="OFFLINE_Step2_Label_5">
-            Nonce
-          </label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="2"
-                 ng-model="tx.nonce"
-                 ng-disabled="checkTxReadOnly"
-                 ng-class="Validator.isPositiveNumber(tx.nonce) ? 'is-valid' : 'is-invalid'" />
-
-        </div>
-      </section>
-
-
-      <!-- Gas Price -->
-      <section class="row form-group" ng-show="checkTxPage">
-        <div class="col-sm-11 clearfix">
-
-          <label translate="OFFLINE_Step2_Label_3">
-            Gas Price:
-          </label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="50"
-                 ng-model="tx.gasPrice"
-                 ng-disabled="checkTxReadOnly"
-                 ng-class="Validator.isPositiveNumber(tx.gasPrice) ? 'is-valid' : 'is-invalid'" />
-
-        </div>
-      </section>
-
     </div>
-    <!-- / Advanced Option Panel -->
-
-
-
-
-
-    <div class="clearfix form-group">
-      <div class="well" ng-show="wallet!=null && customGasMsg!=''">
-        <p>
-          <span translate="SEND_CustomAddrMsg">
-            A message regarding
-          </span>
-          {{tx.to}}
-          <br />
-          <strong>
-            {{customGasMsg}}
-          </strong>
-        </p>
-      </div>
-    </div>
-
-
 
     <div class="row form-group">
       <div class="col-xs-12 clearfix">
@@ -1818,21 +1432,8 @@
                   {{tx.value}} <!--{{unitReadable}}--> Aion
                 </h4>
               </td>
-              <td ng-show="tx.sendMode=='ether'">
+              <td>
                 <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{tx.to}}" watch-var="tx.to"></div>
-                <p>
-                  <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
-                   <!-- {{tx.to}} -->
-                  </strong>
-                </p>
-              </td>
-              <td ng-show="tx.sendMode!=='ether'">
-                <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{tokenTx.to}}" watch-var="tokenTx.to"></div>
-                <p>
-                  <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
-                   <!-- {{tokenTx.to}}-->
-                  </strong>
-                </p>
               </td>
             </tr>
           </tbody>
@@ -1980,15 +1581,6 @@
 </div>
 
 
-
-  <!--
-  <section class="loading-wrap" ng-hide="1==1">
-    <div class="loading">
-      <img src="images/loading.gif" />
-      <h1> Loading... </h1>
-  </section>
-  -->
-
 </section>
 
 
@@ -1996,7 +1588,7 @@
 </div>
 
 <script type="text/javascript" src="js/etherwallet-static.min.js"></script>
-<script type="text/javascript" src="js/etherwallet-master.js"></script>
+<script type="text/javascript" src="js/etherwallet-min.js"></script>
 
 <script>
 

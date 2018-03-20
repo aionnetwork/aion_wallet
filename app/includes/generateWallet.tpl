@@ -30,8 +30,6 @@
                   Getting Started
                 </a>
               </li>
-              <!-- &nbsp;&nbsp;&middot;&nbsp;&nbsp; -->
-              <!-- <br/> -->
           </ul>
         </div>
         <div class="stage">
@@ -86,10 +84,6 @@
 
       </div>
       </div>
-
-
-      
-
 
       <a tabindex="0"
         role="button"
@@ -169,11 +163,6 @@
              aria-describedby="x_KeystoreDesc"
              ng-click="downloaded()"
              target="_blank" rel="noopener noreferrer">
-            <!-- <span translate="x_Download"> -->
-            <!-- <span>
-              Click to Download
-            </span>
-            <br/> -->
             <span translate="x_Keystore2">
               Download: Keystore File
             </span>

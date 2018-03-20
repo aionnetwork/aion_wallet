@@ -15,8 +15,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
     $scope.notifier.scope = $scope;
 
     const AionWeb3 = require('../aionWeb3/lib/web3.js');
-
-    $scope.connectStatus=true;  
+   
 	var connect = function(){
 
 	    var data = {
@@ -28,10 +27,13 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
 		$http.post(window.web3addr, data).then(
 			function (response){
 				console.log("data "+response);
-				$scope.connectStatus = true;},
+				window.connectStatus = true;
+                $scope.connectStatus= true;
+            },
 			function (response){
 				console.log("error "+response);
-				$scope.connectStatus = false;
+				window.connectStatus = false;
+                $scope.connectStatus= false;
 			});
 	}
 	connect();
@@ -60,7 +62,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
         }else {
 
         }
-        window.web3addr="https://"+$scope.currentIP+":"+$scope.currentPort;
+        window.web3addr="http://"+$scope.currentIP+":"+$scope.currentPort;
     }
 
     $scope.setArrowVisibility = function() {
@@ -73,29 +75,6 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
         }, 200);
     }
     $scope.setArrowVisibility();
-
-    var gasPriceKey = "gasPrice";
-    $scope.gasChanged = function() {
-        globalFuncs.localStorage.setItem(gasPriceKey, $scope.gas.value);
-        ethFuncs.gasAdjustment = $scope.gas.value;
-        $scope.gasPriceMsg = ethFuncs.gasAdjustment < 41 ? true : false
-    }
-    var setGasValues = function() {
-        $scope.gas = {
-            curVal: 41,
-            value: globalFuncs.localStorage.getItem(gasPriceKey, null) ? parseInt(globalFuncs.localStorage.getItem(gasPriceKey)) : 41,
-            max: 99,
-            min: 1,
-            step: 1
-        }
-
-        var curNode = globalFuncs.localStorage.getItem('curNode', null);
-
-        ethFuncs.gasAdjustment = $scope.gas.value;
-        $scope.gasPriceMsg = ethFuncs.gasAdjustment < 41 ? true : false
-    }
-    setGasValues();
-    $scope.gasChanged();
 
     $scope.tabClick = function(id) {
         globalService.tokensLoaded = false

@@ -15,15 +15,6 @@ Web3Wallet.prototype.getAddress = function() {
     return this.addressBuffer
 }
 
-// Web3Wallet.prototype.getPath = function() {
-//     throw new Error('Web3Wallet - method not supported')
-// }
-// Web3Wallet.prototype.getHWType = function() {
-//     throw new Error('Web3Wallet - method not supported')
-// }
-// Web3Wallet.prototype.getHWTransport = function() {
-//     throw new Error('Web3Wallet - method not supported')
-// }
 Web3Wallet.prototype.getPrivateKey = function() {
     throw new Error('Web3Wallet - method not supported')
 }

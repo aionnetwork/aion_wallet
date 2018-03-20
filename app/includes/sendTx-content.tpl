@@ -1,32 +1,6 @@
 <!-- Sidebar -->
 <section class="col-sm-4">
-
-  <div class="block block--danger"
-       ng-show="wallet!=null && globalService.currentTab==globalService.tabs.swap.id && !hasEnoughBalance()"
-       style="background: #12364c;
-           color: #fff;
-           border: 2px solid #2bc0ec;">
-
-    <h5 translate="SWAP_Warning_1">
-      Warning! You do not have enough funds to complete this swap.
-    </h5>
-
-    <p translate="SWAP_Warning_2">
-      Please add more funds to your wallet or access a different wallet.
-    </p>
-
-  </div>
-
   <wallet-balance-drtv></wallet-balance-drtv>
-
-  <div ng-show="checkTxPage"
-       ng-click="checkTxReadOnly=!checkTxReadOnly"
-       class="small text-right text-gray-lighter">
-        <small translate="X_Advanced">
-          Advanced Users Only.
-        </small>
-  </div>
-
 </section>
 <!-- / Sidebar -->
 
@@ -92,7 +66,7 @@
 
     <!-- To Address -->
     <div class="row form-group">
-      <address-field placeholder="0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8" var-name="tx.to"></address-field>
+      <address-field placeholder="0xd2f5aa1eefc77d91d5bcb563e039d2c07be1a9ed0dd0851c189c50b5172635c1" var-name="tx.to"></address-field>
     </div>
 
 
@@ -153,7 +127,7 @@
     </section>
 
     <!-- Advanced Option Panel -->
-    <a ng-click="showAdvance=true"
+    <a ng-click="showAdvance=!showAdvance"
        ng-show='globalService.currentTab==globalService.tabs.sendTransaction.id'>
       <p class="strong" translate="TRANS_advanced">
         + Advanced: Add Data
@@ -166,12 +140,7 @@
 
       <!-- Data -->
       <section class="row form-group">
-        <div class="col-sm-11 clearfix" ng-show="tx.sendMode=='ether'">
-          <span class="account-help-icon">
-            <p class="account-help-text" translate="OFFLINE_Step2_Label_6b">
-              This is optional.
-            </p>
-          </span>
+        <div class="col-sm-11 clearfix" >
 
           <label translate="TRANS_data"> Data: </label>
 
@@ -185,65 +154,7 @@
         </div>
       </section>
 
-
-      <!-- Nonce -->
-      <section class="row form-group" ng-show="checkTxPage">
-        <div class="col-sm-11 clearfix">
-
-          <label translate="OFFLINE_Step2_Label_5">
-            Nonce
-          </label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="2"
-                 ng-model="tx.nonce"
-                 ng-disabled="checkTxReadOnly"
-                 ng-class="Validator.isPositiveNumber(tx.nonce) ? 'is-valid' : 'is-invalid'" />
-
-        </div>
-      </section>
-
-
-      <!-- Gas Price -->
-      <section class="row form-group" ng-show="checkTxPage">
-        <div class="col-sm-11 clearfix">
-
-          <label translate="OFFLINE_Step2_Label_3">
-            Gas Price:
-          </label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="50"
-                 ng-model="tx.gasPrice"
-                 ng-disabled="checkTxReadOnly"
-                 ng-class="Validator.isPositiveNumber(tx.gasPrice) ? 'is-valid' : 'is-invalid'" />
-
-        </div>
-      </section>
-
     </div>
-    <!-- / Advanced Option Panel -->
-
-
-
-
-
-    <div class="clearfix form-group">
-      <div class="well" ng-show="wallet!=null && customGasMsg!=''">
-        <p>
-          <span translate="SEND_CustomAddrMsg">
-            A message regarding
-          </span>
-          {{tx.to}}
-          <br />
-          <strong>
-            {{customGasMsg}}
-          </strong>
-        </p>
-      </div>
-    </div>
-
-
 
     <div class="row form-group">
       <div class="col-xs-12 clearfix">

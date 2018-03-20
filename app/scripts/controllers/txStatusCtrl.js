@@ -1,7 +1,7 @@
 'use strict';
 var txStatusCtrl = function($scope) {
     $scope.Validator = Validator;
-    $scope.checkTxPage = true;
+    $scope.checkTxPage = false;
     $scope.checkTxReadOnly = true;
     $scope.txStatus = {
         found: 0,
@@ -25,56 +25,6 @@ var txStatusCtrl = function($scope) {
     var applyScope = function() {
         if (!$scope.$$phase) $scope.$apply();
     }
-    /*
-    var setUSDvalues = function() {
-        ajaxReq.getETHvalue(function(data) {
-            $scope.txInfo.gasPrice.usd = new BigNumber(data.usd).mul(new BigNumber($scope.txInfo.gasPrice.eth)).toString();
-            applyScope();
-        });
-    }*/
-    /*
-    var txToObject = function(tx) {
-        var txStatus = $scope.txStatus;
-        if (tx) {
-            console.log('txToObject')
-            console.log(tx)
-            $scope.txInfo = {
-                status: tx.blockNumber ? txStatus.mined : txStatus.found,
-                hash: tx.hash,
-                from: ethUtil.toChecksumAddress(tx.from),
-                to: tx.to ? ethUtil.toChecksumAddress(tx.to) : '',
-                value: new BigNumber(tx.value).toString(),
-                valueStr: etherUnits.toEther(tx.value, 'wei') + " ETH",
-                gasLimit: new BigNumber(tx.gas).toString(),
-                gasPrice: {
-                    wei: new BigNumber(tx.gasPrice).toString(),
-                    gwei: new BigNumber(tx.gasPrice).div(etherUnits.getValueOfUnit('gwei')).toString(),
-                    eth: etherUnits.toEther(tx.gasPrice, 'wei')
-                },
-                data: tx.input == '0x' ? '' : tx.input,
-                nonce: new BigNumber(tx.nonce).toString()
-            }
-            if ($scope.txInfo.status == txStatus.found) {
-                var _gasPrice = new BigNumber($scope.txInfo.gasPrice.wei).mul(1.1).floor();
-                if (_gasPrice.lt(etherUnits.getValueOfUnit('gwei') * MIN_GAS)) _gasPrice = new BigNumber(etherUnits.getValueOfUnit('gwei') * MIN_GAS)
-                $scope.parentTxConfig = {
-                    to: $scope.txInfo.from,
-                    value: '0',
-                    sendMode: 'ether',
-                    tokensymbol: '',
-                    readOnly: false,
-                    gasPrice: _gasPrice.toString(),
-                    gasLimit: '21000',
-                    data: '',
-                    nonce: $scope.txInfo.nonce
-                }
-                new Modal(document.getElementById('sendTransaction'));
-            }
-            setUSDvalues();
-        } else {
-            $scope.txInfo.status = txStatus.notFound;
-        }
-    }*/
     $scope.checkTxStatus = function() {
         var txInfo = $scope.txInfo;
         try {
