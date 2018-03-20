@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
-
+#appMain {
+  min-width: 900px;
+}
 // Spinner
 #mySpinner {
   height: 100%;
@@ -17,27 +19,28 @@ body {
   background-position: left top, right bottom;
   background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
-  font-family: 'Roboto', sans-serif !important;
+  // font-family: 'Roboto', sans-serif !important;
   font-family: 'Open Sans', sans-serif !important;
-  // background: white;
 }
-// @media (min-width: 1280px) {
-//   .bg-gradient.header-branding {
-//     width: 125px;
-//     .container {
-//       width: 125px !important;
-//       padding: 0;
-//     }
-//   }
-// }
 
 header {
   margin-bottom: 0;
 }
+
 .mt-50 {
   margin-top: 50px;
 }
 
+@media (max-width: 900px) {
+  .header-branding .dropdown-gas {
+    margin-bottom: 0 !important;
+  }
+  nav:first-child {
+    .nav-inner li:first-child {
+      margin-left: 20px;
+    }
+  }
+}
 
 .bg-gradient.header-branding {
   // margin-bottom: -20px;
@@ -76,17 +79,12 @@ header {
       }
     }
   }
+
   nav {
-    min-width: 380px;
-  }
-  .tagline {
-    // flex-direction: column;
-    justify-content: space-between;
-    nav {
-      width: 400px;
-    }
+    min-width: 270px;
   }
 }
+
 .nav-inner {
   li:first-child {
     margin-right: 50px;
