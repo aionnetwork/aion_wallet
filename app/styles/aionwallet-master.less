@@ -24,15 +24,53 @@
  *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
  *
  * Contributors to the aion source files:
+ *     Aion foundation.
  *     MyEtherWallet LLC  
  *******************************************************************************/
 
-'use strict';
+@import "aionwallet-variables.less";
+@import "aionwallet-fonts.less";
 
-var walletDecryptDrtv = function() {
-	return {
-        restrict : "E",
-        template : require('./walletDecryptDrtv.html')
-  };
-};
-module.exports = walletDecryptDrtv;
+    // Core variables and mixins
+    @import "bootstrap/mixins.less";
+
+    // Reset and dependencies
+    @import "bootstrap/normalize.less";
+    @import "bootstrap/print.less";
+
+    // Core CSS
+    @import "bootstrap/scaffolding.less";
+    @import "bootstrap/type.less";
+    @import "bootstrap/code.less";
+    @import "bootstrap/grid.less";
+    @import "bootstrap/tables.less";
+    @import "bootstrap/forms.less";
+    @import "bootstrap/buttons.less";
+
+    // Components
+    //@import "bootstrap/component-animations.less";
+    @import "bootstrap/dropdowns.less";
+    @import "bootstrap/button-groups.less";
+    @import "bootstrap/input-groups.less";
+    @import "bootstrap/alerts.less";
+    @import "bootstrap/wells.less";
+    @import "bootstrap/close.less";
+
+    // Components w/ JavaScript
+    @import "bootstrap/modals.less";
+
+    // Utility classes
+    @import "bootstrap/utilities.less";
+    @import "bootstrap/responsive-utilities.less";
+
+@import "aionwallet-custom.less";
+@import "aionwallet-txstatus.less";
+@import "aionwallet-ext-custom.less";
+@import "aionwallet-utilities.less";
+@import "aionwallet-nav.less";
+@import "aionwallet-print.less";
+
+
+@import "aionwallet-new.less";
+
+@import "aionwallet-styles.less";

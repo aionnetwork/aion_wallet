@@ -1,3 +1,33 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/
+
 'use strict';
 var nacl = require('./nacl.js');
 var blake2b = require('./blakejs/blake2b');
@@ -14,7 +44,7 @@ function hexStringToByte(str) {
 }
 
 var uiFuncs = function() {}
-uiFuncs.getTxData = function($scope) {console.log("getting data");
+uiFuncs.getTxData = function($scope) {
     return {
         to: $scope.tx.to,
         value: $scope.tx.value,
@@ -28,132 +58,21 @@ uiFuncs.getTxData = function($scope) {console.log("getting data");
         hwTransport: $scope.wallet.getHWTransport()
     };
 }
+
 uiFuncs.isTxDataValid = function(txData) { 
-    console.log("txData.to: ",txData.to);
-    console.log("txData.value: ",txData.value);
-    console.log("txData.unit: ",txData.unit);
-    console.log("txData.gasLimit: ",txData.gasLimit);
-    console.log("txData.data: ",txData.data);
-    console.log("txData.from: ",txData.from);
-    console.log("txData.privKey: ",txData.privKey);
-    console.log("txData.path: ",txData.path);
-    console.log("txData.hwType: ",txData.hwType);
-    console.log("txData.hwTransport: ",txData.hwTransport);
-
-
-
-
+    
     if (txData.to != "0xCONTRACT" && !ethFuncs.validateEtherAddress(txData.to)) throw globalFuncs.errorMsgs[5];
     else if (!globalFuncs.isNumeric(txData.value) || parseFloat(txData.value) < 0) throw globalFuncs.errorMsgs[0];
     else if (!globalFuncs.isNumeric(txData.gasLimit) || parseFloat(txData.gasLimit) <= 0) throw globalFuncs.errorMsgs[8];
     else if (!ethFuncs.validateHexString(txData.data)) throw globalFuncs.errorMsgs[9];
     if (txData.to == "0xCONTRACT") txData.to = '';
 }
-uiFuncs.signTxTrezor = function(rawTx, txData, callback) {
-    var localCallback = function(result) {
-        if (!result.success) {
-            if (callback !== undefined) {
-                callback({
-                    isError: true,
-                    error: result.error
-                });
-            }
-            return;
-        }
 
-        rawTx.v = "0x" + ethFuncs.decimalToHex(result.v);
-        rawTx.r = "0x" + result.r;
-        rawTx.s = "0x" + result.s;
-        var eTx = new ethUtil.Tx(rawTx);
-        rawTx.rawTx = JSON.stringify(rawTx);
-        rawTx.signedTx = '0x' + eTx.serialize().toString('hex');
-        rawTx.isError = false;
-        if (callback !== undefined) callback(rawTx);
-    }
-
-    TrezorConnect.signEthereumTx(
-        txData.path,
-        ethFuncs.getNakedAddress(rawTx.nonce),
-        ethFuncs.getNakedAddress(rawTx.gasPrice),
-        ethFuncs.getNakedAddress(rawTx.gasLimit),
-        ethFuncs.getNakedAddress(rawTx.to),
-        ethFuncs.getNakedAddress(rawTx.value),
-        ethFuncs.getNakedAddress(rawTx.data),
-        //rawTx.chainId,
-        localCallback
-    );
-}
-uiFuncs.signTxLedger = function(app, eTx, rawTx, txData, old, callback) {
-   // eTx.raw[6] = Buffer.from([rawTx.chainId]);
-    eTx.raw[7] = eTx.raw[8] = 0;
-    var toHash = old ? eTx.raw.slice(0, 6) : eTx.raw;
-    var txToSign = ethUtil.rlp.encode(toHash);
-    var localCallback = function(result, error) {
-        if (typeof error != "undefined") {
-            error = error.errorCode ? u2f.getErrorByCode(error.errorCode) : error;
-            if (callback !== undefined) callback({
-                isError: true,
-                error: error
-            });
-            return;
-        }
-        rawTx.v = "0x" + result['v'];
-        rawTx.r = "0x" + result['r'];
-        rawTx.s = "0x" + result['s'];
-        eTx = new ethUtil.Tx(rawTx);
-        rawTx.rawTx = JSON.stringify(rawTx);
-        rawTx.signedTx = '0x' + eTx.serialize().toString('hex');
-        rawTx.isError = false;
-        if (callback !== undefined) callback(rawTx);
-    }
-    app.signTransaction(txData.path, txToSign.toString('hex'), localCallback);
-}
-uiFuncs.signTxDigitalBitbox = function(eTx, rawTx, txData, callback) {
-    var localCallback = function(result, error) {
-        if (typeof error != "undefined") {
-            error = error.errorCode ? u2f.getErrorByCode(error.errorCode) : error;
-            if (callback !== undefined) callback({
-                isError: true,
-                error: error
-            });
-            return;
-        }
-        uiFuncs.notifier.info("The transaction was signed but not sent. Click the blue 'Send Transaction' button to continue.");
-        rawTx.v = ethFuncs.sanitizeHex(result['v']);
-        rawTx.r = ethFuncs.sanitizeHex(result['r']);
-        rawTx.s = ethFuncs.sanitizeHex(result['s']);
-        var eTx_ = new ethUtil.Tx(rawTx);
-        rawTx.rawTx = JSON.stringify(rawTx);
-        rawTx.signedTx = ethFuncs.sanitizeHex(eTx_.serialize().toString('hex'));
-        rawTx.isError = false;
-        if (callback !== undefined) callback(rawTx);
-    }
-    uiFuncs.notifier.info("Touch the LED for 3 seconds to sign the transaction. Or tap the LED to cancel.");
-    var app = new DigitalBitboxEth(txData.hwTransport, '');
-    app.signTransaction(txData.path, eTx, localCallback);
-}
-uiFuncs.trezorUnlockCallback = function(txData, callback) {
-    TrezorConnect.open(function(error) {
-        if (error) {
-            if (callback !== undefined) callback({
-                isError: true,
-                error: error
-            });
-        } else {
-            txData.trezorUnlocked = true;
-            uiFuncs.generateTx(txData, callback);
-        }
-    });
-}
 uiFuncs.generateTx = function($scope, txData, callback) {     
 
     const AionWeb3 = require('./aionWeb3/index');
     var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-    
-    if ((typeof txData.hwType != "undefined") && (txData.hwType == "trezor") && !txData.trezorUnlocked) {
-        uiFuncs.trezorUnlockCallback(txData, callback);
-        return;
-    }
+
     try {
         uiFuncs.isTxDataValid(txData);
         
@@ -184,17 +103,11 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 "0x01"];
 
             var RAWTX = RLP.encode(rawTxArray); 
-			console.log("transactionRaw serialized "+ RAWTX.toString('hex'));
 
             var SIG = Buffer.concat ([new Buffer (hexStringToByte($scope.wallet.getPublicKeyString())),
                 new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString())))]);
 
-            console.log("public key length: "+ new Buffer (hexStringToByte($scope.wallet.getPublicKeyString())).length+" length of back: "+new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString()))).length);
-
-
-            console.log("signiture "+ SIG.toString('hex'));
             rawTx.signedTx = RLP.encode(rawTxArray.concat(SIG)).toString('hex'); 
-            console.log("transaction with signiture "+ rawTx.signedTx);
             rawTx.rawTx = JSON.stringify(rawTx);
             rawTx.isError = false;
             if (callback !== undefined) callback(rawTx);

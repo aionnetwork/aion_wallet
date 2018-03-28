@@ -24,15 +24,12 @@
  *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
  *
  * Contributors to the aion source files:
- *     MyEtherWallet LLC  
+ *	   MyEtherWallet LLC	
  *******************************************************************************/
 
-'use strict';
 
-var walletDecryptDrtv = function() {
-	return {
-        restrict : "E",
-        template : require('./walletDecryptDrtv.html')
-  };
-};
-module.exports = walletDecryptDrtv;
+#! /usr/bin/env node
+
+var open = require("open");
+var seperator = process.platform=="win32" ? "\\" : "/";
+open(require('path').dirname(require.main.filename)+seperator+".."+seperator+"index.html");

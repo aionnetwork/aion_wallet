@@ -1,29 +1,35 @@
-<main class="tab-pane block--container active" ng-if="globalService.currentTab==globalService.tabs.txStatus.id" ng-controller='txStatusCtrl' role="main" ng-cloak>
+<!--/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/-->
+<main class="tab-pane block--container active" ng-if="globalService.currentTab==globalService.tabs.txStatus.id"  role="main" ng-cloak>
 
-  <!-- Section 3:  Unlock -->
-  <section class="txstatus__3" ng-show="txInfo.status == txStatus.found">
-
-    <br><br>
-
-    <h1 class="text-center" translate="x_CancelReplaceTx">
-      Cancel or Replace Transaction
-    </h1>
-
-    <section class="clearfix collapse-container">
-      <div class="text-center" ng-click="wd = !wd">
-        <a class="collapse-button"><span ng-show="wd">+</span><span ng-show="!wd">-</span></a>
-        <h4 class="text-danger text-center">
-          Unlock your wallet to replace your transaction. (But, please be careful)
-        </h4>
-      </div>
-      <div ng-show="!wd">
-         <wallet-decrypt-drtv></wallet-decrypt-drtv>         
-      </div>
-    </section>
-  </section>
-  <!-- / Section 3:  Unlock -->
-
-  <!-- Send Tx Content -->
+ <!-- Send Tx Content -->
  <section class="row" ng-show="wallet!=null" ng-controller='sendTxCtrl'>
     <div ng-show="wallet.getChecksumAddressString() == txInfo.from">
        @@include( './sendTx-content.tpl') 

@@ -1,3 +1,33 @@
+<!--/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/-->
+ 
 <!-- Sidebar -->
 <section class="col-sm-4">
   <wallet-balance-drtv></wallet-balance-drtv>
@@ -6,55 +36,6 @@
 
 <!-- Content -->
 <div class="col-sm-8" >
-
-
-  <!-- If unlocked with address only -->
-  <article class="block" ng-show="wallet.type=='addressOnly'" style="background: #12364c;
-      color: #fff;
-      border: 2px solid #2bc0ec;">
-    <div class="row form-group">
-      <h4 translate="SEND_ViewOnly">
-        You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.
-      </h4>
-      <h5 translate="X_HelpfulLinks">
-        Helpful Links &amp; FAQs
-      </h5>
-      <ul>
-        <li class="u__protip">
-          <a href="https://myetherwallet.github.io/knowledge-base/getting-started/accessing-your-new-eth-wallet.html"
-             target="_blank"
-             rel="noopener noreferrer"
-             translate="X_HelpfulLinks_1">
-                How to Access your Wallet
-          </a>
-        </li>
-        <li class="u__protip">
-          <a href="https://myetherwallet.github.io/knowledge-base/private-keys-passwords/lost-eth-private-key.html"
-             target="_blank"
-             rel="noopener noreferrer"
-             translate="X_HelpfulLinks_2">
-                I lost my private key
-          </a>
-        </li>
-        <li class="u__protip">
-          <a href="https://myetherwallet.github.io/knowledge-base/private-keys-passwords/accessing-different-address-same-private-key-ether.html"
-             target="_blank"
-             rel="noopener noreferrer"
-             translate="X_HelpfulLinks_3">
-                My private key opens a different address
-          </a>
-        </li>
-        <li class="u__protip">
-          <a href="https://myetherwallet.github.io/knowledge-base/migration/"
-             target="_blank"
-             rel="noopener noreferrer"
-             translate="X_HelpfulLinks_4">
-                Migrating to/from MyEtherWallet
-          </a>
-        </li>
-      </ul>
-    </div>
-  </article>
 
 
 
@@ -110,7 +91,7 @@
 
 
 
-    <!-- Gas Limit -->
+    <!-- NRG Limit -->
     <section class="row form-group">
       <div class="col-sm-11 clearfix">
         <label translate="TRANS_gas">

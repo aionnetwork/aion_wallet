@@ -1,3 +1,32 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *******************************************************************************/
+
 const assert = require('assert')
 /**
  * RLP Encoding based on: https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-RLP
@@ -50,13 +79,15 @@ function encodeLength (len, offset) {
  * @returns {Array} - returns decode Array of Buffers containg the original message
  **/
 exports.decode = function (input, stream) {
-  console.log("input legnth is "+ input.length);
+  //console.log("input legnth is "+ input.length);
   if (!input || input.length === 0) {
     return new Buffer([])
   }
 
   input = toBuffer(input)
   var decoded = _decode(input)
+
+  //console.log("new decoded ", decoded);
 
   if (stream) {
     return decoded
@@ -91,11 +122,10 @@ exports.getLength = function (input) {
 }
 
 function _decode (input) {
-  console.log("decode input: ", input);
   var length, llength, data, innerRemainder, d
   var decoded = []
   var firstByte = input[0]
-console.log("first byte is "+firstByte);
+
   if (firstByte <= 0x7f) {
     // a single byte whose value is in the [0x00, 0x7f] range, that byte is its own RLP encoding.
     return {
@@ -206,8 +236,9 @@ function intToBuffer (i) {
 }
 
 function toBuffer (v) {
-  console.log("toBuffer: ", v);
-  console.log("Buffer.isBuffer(v): ", Buffer.isBuffer(v))
+  //console.log("toBuffer: ", v);
+  //console.log("toBuffer: ", typeof v);
+  //console.log("Buffer.isBuffer(v): ", Buffer.isBuffer(v))
   if (!Buffer.isBuffer(v)) {
     if (typeof v === 'string') {
       if (isHexPrefixed(v)) {
@@ -224,10 +255,9 @@ function toBuffer (v) {
     } else if (v === null || v === undefined) {
       v = new Buffer([])
     } else if (Array.isArray(v)) {
-      console.log("yay, is Array");
       v = new Buffer(v);
     } else if (v.toArray) {
-      onsole.log("is BN");
+    //  console.log("is BN");
       // converts a BN to a Buffer
       v = new Buffer(v.toArray())
     } else {

@@ -1,3 +1,33 @@
+<!--/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/-->
+
 <main class="tab-pane block--container active"
       ng-if="globalService.currentTab==globalService.tabs.generateWallet.id"
       ng-controller='walletGenCtrl'
@@ -46,7 +76,7 @@
           <h1>
             Create a Password
           </h1>
-          <p translate="x_PasswordDesc"></p>
+          <p >Enter a password that will be used to encrypt your private key into a keystore file, and please keep it safe!</p>
         </div>
         <div>
           <h4 translate="GEN_Label_1" style="margin: 0">
@@ -142,13 +172,13 @@
         <div class="half">
           <div>
             <p class="GEN_Warning_1">
-              **Do not lose it!** It cannot be recovered if you lose it.
+              Please download your keystore file below which stores the encrypted version of your private key
             </p>
             <p class="GEN_Warning_2">
-              **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
+              You will be asked to enter your password in order to unlock your account with the public key
             </p>
             <p class="GEN_Warning_3">
-              **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+              Please keep this safe!
             </p>
           </div>
         </div>
@@ -226,14 +256,14 @@
         <div class="info">
           <h1> Save your Private Key & Paper Wallet!</h1>
           <div>
-            <p>
-              **Do not lose it!** It cannot be recovered if you lose it.
+            <p class="GEN_Warning_1">
+              Please download your keystore file below which stores the encrypted version of your private key
             </p>
-            <p>
-              **Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.
+            <p class="GEN_Warning_2">
+              You will be asked to enter your password in order to unlock your account with the public key
             </p>
-            <p>
-              **Make a backup!** Secure it like the millions of dollars it may one day be worth.
+            <p class="GEN_Warning_3">
+              Please keep this safe!
             </p>
           </div>
         </div>
@@ -242,7 +272,7 @@
                class="form-control"
                readonly="readonly"
                rows="3"
-               style="text-align: left; margin: 50px 0;">{{wallet.getPrivateKeyString()}}
+               style="text-align: left; margin: 50px 0;">0x{{wallet.getPrivateKeyString()}}
         </textarea>
 
         <br />

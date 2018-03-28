@@ -1,3 +1,33 @@
+<!--/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/-->
+ 
 <article class="modal fade" id="sendTransaction" tabindex="-1">
   <section class="modal-dialog">
     <section class="modal-content">
@@ -19,24 +49,12 @@
                      blockie-address="0x{{wallet.getPublicKeyString()}}"
                      watch-var="wallet.getAddressString()">
                 </div>
-                <p>
-                  <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
-                    <!--0x{{wallet.getPublicKeyString()}}-->
-                  </strong>
-                </p>
-              </td>
-              <td ng-show="tx.sendMode=='ether'" class="mono">
-                ->
-                <br />
-                <h4 class="text-danger">
-                  {{tx.value}} <!--{{unitReadable}}--> Aion
-                </h4>
-              </td>
-              <td ng-show="tx.sendMode!=='ether'" class="mono">
+
+              <td class="mono">
                 ->
                 <br />
                 <h4 class="text-primary">
-                  {{tx.value}} <!--{{unitReadable}}--> Aion
+                  {{tx.value}} Aion
                 </h4>
               </td>
               <td>
@@ -95,11 +113,10 @@
       <div class="modal-footer">
         <h4 class="text-center">
           <span translate="SENDModal_Content_1">You are about to send</span>
-          <strong ng-show="tx.sendMode=='ether'" class="mono">{{tx.value}} Aion</strong>
-          <strong ng-show="tx.sendMode!=='ether'" class="mono">{{tokenTx.value}} <!--{{unitReadable}}--> Aion</strong>
+          <strong  class="mono">{{tx.value}} Aion</strong>
           <span translate="SENDModal_Content_2">to address</span>
-          <strong ng-show="tx.sendMode=='ether'" class="mono">{{tx.to}}.</strong>
-          <strong ng-show="tx.sendMode!=='ether'" class="mono">{{tokenTx.to}}</strong>
+          <strong class="mono">{{tx.to}}.</strong>
+          <strong class="mono">{{tokenTx.to}}</strong>
         </h4>
         <p translate="SENDModal_Content_3">
           Are you sure you want to do this?

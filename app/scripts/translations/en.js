@@ -1,12 +1,42 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/
+ 
 // English
 'use strict';
 var en = function() {}
 en.code = 'en';
 en.data = {
 
-GEN_Warning_1                   :  '**Do not lose it!** It cannot be recovered if you lose it.',
-GEN_Warning_2                   :  '**Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.',
-GEN_Warning_3                   :  '**Make a backup!** Secure it like the millions of dollars it may one day be worth.',
+GEN_Warning_1                   :  'Please download your keystore file below which stores the encrypted version of your private key ',
+GEN_Warning_2                   :  'You will be asked to enter your password in order to unlock your account with the public key',
+GEN_Warning_3                   :  'Please keep this safe!',
 
 SEND_Helper_Contract            :  'In most cases you should leave this as 0.',
 SEND_ViewOnly                   :  'You cannot send with only your address. You must use one of the other options to unlock your wallet in order to send.',
@@ -25,9 +55,6 @@ ENS_WrongAddress_2              :  'Please unlock the wallet with address ',
 
 
 /* Old */
-ADD_DigitalBitbox_0a            :  'Re-open MyEtherWallet on a secure (SSL) connection',
-ADD_DigitalBitbox_0b            :  'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/)',
-ADD_DigitalBitbox_scan          :  'Connect your Digital Bitbox',
 ADD_Label_1                     :  'What would you like to do?',
 ADD_Label_2                     :  'Create a Nickname',
 ADD_Label_3                     :  'Your wallet is encrypted. Good! Please enter the password.',
@@ -37,31 +64,12 @@ ADD_Label_6                     :  'Unlock your Wallet',
 ADD_Label_6_short               :  'Unlock',
 ADD_Label_7                     :  'Add Account',
 ADD_Label_8                     :  'Password (optional):',
-ADD_Ledger_0a                   :  'Please use MyEtherWallet on a secure (SSL / HTTPS) connection to connect.',
-ADD_Ledger_0b                   :  'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/)',
-ADD_Ledger_1                    :  'Connect your Ledger Wallet',
-ADD_Ledger_2                    :  'Open the Ethereum application (or a contract application)',
-ADD_Ledger_2_Exp                :  'Open the Expanse application (or a contract application)',
-ADD_Ledger_2_Ubq                :  'Open the Ubiq application (or a contract application)',
-ADD_Ledger_3                    :  'Verify that Browser Support is enabled in Settings',
-ADD_Ledger_4                    :  'If no Browser Support is found in settings, verify that you have [Firmware >1.2](https://www.ledgerwallet.com/apps/manager)',
-ADD_Ledger_scan                 :  'Connect to Ledger Wallet',
-ADD_MetaMask                    :  'Connect to MetaMask',
 ADD_Radio_1                     :  'Generate New Wallet',
 ADD_Radio_2                     :  'Select Your Wallet File (Keystore / JSON)',
 ADD_Radio_2_alt                 :  'Select Your Wallet File',
 ADD_Radio_2_short               :  'SELECT WALLET FILE...',
 ADD_Radio_3                     :  'Paste Your Private Key',
 ADD_Radio_4                     :  'Add an Account to Watch',
-ADD_Radio_5                     :  'Paste Your Mnemonic',
-ADD_Radio_5_Path                :  'Select HD derivation path',
-ADD_Radio_5_PathAlternative     :  '(Ledger)',
-ADD_Radio_5_PathCustom          :  'Custom',
-ADD_Radio_5_PathTrezor          :  '(TREZOR)',
-ADD_Radio_5_withTrezor          :  '(Jaxx, Metamask, Exodus, imToken, TREZOR)',
-ADD_Radio_5_woTrezor            :  '(Jaxx, Metamask, Exodus, imToken)',
-ADD_Trezor_scan                 :  'Connect to TREZOR',
-ADD_Warning_1                   :  'You can add any account to "watch" on the wallets tab without uploading a private key. This does ** not ** mean you have access to this wallet, nor can you transfer Ether from it.',
 
 decrypt_Access                  :  'How would you like to access your wallet?',
 decrypt_Select                  :  'Select a Wallet',
@@ -75,20 +83,16 @@ ERROR_4                         :  '(error_05) This unit doesn\'t exists, please
 ERROR_5                         :  '(error_06) Please enter a valid address.',
 ERROR_6                         :  '(error_07) Please enter a valid password.',
 ERROR_7                         :  '(error_08) Please enter valid decimals     (Must be an integer. Try 0-18.)',
-ERROR_8                         :  '(error_09) Please enter a valid gas limit  (Must be an integer. Try 21000-4000000.)',
+ERROR_8                         :  '(error_09) Please enter a valid NRG limit  (Must be an integer. Try 21000-4000000.)',
 ERROR_9                         :  '(error_10) Please enter a valid data value (Must be hex.)',
-ERROR_10                        :  '(error_11) Please enter a valid gas price. (Must be an integer. Try 20 PLAT / 20000000000 WEI.)',
+ERROR_10                        :  '(error_11) Please enter a valid NRG price. (Must be an integer. Try 20 PLAT / 20000000000 WEI.)',
 ERROR_11                        :  '(error_12) Please enter a valid nonce (Must be an integer.)',
 ERROR_12                        :  '(error_13) Invalid signed transaction.',
 ERROR_13                        :  '(error_14) A wallet with this nickname already exists.',
 ERROR_14                        :  '(error_15) Wallet not found.',
 ERROR_15                        :  '(error_16) Whoops. It doesn\'t look like a proposal with this ID exists yet or there is an error reading this proposal.',
 ERROR_16                        :  '(error_17) A wallet with this address already exists in storage. Please check your wallets page.',
-ERROR_17                        :  '(error_18) Insufficient balance. Your gas limit * gas price + amount to send exceeds your current balance. Send more ETH to your account or use the "Send Entire Balance" button. If you believe this is in error, try pressing generate again. Required (d+) and got: (d+). [Learn More.](https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html)',
-ERROR_18                        :  '(error_19) All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.',
 ERROR_19                        :  '(error_20) Please enter a valid symbol',
-ERROR_20                        :  '(error_21) Not a valid ERC-20 token',
-ERROR_21                        :  '(error_22) Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.',
 ERROR_22                        :  '(error_23) Please enter a valid node name',
 ERROR_23                        :  '(error_24) Please enter a valid URL. If you are on https, your URL must be https',
 ERROR_24                        :  '(error_25) Please enter a valid port.',
@@ -102,7 +106,6 @@ ERROR_31                        :  '(error_32) Please enter a valid secret phras
 ERROR_32                        :  '(error_33) Could not connect to the node. Refresh your page, try a different node (top-right corner), check your firewall settings. If custom node, check your configs.',
 ERROR_33                        :  '(error_34) The wallet you have unlocked does not match the owner\'s address.',
 ERROR_34                        :  '(error_35) The name you are attempting to reveal does not match the name you have entered.',
-ERROR_35                        :  '(error_36) Input address is not checksummed. <a href="https://myetherwallet.github.io/knowledge-base/addresses/not-checksummed-shows-when-i-enter-an-address.html" target="_blank" rel="noopener noreferrer">What does that mean?</a>',
 ERROR_36                        :  '(error_37) Please enter a valid TX hash',
 ERROR_37                        :  '(error_38) Please enter valid hex string. Hex only contains: 0x, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, a, b, c, d, e, f',
 ERROR_38                        :  '(error_39) Offer must have either price or reserve set to more than 0',
@@ -141,6 +144,8 @@ GEN_SuccessMsg                  :  'Success! Your wallet has been generated.',
 GEN_Unlock                      :  'Unlock your wallet to see your address',
 GET_ConfButton                  :  'I understand. Continue.',
 
+HELP_2a_Title                   :  'How do I save/backup my wallet?',
+
 MSG_date                        :  'Date',
 MSG_info1                       :  'Include the current date so the signature cannot be reused on a different date.',
 MSG_info2                       :  'Include your nickname and where you use the nickname so someone else cannot use it.',
@@ -164,7 +169,7 @@ NAV_InteractContract            :  'Interact with Contract',
 NAV_Multisig                    :  'Multisig',
 NAV_MyWallets                   :  'My Wallets',
 NAV_Offline                     :  'Send Offline',
-NAV_SendEther                   :  'Use Wallet',
+NAV_SendAION                   :  'Use Wallet',
 NAV_SendTokens                  :  'Use Wallet',
 NAV_SignMsg                     :  'Sign Message',
 NAV_Swap                        :  'Swap',
@@ -178,7 +183,6 @@ SEND_addr                       :  'To Address',
 SEND_amount                     :  'Amount to Send',
 SEND_amount_short               :  'Amount',
 SEND_custom                     :  'Add Custom Token',
-SEND_gas                        :  'Gas',
 SEND_generate                   :  'Generate Transaction',
 SEND_raw                        :  'Raw Transaction',
 SEND_signed                     :  'Signed Transaction',
@@ -187,7 +191,6 @@ SEND_TransferTotal              :  'Send Entire Balance',
 SENDModal_Content_1             :  'You are about to send',
 SENDModal_Content_2             :  'to address',
 SENDModal_Content_3             :  'Are you sure you want to do this?',
-SENDModal_Content_4             :  'NOTE: If you encounter an error, you most likely need to add ether to your account to cover the gas cost of sending tokens. Gas is paid in ether.',
 SENDModal_No                    :  'No, get me out of here!',
 SENDModal_Title                 :  'Warning!',
 SENDModal_Yes                   :  'Yes, I am sure! Make transaction.',
@@ -195,13 +198,6 @@ SENDModal_Yes                   :  'Yes, I am sure! Make transaction.',
 sidebar_AccountAddr             :  'Account Address',
 sidebar_AccountBal              :  'Account Balance',
 sidebar_AccountInfo             :  'Account Information',
-sidebar_DisplayOnLedger         :  'Display address on Ledger',
-sidebar_DisplayOnTrezor         :  'Display address on TREZOR',
-sidebar_donate                  :  'Donate',
-sidebar_donation                :  'MyEtherWallet is a free, open-source service dedicated to your privacy and security. The more donations we receive, the more time we spend creating new features, listening to your feedback, and giving you what you want. We are just two people trying to change the world. Help us?',
-sidebar_Equiv                   :  'Transaction Status',
-sidebar_thanks                  :  'THANK YOU!!!',
-sidebar_TokenBal                :  'Token Balances',
 sidebar_TransHistory            :  'Transaction History',
 
 SUCCESS_1                       :  'Valid address',
@@ -216,11 +212,6 @@ TRANS_advanced                  :  '+Advanced: Add Data',
 TRANS_data                      :  'Data',
 TRANS_desc                      :  'If you want to send Tokens, please use the "Send Token" page instead.',
 TRANS_gas                       :  'NRG Limit',
-TRANS_sendInfo                  :  'A standard transaction using 21000 gas will cost 0.000441 ETH. We do not take a transaction fee.',
-
-TXFEE_Desc                      :  'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)',
-
-WARN_Send_Link                  :  'You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started.',
 
 x_Access                        :  'Access',
 x_AddessDesc                    :  'Your Address can also be known as your `Account #` or your `Public Key`. It is what you share with people so they can send you AION. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere.',
@@ -228,20 +219,13 @@ x_Address                       :  'Your Address',
 x_Cancel                        :  'Cancel',
 x_CancelReplaceTx               :  'Cancel or Replace Transaction',
 x_CancelTx                      :  'Cancel Transaction',
-x_CSV                           :  'CSV file (unencrypted)',
-x_DigitalBitbox                 :  'Digital Bitbox',
 x_Download                      :  'Download',
 x_Json                          :  'JSON File (unencrypted)',
-x_JsonDesc                      :  'This is the unencrypted, JSON format of your private key. This means you do not need the password but anyone who finds your JSON can access your wallet & Ether without the password.',
 x_Keystore                      :  'Keystore File (Recommended · Encrypted)',
 x_Keystore2                     :  'Keystore File ',
 x_KeystoreDesc                  :  'This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up.',
-x_Ledger                        :  'Ledger Wallet',
-x_MetaMask                      :  'MetaMask / Mist',
-x_Mnemonic                      :  'Mnemonic Phrase',
-x_ParityPhrase                  :  'Parity Phrase',
 x_Password                      :  'Password',
-x_PasswordDesc                  :  'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+x_PasswordDesc                  :  'Enter a  password that will be used to encrypt your private key into a keystore file, and please keep it safe!',
 x_Print                         :  'Print Paper Wallet',
 x_PrintDesc                     :  'ProTip: If you cannot print this right now, click "Print" and save it as a PDF until you are able to get it printed. Remove it from your computer afterwards!',
 x_PrintShort                    :  'Print',
@@ -252,7 +236,6 @@ x_ReadMore                      :  'Read More',
 x_ReplaceTx                     :  'Replace Transaction',
 x_Save                          :  'Save',
 x_TransHash                     :  'Transaction Hash',
-x_Trezor                        :  'TREZOR',
 x_TXFee                         :  'TX Fee',
 x_TxHash                        :  'TX Hash',
 x_TXT                           :  'TXT file (unencrypted)',

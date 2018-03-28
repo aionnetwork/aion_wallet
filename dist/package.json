@@ -1,13 +1,13 @@
 {
-    "name": "MyEtherWallet",
+    "name": "AionWallet",
     "version": "3.11.3.0",
-    "description": "An NPM dist of MyEtherWallet. For easier downloading & updating via CLI.",
-    "author": "MyEtherWallet",
+    "description": "Aion's implementation of a wallet used to send AIONs",
+    "author": "MyEtherWallet, AION Foundation",
     "license": "ISC",
     "devDependencies": {
         "open": "0.0.5"
     },
     "bin": {
-        "mew": "bin/startMEW.js"
+        "mew": "bin/startAION.js"
     }
 }

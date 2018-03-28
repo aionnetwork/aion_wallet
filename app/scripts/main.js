@@ -1,7 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/
+
 'use strict';
 require('./localStoragePolyfill');
-var IS_CX = false;
-if (typeof chrome != 'undefined') IS_CX = chrome.windows === undefined ? false : true;
 var angular                  = require('angular');
 var angularTranslate         = require('angular-translate');
 var angularTranslateErrorLog = require('angular-translate-handler-log');
@@ -21,17 +49,14 @@ var ethUtil                  = require('ethereumjs-util');
 ethUtil.crypto               = require('crypto');
 ethUtil.Tx                   = require('ethereumjs-tx');
 ethUtil.scrypt               = require('scryptsy');
-ethUtil.uuid                 = require('uuid');
 ethUtil.WAValidator          = require('wallet-address-validator');
 window.ethUtil               = ethUtil;
 var format                   = require('string-format');
 window.format                = format;
 var browser                  = require('detect-browser');
 window.browser               = browser;
-var Wallet                   = require('./myetherwallet');
+var Wallet                   = require('./aionwallet');
 window.Wallet                = Wallet;
-var Web3Wallet               = require('./web3Wallet');
-window.Web3Wallet            = Web3Wallet;
 var globalFuncs              = require('./globalFuncs');
 window.globalFuncs           = globalFuncs;
 var uiFuncs                  = require('./uiFuncs');
@@ -45,12 +70,9 @@ var translate                = require('./translations/translate.js');
 var tabsCtrl                 = require('./controllers/tabsCtrl');
 var viewCtrl                 = require('./controllers/viewCtrl');
 var walletGenCtrl            = require('./controllers/walletGenCtrl');
-var onboardingCtrl            = require('./controllers/onboardingCtrl');
 var decryptWalletCtrl        = require('./controllers/decryptWalletCtrl');
 var viewWalletCtrl           = require('./controllers/viewWalletCtrl');
-var txStatusCtrl              = require('./controllers/txStatusCtrl');
 var sendTxCtrl               = require('./controllers/sendTxCtrl');
-var signMsgCtrl              = require('./controllers/signMsgCtrl');
 var globalService            = require('./services/globalService');
 var walletService            = require('./services/walletService');
 var blockiesDrtv             = require('./directives/blockiesDrtv');
@@ -82,12 +104,9 @@ app.directive('walletDecryptDrtv', walletDecryptDrtv);
 app.controller('tabsCtrl', ['$scope', 'globalService', '$translate', '$sce', '$http', tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$sce', viewCtrl]);
 app.controller('walletGenCtrl', ['$scope', walletGenCtrl]);
-app.controller('onboardingCtrl', ['$scope', onboardingCtrl]);
 app.controller('decryptWalletCtrl', ['$scope', '$sce', 'walletService', decryptWalletCtrl]);
 app.controller('viewWalletCtrl', ['$scope', 'walletService', viewWalletCtrl]);
-app.controller('txStatusCtrl', ['$scope', txStatusCtrl]);
 app.controller('sendTxCtrl', ['$scope', '$sce', 'walletService', '$rootScope', sendTxCtrl]);
-app.controller('signMsgCtrl', ['$scope', '$sce', 'walletService', signMsgCtrl]);
 
 
 

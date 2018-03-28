@@ -1,3 +1,33 @@
+<!--*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/-->
+
 <article class="block decrypt-drtv clearfix" ng-controller='decryptWalletCtrl as $crtl'>
 
   <!-- Column 1 - Select Type of Key -->
@@ -29,7 +59,7 @@
       <span translate="x_PrivKey2">
         Private Key
       </span>
-    </label>
+    </label> 
 
     </section>
   <!-- / Column 1 - Select Type of Key -->
@@ -92,7 +122,11 @@
               Learn How to Protect Yourself and Your Funds
           </a>
         </li>
-     
+
+     <div class="form-group">
+        If your keystore file is generated from Aion kernel, your keystore will contain additional security measures, it may take additional time to decrypt.
+     </div>
+    
       <br />
       <div class="form-group">
         <input style="display:none;" type="file" on-read-file="showContent($fileContent)" id="fselector" />
@@ -114,17 +148,42 @@
                placeholder="{{ 'x_Password' | translate }}"
                type="password" />
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-show="showFDecrypt||showPDecrypt||showMDecrypt||showParityDecrypt">
+        
         <a tabindex="0"
            role="button"
            class="btn btn-primary"
            ng-show="showFDecrypt||showPDecrypt||showMDecrypt||showParityDecrypt"
            ng-click="decryptWallet()"
-           translate="ADD_Label_6_short">
-             UNLOCK
+           >
+            <span ng-show="!kernelKeystore">
+              UNLOCK
+            </span>
+             
+          <div class="mySpinner" 
+              style="height: 100%;width: 100%;margin: 0;padding: 0;border: 0;" 
+              ng-show="kernelKeystore"
+            >
+              <div class="pt-spinner pt-intent-primary" style="display: inline-block;">
+                <div class="pt-spinner-svg-container">
+                  <svg viewBox="0 0 100 100">
+                    <path class="pt-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
+                    <path class="pt-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
+                  </svg>
+                </div>
+              </div>
+              <!-- <span class="pt-text-muted" style="display: block; margin-top: 20px; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 300;">Decrypting Wallet</span> -->
+          </div>
          </a>
       </div>
+           <!-- ng-if="kernelKeystore" -->
+            <!-- ng-class="kernelKeystore ? 'is-valid' : 'is-invalid'" -->
+
+
+
     </div>
+
+
     <!-- / Keystore -->
 
     <!--  Private Key -->

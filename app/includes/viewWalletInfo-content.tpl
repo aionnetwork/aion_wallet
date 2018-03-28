@@ -1,3 +1,32 @@
+<!--/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/-->
 <h1 class="wallet-details">
   <img src="images/icons/small-logo.png"/>
   Use Wallet
@@ -32,21 +61,6 @@
            blockie-address="0x{{wallet.getPublicKeyString()}}"
            watch-var="wallet">
       </div>
-    </div>
-
-    <div class="col-xs-12" ng-show='showEnc'>
-      <div class="account-help-icon">
-        <img src="images/icons/small-logo.png" class="help-icon aion-help" />
-        <p class="account-help-text" translate="x_KeystoreDesc">
-          This Keystore matches the format used by Mist & Geth so you can easily import it in the future. It is the recommended file to download and back up.
-        </p>
-        <h5 translate="x_Keystore">
-          Keystore
-        </h5>
-      </div>
-      <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{encFileName}}" translate="x_Download">
-        DOWNLOAD
-      </a>
     </div>
 
     <div class="col-xs-12" ng-show="wallet.type=='default'">

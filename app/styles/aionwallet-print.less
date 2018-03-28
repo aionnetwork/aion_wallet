@@ -1,0 +1,132 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/
+ 
+/* Print Etherwallet Page */
+.print-container {
+  // width: 680px;
+  // height: 280px;
+  width: 710px;
+  height: 320px;
+  border: 1px solid gray;
+  margin-bottom: 50px;
+  position: relative;
+  #identicon {
+    -webkit-print-color-adjust: exact;
+    position: absolute;
+    right: 7.5rem;
+    bottom: 3rem;
+  }
+  #identicon:after {
+    content: "Always look for this icon when sending to this wallet.";
+    font-size: 9px;
+    width: 120px;
+    position: absolute;
+    bottom: .75rem;
+    text-align: center;
+    right: -7.5rem;
+  }
+  // targets the sidebar AION pic - kind of hacky
+  img[src*="images/print-sidebar.png"] {
+    width: 97px;
+    height: 100%;
+  }
+}
+
+.print-title {
+  float: left;
+}
+
+.print-text {
+  color: darken(@ether-blue,10%);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.print-qr-code-1 {
+  width: 28%;
+  float: left;
+  position: relative;
+  padding: 20px;
+  .print-text {
+    right: -35px;
+    bottom: 69px;
+  }
+}
+
+.print-qr-code-2 {
+  width: 28%;
+  float: left;
+  position: relative;
+  padding: 20px;
+  .print-text {
+    right: -45px;
+    bottom: 69px;
+  }
+}
+
+.print-notes {
+  width: 28%;
+  float: left;
+  position: relative;
+  padding: 20px;
+  .print-text {
+    right: -45px;
+    bottom: 69px;
+  }
+}
+
+
+.print-address-container {
+  float: left;
+  width: 85%;
+  padding: 0 25px;
+  p {
+    font-size:14px;
+    font-family: @font-family-monospace;
+  }
+}
+
+.ether-logo-1 {
+  position: absolute;
+  left: 300px;
+}
+
+.ether-logo-2 {
+  position: absolute;
+  right: 32px;
+  bottom: 64px;
+}
+

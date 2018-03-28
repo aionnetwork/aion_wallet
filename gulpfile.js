@@ -1,3 +1,33 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/
+ 
 const fs = require('fs');
 
 const autoprefixer = require('gulp-autoprefixer');
@@ -24,7 +54,6 @@ const html2js      = require('html2js-browserify');
 
 const app          = './app/';
 const dist         = './dist/';
-const dist_CX      = './chrome-extension/';
 
 
 // Error / Success Handling
@@ -72,11 +101,10 @@ gulp.task('html', function(done) {
 
 // styles: Compile and Minify Less / CSS Files
 let less_watchFolder = app + 'styles/**/*.less';
-let less_srcFile = app + 'styles/etherwallet-master.less';
+let less_srcFile = app + 'styles/aionwallet-master.less';
 let less_destFolder = dist + 'css';
-let less_destFolder_CX = dist_CX + 'css';
-let less_destFile = 'etherwallet-master.css';
-let less_destFileMin = 'etherwallet-master.min.css';
+let less_destFile = 'aionwallet-master.css';
+let less_destFileMin = 'aionwallet-master.min.css';
 
 gulp.task('styles', function() {
     return gulp.src(less_srcFile)
@@ -89,7 +117,6 @@ gulp.task('styles', function() {
         .pipe(cssnano({ autoprefixer: false, safe: true }))
         .pipe(rename(less_destFileMin))
         .pipe(gulp.dest(less_destFolder))
-        .pipe(gulp.dest(less_destFolder_CX))
         .pipe(notify(onSuccess('Styles')))
 });
 
@@ -98,8 +125,7 @@ gulp.task('styles', function() {
 let js_watchFolder = app + 'scripts/**/*.{js,json,html}';
 let js_srcFile = app + 'scripts/main.js';
 let js_destFolder = dist + 'js/';
-let js_destFolder_CX = dist_CX + 'js/';
-let js_destFile = 'etherwallet-master.js';
+let js_destFile = 'aionwallet-master.js';
 let browseOpts = { debug: true }; // generates inline source maps - only in js-debug
 let babelOpts = {
     presets: ['es2015'],
@@ -114,7 +140,6 @@ function bundle_js(bundler) {
         .pipe(buffer())
         .pipe(rename(js_destFile))
         .pipe(gulp.dest(js_destFolder))
-        .pipe(gulp.dest(js_destFolder_CX))
         .pipe(notify(onSuccess('JS')))
 }
 
@@ -125,7 +150,6 @@ function bundle_js_debug(bundler) {
         .pipe(buffer())
         .pipe(rename(js_destFile))
         .pipe(gulp.dest(js_destFolder))
-        .pipe(gulp.dest(js_destFolder_CX))
         .pipe(notify(onSuccess('JS')))
 }
 
@@ -150,7 +174,7 @@ gulp.task('js-debug', function() {
 // Rebuild Static JS
 let js_srcFilesStatic = app + 'scripts/staticJS/to-compile-to-static/*.js';
 let js_destFolderStatic = app + 'scripts/staticJS/';
-let js_destFileStatic = 'etherwallet-static.min.js';
+let js_destFileStatic = 'aionwallet-static.min.js';
 
 gulp.task('staticJS', function() {
     return gulp.src(js_srcFilesStatic)
@@ -166,7 +190,6 @@ gulp.task('staticJS', function() {
 // Copy
 let imgSrcFolder = app + 'images/**/*';
 let fontSrcFolder = app + 'fonts/*.*';
-let cxSrcFiles = app + 'includes/browser_action/*.*';
 let jsonFile = app + '*.json';
 let jQueryFile = app + 'scripts/staticJS/jquery-1.12.3.min.js';
 let bin = app + '/bin/*';
@@ -193,11 +216,8 @@ gulp.task('copy', ['staticJS'], function() {
     gulp.src(readMe)
         .pipe(gulp.dest(dist));
 
-    gulp.src(bin)
-        .pipe(gulp.dest(dist + 'bin'));
-
-    return gulp.src(cxSrcFiles)
-        .pipe(gulp.dest(dist_CX + 'browser_action'))
+   return gulp.src(bin)
+        .pipe(gulp.dest(dist + 'bin'))
 
     .pipe(notify(onSuccess(' Copy ')))
 });
@@ -208,10 +228,8 @@ gulp.task('copy', ['staticJS'], function() {
 // Clean files that get compiled but shouldn't
 gulp.task('clean', function() {
     return gulp.src([
-            dist + 'cx-wallet.html',
             dist + 'images/icons',
             dist + 'manifest.json',
-            dist_CX + 'package.json'
         ], { read: false })
         .pipe(plumber({ errorHandler: onError }))
         .pipe(clean())
@@ -244,17 +262,14 @@ gulp.task('getVersion', function() {
 
 // zips dist folder
 gulp.task('zip', ['getVersion'], function() {
-    gulp.src(dist + '**/**/*')
+   return gulp.src(dist + '**/**/*')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(rename(function (path) {
-          path.dirname = './etherwallet-' + versionNum + '/' + path.dirname;
+          path.dirname = './aionwallet-' + versionNum + '/' + path.dirname;
         }))
-        .pipe(zip('./etherwallet-' + versionNum + '.zip'))
+        .pipe(zip('./aionwallet-' + versionNum + '.zip'))
         .pipe(gulp.dest('./releases/'))
         .pipe(notify(onSuccess('Zip Dist ' + versionNum)));
-    return gulp.src(dist_CX + '**/**/*')
-        .pipe(plumber({ errorHandler: onError }))
-        .pipe(gulp.dest('./releases/'))
 });
 
 
@@ -293,19 +308,14 @@ function archive() {
 
 
 gulp.task('travisZip', ['getVersion'], function() {
-    gulp.src(dist + '**/**/*')
+   return  gulp.src(dist + '**/**/*')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(rename(function (path) {
-          path.dirname = './etherwallet-' + versionNum + '/' + path.dirname;
+          path.dirname = './aionwallet-' + versionNum + '/' + path.dirname;
         }))
-        .pipe(zip('./etherwallet-' + versionNum + '.zip'))
+        .pipe(zip('./aionwallet-' + versionNum + '.zip'))
         .pipe(gulp.dest('./deploy/'))
         .pipe(notify(onSuccess('Zip Dist ' + versionNum)));
-    return gulp.src(dist_CX + '**/**/*')
-        .pipe(plumber({ errorHandler: onError }))
-        .pipe(zip('./chrome-extension-' + versionNum + '.zip'))
-        .pipe(gulp.dest('./deploy/'))
-        .pipe(notify(onSuccess('Zip CX ' + versionNum)))
 });
 
 
