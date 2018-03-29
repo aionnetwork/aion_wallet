@@ -57,6 +57,7 @@ If you want to help contribute, here's what you need to know to get it up and ru
 
 **A couple of notes:**
 
+- You can find the translations in `app/scripts/translations`.
 - Everything on the entire site is broken down into lines and in this one file. The uppermost items are the highest priority and the further you go down, the less of a priority it is.
 - You can add comments anywhere by wrapping it in /* Your Comment Here */. If you want to leave a note for yourself or someone else, do so in this format. That way it doesn't screw up the code or show up somewhere on the site.
 - Don't delete any lines. Just leave it in English if you don't know how to translate it.
