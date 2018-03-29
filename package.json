@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "gulp",
     "dist": "gulp prep",
-    "build": "gulp build"
+    "build": "gulp build",
+    "postinstall": "cd app/scripts/aionWeb3 && npm install"
   },
   "devDependencies": {
     "angular": "^1.6.2",

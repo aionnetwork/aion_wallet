@@ -30,7 +30,7 @@
 
 'use strict';
 var nacl = require('./nacl.js');
-var blake2b = require('./blakejs/blake2b');
+var blake2b = require('blakejs/blake2b');
 var blake2bHex = blake2b.blake2bHex;
 const RLP = require('./RLPlib.js');
 
