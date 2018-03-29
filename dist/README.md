@@ -28,6 +28,7 @@ If you want to help contribute, here's what you need to know to get it up and ru
 - Start by running `npm install`.
 - Run `npm run dev`. Gulp will then watch & compile everything and then watch for changes to the HTML, JS, or CSS.
 - For distribution, run `npm run dist`.
+- To open in browser, go to: `file:///path/to/project/aion_wallet/dist/index.html`. Replace `/path/to/project` with the full path to the project on your PC.
 
 **Folder Structure**
 - `fonts` and `images` get moved into their respective folders. This isn't watched via gulp so if you add an image or font, you need to run `gulp` again.
@@ -71,7 +72,3 @@ If you want to help contribute, here's what you need to know to get it up and ru
 
 ### Contact
 If you can think of any other features or run into bugs, let us know. You can fork, open a PR, open an issue, or email us at support@aion.network
-
-
-
-
