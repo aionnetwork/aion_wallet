@@ -19974,6 +19974,7 @@ translate.marked = function (data) {
     if (tData.hasOwnProperty(key)) tData[key] = marked(tData[key]);
   }return tData;
 };
+
 module.exports = translate;
 
 },{"./en":112}],114:[function(require,module,exports){
