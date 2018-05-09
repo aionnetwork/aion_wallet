@@ -30,8 +30,10 @@
  
 'use strict';
 
-var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
+var sendTxCtrl = function($scope, $sce, walletService, $rootScope, $http) {
 
+    $scope.http=$http;
+    console.log("scope.http is "+$scope.http);
     $scope.tx = {};
     $scope.signedTx
     $scope.sendTxModal = new Modal(document.getElementById('sendTransaction'));
@@ -118,11 +120,12 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
             uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu"); 
             return;
         } 
-
         if (!$scope.Validator.isValidAddress($scope.tx.to)) {
             $scope.notifier.danger(globalFuncs.errorMsgs[5]);
             return;
         }
+
+
         var txData = uiFuncs.getTxData($scope);
         txData.gasPrice = $scope.tx.gasPrice ? '0x' + new BigNumber($scope.tx.gasPrice).toString(16) : null;
         txData.nonce = $scope.tx.nonce ? '0x' + new BigNumber($scope.tx.nonce).toString(16) : null;
@@ -133,16 +136,7 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
         // if false, replace gas price and nonce. gas price from slider. nonce from server.
         if (txData.gasPrice && txData.nonce) txData.isOffline = true;
 
-        try {   
-            const AionWeb3 = require('../aionWeb3/index');
-            var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-            
-        } catch (err) {
-            console.log("not connected");
-            uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
-        } 
-
-        if (txData.value > aionweb3.eth.getBalance('0x'+$scope.wallet.getPublicKeyString())){ 
+        if (txData.value > window.balance){ 
             $scope.notifier.danger("you do not have enough balance in your account!");
             return;
         }
@@ -162,7 +156,7 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
 
     $scope.sendTx = function() {
         $scope.sendTxModal.close();
-        uiFuncs.sendTx($scope.signedTx, function(resp) {
+        uiFuncs.sendTx($http, $scope.signedTx, function(resp) {
             if (!resp.isError) {
                 var completeMsg = '<p>' + globalFuncs.successMsgs[2] + '<strong>' + resp.data + '</strong></p>';
                 $scope.notifier.success(completeMsg, 0);
@@ -177,7 +171,7 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
       var raw = JSON.parse (rawt);
 
       $scope.parsedSignedTx.balance       = $scope.wallet.getBalance();
-      $scope.parsedSignedTx.from          = "0x"+walletService.wallet.getPublicKeyString();
+      $scope.parsedSignedTx.from          = "0x"+walletService.wallet.pubToAddress();
       $scope.parsedSignedTx.to            = raw.RLP_TX_TO;
       $scope.parsedSignedTx.value         = raw.RLP_TX_VALUE;
       $scope.parsedSignedTx.timeStamp     = raw.RLP_TX_TIMESTAMP;

@@ -34,7 +34,7 @@ var en = function() {}
 en.code = 'en';
 en.data = {
 
-GEN_Warning_1                   :  'Please download your keystore file below which stores the encrypted version of your private key ',
+GEN_Warning_1                   :  'Please download your keystore file below. It stores the encrypted version of your private key',
 GEN_Warning_2                   :  'You will be asked to enter your password in order to unlock your account with the public key',
 GEN_Warning_3                   :  'Please keep this safe!',
 
@@ -138,7 +138,7 @@ GEN_Label_2                     :  'Save your `Keystore` File.',
 GEN_Label_3                     :  'Continue to Wallet',
 GEN_Label_4                     :  'Print paper wallet or a QR code.',
 GEN_Label_5                     :  'Save Your `Private Key`.',
-GEN_Placeholder_1               :  'Do NOT forget to save this!',
+GEN_Placeholder_1               :  'Save this in a safe place!',
 GEN_Placeholder_2               :  'Retype your password!',
 GEN_SuccessMsg                  :  'Success! Your wallet has been generated.',
 GEN_Unlock                      :  'Unlock your wallet to see your address',

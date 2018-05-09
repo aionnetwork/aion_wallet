@@ -30,8 +30,9 @@
 
 'use strict';
 var nacl = require('./nacl.js');
-var blake2b = require('./blakejs/blake2b');
+var blake2b = require('./blake2b');
 var blake2bHex = blake2b.blake2bHex;
+var blake2B = blake2b.blake2b;
 const RLP = require('./RLPlib.js');
 
 function bin2string(array){
@@ -73,7 +74,7 @@ Wallet.generate = function(icapDirect) {
 
 Wallet.prototype.setBalance = function(callback) {
     var parentObj = this;
-
+/*
     try {   
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         const AionWeb3 = require('./aionWeb3/lib/web3.js');
@@ -83,6 +84,27 @@ Wallet.prototype.setBalance = function(callback) {
         console.log("not connected");
         uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
     } 
+*/
+    var data = {
+        "jsonrpc":"2.0",
+        "method":"eth_getBalance",
+        "params":['0x'+this.pubKey , "latest"],
+        "id":1
+    };
+
+    var xhr = new XMLHttpRequest();
+    var url = window.web3addr;
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+            var json = JSON.parse(xhr.responseText);
+            this.balance= json.result;
+            window.balance = this.balance;
+        }
+    };
+    xhr.send(data);
 }
 Wallet.prototype.getBalance = function() {
     return this.balance/Math.pow(10,18);
@@ -124,6 +146,15 @@ Wallet.prototype.getChecksumAddressString = function() {
 }
 Wallet.fromPrivateKey = function(priv) {
     return new Wallet(priv)
+}
+
+Wallet.prototype.pubToAddress= function (){
+    console.log("hereerer");
+    var Pub = Buffer.from(this.pubKey,'hex');
+    var buf = new Buffer (['0xA0']);
+    var buff = Buffer.concat([buf,new Buffer(blake2B(Pub,'',32).slice(1,32))]);
+    console.log(new Buffer (blake2B(Pub,'',32)).toString('hex'));
+    return buff.toString('hex');
 }
 
 Wallet.prototype.toV3 = function(password) {
@@ -300,8 +331,11 @@ Wallet.fromAionWalletKey = function(input, password) {
 Wallet.prototype.toV3String = function(password, opts) {
     return JSON.stringify(this.toV3(password, opts))
 }
-Wallet.prototype.getV3Filename = function(timestamp) {
-    var ts = timestamp ? new Date(timestamp) : new Date()
+Wallet.prototype.getV3Filename = function(timestamp) { 
+    var ts = timestamp ? new Date(timestamp) : new Date();
+
+    console.log("UTC--"+ ts.toJSON().replace(/:/g, "-")+ "--"+this.privKey.toString('hex').substring(64));
+
     return "UTC--"+ ts.toJSON().replace(/:/g, "-")+ "--"+this.privKey.toString('hex').substring(64);
 }
 Wallet.decipherBuffer = function(decipher, data) {

@@ -40,6 +40,7 @@ window.web3addr = "http://127.0.0.1:8545";
 window.currentNode ="Default: localhost:8545";
 
 window.connectStatus = true;
+window.balance ="Not Connected";
 
 var marked                   = require('./staticJS/customMarked');
 window.marked                = marked;

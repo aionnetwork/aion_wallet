@@ -55,7 +55,7 @@ var viewWalletCtrl = function($scope, walletService) {
     });
     $scope.printQRCode = function() {
         globalFuncs.printPaperWallets(JSON.stringify([{
-            address: '0x'+$scope.wallet.getPublicKeyString(),
+            address: '0x'+$scope.wallet.pubToAddress(),
             private: '0x'+$scope.wallet.getPrivateKeyString().substring(0,64)+'\n'+$scope.wallet.getPrivateKeyString().substring(64,128)
         }]));
     }

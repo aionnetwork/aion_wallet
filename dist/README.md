@@ -71,7 +71,3 @@ If you want to help contribute, here's what you need to know to get it up and ru
 
 ### Contact
 If you can think of any other features or run into bugs, let us know. You can fork, open a PR, open an issue, or email us at support@aion.network
-
-
-
-

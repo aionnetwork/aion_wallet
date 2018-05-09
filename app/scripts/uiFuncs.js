@@ -30,9 +30,10 @@
 
 'use strict';
 var nacl = require('./nacl.js');
-var blake2b = require('./blakejs/blake2b');
+var blake2b = require('./blake2b');
 var blake2bHex = blake2b.blake2bHex;
 const RLP = require('./RLPlib.js')
+var request = require('request');
 
 function hexStringToByte(str) { 
   var a = [];
@@ -70,9 +71,6 @@ uiFuncs.isTxDataValid = function(txData) {
 
 uiFuncs.generateTx = function($scope, txData, callback) {     
 
-    const AionWeb3 = require('./aionWeb3/index');
-    var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-
     try {
         uiFuncs.isTxDataValid(txData);
         
@@ -80,8 +78,21 @@ uiFuncs.generateTx = function($scope, txData, callback) {
         
         var genTxWithInfo = function(data) {
 
+            var tempNonce="";
+
+            var data = {
+                "jsonrpc":"2.0",
+                "method":"eth_getTransactionCount",
+                "params":['0x'+$scope.wallet.getPublicKeyString(),'latest'],
+                "id":1
+            };
+
+            request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
+                tempNonce= body.result;
+            });
+            
             var rawTx = {
-                RLP_TX_NONCE: aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString()),
+                RLP_TX_NONCE: tempNonce,
                 RLP_TX_TO: ethFuncs.sanitizeHex(txData.to),
                 RLP_TX_VALUE: txData.value,
                 RLP_TX_DATA: ethFuncs.sanitizeHex(txData.data),
@@ -93,7 +104,7 @@ uiFuncs.generateTx = function($scope, txData, callback) {
 
             txData.gasprice =1; 
 
-            var rawTxArray= [ethFuncs.sanitizeHex('0x'+aionweb3.eth.getTransactionCount('0x'+$scope.wallet.getPublicKeyString())), 
+            var rawTxArray= [ethFuncs.sanitizeHex('0x'+tempNonce), 
                 ethFuncs.sanitizeHex(txData.to), 
                 ethFuncs.sanitizeHex((txData.value*Math.pow(10, 18)).toString(16)), 
                 ethFuncs.sanitizeHex('0x'+txData.data), 
@@ -131,32 +142,30 @@ uiFuncs.generateTx = function($scope, txData, callback) {
         });
     }
 }
-uiFuncs.sendTx = function(signedTx, callback) {
+uiFuncs.sendTx = function($http, signedTx, callback) {
 
-    try {   
-        const AionWeb3 = require('./aionWeb3/index');
-        var aionweb3 = new AionWeb3(new AionWeb3.providers.HttpProvider(window.web3addr));
-        
-    } catch (err) {
-        console.log("not connected");
-        uiFuncs.notifier.danger("You are not connected to a node, please connect to a functional node from the drop down menu");
-    } 
+    var data = {
+        "jsonrpc":"2.0",
+        "method":"eth_sendRawTransaction",
+        "params":['0x'+signedTx],
+        "id":1
+    };
 
-    aionweb3.eth.sendRawTransaction('0x'+signedTx, function(err, txHash) {
-        var resp = {};
-        if (err) {
-            resp = {
-                isError: true,
-                error: err
-            };
-        } else {
+    $http.post(window.web3addr, data).then(
+        function (response){
+            console.log("data "+ response.data.result);
             resp = {
                 isError: false,
                 data: txHash
             };
-        }
-        if (callback !== undefined) callback(resp);
-    })
+        },
+        function (response){
+            console.log("error "+response);
+            resp = {
+                isError: true,
+                error: err
+            };
+    });
 }
 
 uiFuncs.notifier = {

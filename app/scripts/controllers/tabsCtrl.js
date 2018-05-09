@@ -44,7 +44,6 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
     $scope.notifier.sce = $sce;
     $scope.notifier.scope = $scope;
 
-    const AionWeb3 = require('../aionWeb3/lib/web3.js');
    
 	var connect = function(){
 
@@ -56,7 +55,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
 
 		$http.post(window.web3addr, data).then(
 			function (response){
-				console.log("data "+response);
+				console.log("data "+ response.data.result);
 				window.connectStatus = true;
                 $scope.connectStatus= true;
             },

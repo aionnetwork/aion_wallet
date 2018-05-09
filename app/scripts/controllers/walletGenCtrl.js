@@ -57,7 +57,7 @@ var walletGenCtrl = function($scope) {
 
             $scope.blobEnc = globalFuncs.getBlob("application/octet-stream", encodedFile);
 
-            $scope.encFileName = $scope.wallet.getV3Filename();
+            $scope.encFileName = $scope.wallet.getV3Filename(); console.log("wallet control "+$scope.encFileName);
             if (parent != null)
                 parent.postMessage(JSON.stringify({ address: $scope.wallet.getAddressString(), checksumAddress: $scope.wallet.getChecksumAddressString() }), "*");
             $scope.isDone = true;
@@ -65,7 +65,7 @@ var walletGenCtrl = function($scope) {
         }
     }
     $scope.printQRCode = function() {        
-        var pub = $scope.wallet.getPublicKeyString();
+        var pub = $scope.wallet.pubToAddress();
         var priv = $scope.wallet.getPrivateKeyString();
 
         globalFuncs.printPaperWallets(JSON.stringify([{

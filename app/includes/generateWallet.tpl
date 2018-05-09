@@ -193,7 +193,7 @@
              aria-describedby="x_KeystoreDesc"
              ng-click="downloaded()"
              target="_blank" rel="noopener noreferrer">
-            <span translate="x_Keystore2">
+            <span translate="x_Keystore2"> 
               Download: Keystore File
             </span>
           </a>
