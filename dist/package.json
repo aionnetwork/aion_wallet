@@ -1,0 +1,13 @@
+{
+    "name": "AionWallet",
+    "version": "3.11.3.0",
+    "description": "Aion's implementation of a wallet used to send AIONs",
+    "author": "MyEtherWallet, AION Foundation",
+    "license": "ISC",
+    "devDependencies": {
+        "open": "0.0.5"
+    },
+    "bin": {
+        "mew": "bin/startAION.js"
+    }
+}

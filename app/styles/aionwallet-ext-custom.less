@@ -1,0 +1,82 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 Aion foundation.
+ *
+ *     This file is part of the aion network project.
+ *
+ *     The aion network project is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *     the License, or any later version.
+ *
+ *     The aion network project is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with the aion network project source files.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     The aion network project leverages useful source code from other
+ *     open source projects. We greatly appreciate the effort that was
+ *     invested in these projects and we thank the individual contributors
+ *     for their work. For provenance information and contributors
+ *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.
+ *
+ * Contributors to the aion source files:
+ *     Aion foundation.
+ *     MyEtherWallet LLC  
+ *******************************************************************************/
+ 
+#etherWalletPopUp {
+  padding: 10px;
+  position: relative;
+  min-width: 346px;
+
+  .back-icon {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    &:hover,
+    &:active {
+      outline: 0;
+    }
+  }
+}
+
+.quicksend-address {
+  font-family: @font-family-monospace;
+  max-width: 170px;
+  word-wrap: break-word;
+  font-size: 12px;
+  font-weight: 300;
+  display: block;
+}
+
+.chrome-tokens span {
+  min-width: 130px;
+  display: inline-block;
+}
+
+.mainWalletEdit,
+.mainWalletView,
+.mainWalletDelete {
+  margin: .5em;
+}
+
+.myWalletCtrl table:not(.account-info) {
+  h2 {  margin: 0;    font-size: 1.6em;  }
+  h3 { font-weight: 400; font-size: 1.3em; }
+  td:nth-child(2) {
+    max-width: 380px;
+  }
+  td, th {
+    vertical-align: middle;
+    padding: .5em .75em;
+  }
+}
+
+#secWatchOnlyMain .mainWalletDelete {
+  width: 60px;
+  display: block;
+}
