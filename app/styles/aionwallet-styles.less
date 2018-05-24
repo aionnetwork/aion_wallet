@@ -25,9 +25,9 @@
  *
  * Contributors to the aion source files:
  *     Aion foundation.
- *     MyEtherWallet LLC  
+ *     MyEtherWallet LLC
  *******************************************************************************/
- 
+
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 #appMain {
   min-width: 900px;
@@ -332,7 +332,7 @@ ul.dropdown-menu {
   //   width: 85%;
   //   bottom: 20px;
   // }
-  
+
   button {
     font-size: 19px;
     // font-family: 'Pacifico';
@@ -393,7 +393,7 @@ aion-button {
       color: #fff;
     }
   }
- 
+
 .modal-content{
   min-width: 1000px;
   transform: translateX(-7%);
@@ -408,12 +408,12 @@ aion-button {
     //margin-right: 5px;
     //margin-bottom: 5px;
     //border-radius: 5px;
-    
+
   }
   .small{
      a:hover {
           text-decoration: underline;
-          text-decoration-color: #5af0bd;          
+          text-decoration-color: #5af0bd;
       }
    }
 }
@@ -426,12 +426,12 @@ aion-button {
 }
 code {
   // background-color: rgba(17, 102, 152, 0.66) !important;
-  background-color: #12173A !important;
+  background-color: #4221cc !important;
 }
 .block {
   code {
     // background-color: rgba(17, 102, 152, 0.66) !important;
-    background-color: #12173A !important;
+    background-color: #4221cc !important;
   }
 }
 
@@ -462,7 +462,7 @@ code {
     }
     a:hover {
           text-decoration: underline;
-          text-decoration-color: #5af0bd;          
+          text-decoration-color: #5af0bd;
         }
     .stage {
       min-height: 155px;
@@ -641,7 +641,7 @@ wallet-balance-drtv {
       margin-bottom: 20px;
       padding: 20px;
 
-      
+
 
       h5{
         color:#4221cc !important;
@@ -660,7 +660,7 @@ wallet-balance-drtv {
 
     a:hover {
           text-decoration: underline;
-          text-decoration-color: #5af0bd;          
+          text-decoration-color: #5af0bd;
     }
   }
   span.mono.wrap {
@@ -677,7 +677,7 @@ wallet-balance-drtv {
       box-shadow:  0 0 12px 1px rgba(0,0,0,.1);
       margin-bottom: 100px;
       padding: 20px;
-     
+
 
       h5{
         //color:#4221cc !important;
@@ -689,7 +689,7 @@ wallet-balance-drtv {
       }
   .btn:hover{
         text-decoration:none !important;
-       
+
       }
 }
 
@@ -750,7 +750,7 @@ article.decrypt-drtv  {
       margin: 0;
       color: #4221cc;
       padding-left: 20px;
-      margin-bottom: 16px; 
+      margin-bottom: 16px;
       &:before {
         content: "\00BB \0020";
         font-size: 1.4rem;
@@ -763,7 +763,7 @@ article.decrypt-drtv  {
       }
       a:hover {
           text-decoration: underline;
-          text-decoration-color: #5af0bd;          
+          text-decoration-color: #5af0bd;
         }
     }
     ul {
@@ -934,13 +934,13 @@ a.collapse-button {
     //background: transparent;
   }
   a.btn-default {
-   
+
     padding: 15px 25px;
     border: 2px solid rgba(180,157,255,.15);
     margin-right: 5px;
     margin-bottom: 5px;
     border-radius: 5px;
-    
+
   }
   a {
     color: #4221cc;
@@ -987,23 +987,31 @@ a.btn-danger {
 
 // HELP PAGES
 .single {
-  //background: rgba(71, 208, 241, 0.05);
-  //background-image: url(../images/background/bg-left.svg), url(../images/background/bg-right.svg);
-  //background-position: left top, right bottom;
-  //background-repeat: no-repeat, no-repeat;
-  //background-attachment: fixed, fixed;
-
-  h1:after{
-    content: '';
-    position: absolute !important;
-    top: 60px;
-    left: 22px !important;
-    width: 50px !important;
-    height: 4px !important;
+  // padding: 20%;
+  h1:after {
+    content: "";
+    position: absolute!important;
+    top: 108px;
+    left: 58px!important;
+    width: 60px!important;
+    height: 4px!important;
     background-color: #5af0bd;
   }
-  h3,h4,h5{
-    color:#4221cc !important;
+  .inside-li:before {
+    color: #12173A !important;
+    content: "●";
+    font-size: 1.1rem;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 400;
+    color:#4221cc;
+  }
+  h3, h4, h5{
+    color:#12173A;
+    font-weight: 600;
+    font-size: 1.4rem;
   }
   .header-branding .container {
     display: flex;
@@ -1012,9 +1020,14 @@ a.btn-danger {
   .block {
     background: white;
     color: #12173A;
+    padding: 6%;
+    margin-bottom: 0px !important;
   }
   a {
     color: #4221cc !important;
+    &:hover {
+      text-decoration-color: #4221cc !important;
+    }
   }
   ul {
     list-style-type: none;
@@ -1161,7 +1174,7 @@ a.btn-danger {
     left: 100%;
     position: absolute;
 
-    
+
 }
 }
 
@@ -1179,4 +1192,3 @@ a.btn-danger {
   50% { opacity: 0.1; }
   100% { opacity: 1; }
 }
-
