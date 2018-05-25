@@ -25,9 +25,9 @@
  *
  * Contributors to the aion source files:
  *     Aion foundation.
- *     MyEtherWallet LLC  
+ *     MyEtherWallet LLC
  *******************************************************************************/-->
- 
+
 <article class="modal fade" id="sendTransaction" tabindex="-1">
   <section class="modal-dialog">
     <section class="modal-content">
@@ -91,7 +91,7 @@
             </tr>
             <tr>
               <td class="small text-right">NRG Price:</td>
-              <td class="small text-left mono">1 PLAT</small>
+              <td class="small text-left mono">1 Amp</small>
               </td>
             </tr>
             <tr>
