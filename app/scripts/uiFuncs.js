@@ -1,23 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2017-2018 Aion foundation.
  *
- *     This file is part of the aion network project.
+ *     This file is part of the Aion Network project.
  *
- *     The aion network project is free software: you can redistribute it
+ *     The Aion Network project is free software: you can redistribute it
  *     and/or modify it under the terms of the GNU General Public License
  *     as published by the Free Software Foundation, either version 3 of
  *     the License, or any later version.
  *
- *     The aion network project is distributed in the hope that it will
+ *     The Aion Network project is distributed in the hope that it will
  *     be useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *     See the GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with the aion network project source files.
+ *     along with the Aion Network project source files.
  *     If not, see <https://www.gnu.org/licenses/>.
  *
- *     The aion network project leverages useful source code from other
+ *     The Aion Network project leverages useful source code from other
  *     open source projects. We greatly appreciate the effort that was
  *     invested in these projects and we thank the individual contributors
  *     for their work. For provenance information and contributors
@@ -32,8 +32,8 @@
 var nacl = require('./nacl.js');
 var blake2b = require('./blake2b');
 var blake2bHex = blake2b.blake2bHex;
-const RLP = require('./RLPlib.js')
-var request = require('request');
+const RLP = require('./RLPlib.js');
+var axios = require('axios');
 
 function hexStringToByte(str) { 
   var a = [];
@@ -86,11 +86,20 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 "params":['0x'+$scope.wallet.getPublicKeyString(),'latest'],
                 "id":1
             };
-
-            request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
+/*
+            request.post({url: window.web3addr,headers:{'Content-Type': 'application/json'}, body: data, json: true}, function(error, response, body){
                 tempNonce= body.result;
             });
-            
+*/          
+
+            axios.post(window.web3addr, data)
+              .then(function (response) {
+                tempNonce= response.data;
+              })
+              .catch(function (error) {
+                console.log(error);
+            });
+
             var rawTx = {
                 RLP_TX_NONCE: tempNonce,
                 RLP_TX_TO: ethFuncs.sanitizeHex(txData.to),
@@ -101,6 +110,7 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 RLP_TX_NRGPRICE: data.gasprice,
                 RLP_TX_TYPE: "0x01"               
             };
+           
 
             txData.gasprice =1; 
 
@@ -150,8 +160,8 @@ uiFuncs.sendTx = function( signedTx, callback) {
         "params":['0x'+signedTx],
         "id":1
     };
-
-    request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
+/*
+    request.post({url: window.web3addr, headers:{'Content-Type': 'application/json'}, body: data, json: true}, function(error, response, body){
         var resp = {};
         if (error){
             console.log("error "+error);
@@ -168,6 +178,27 @@ uiFuncs.sendTx = function( signedTx, callback) {
         }
         if (callback !== undefined) callback(resp);
     })
+    */
+
+    axios.post(window.web3addr, data)
+      .then(function (response) {
+        var resp = {};
+        console.log("data "+ response.data.result);
+        resp = {
+            isError: false,
+            data: response.data.result
+        };
+        if (callback !== undefined) callback(resp);
+      })
+      .catch(function (error) {
+        var resp = {};
+        console.log("error "+error);
+        resp = {
+            isError: true,
+            error: error
+        };
+        if (callback !== undefined) callback(resp);
+    });
 }
 
 uiFuncs.notifier = {

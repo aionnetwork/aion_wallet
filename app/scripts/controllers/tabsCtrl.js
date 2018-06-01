@@ -1,23 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2017-2018 Aion foundation.
  *
- *     This file is part of the aion network project.
+ *     This file is part of the Aion Network project.
  *
- *     The aion network project is free software: you can redistribute it
+ *     The Aion Network project is free software: you can redistribute it
  *     and/or modify it under the terms of the GNU General Public License
  *     as published by the Free Software Foundation, either version 3 of
  *     the License, or any later version.
  *
- *     The aion network project is distributed in the hope that it will
+ *     The Aion Network project is distributed in the hope that it will
  *     be useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *     See the GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with the aion network project source files.
+ *     along with the Aion Network project source files.
  *     If not, see <https://www.gnu.org/licenses/>.
  *
- *     The aion network project leverages useful source code from other
+ *     The Aion Network project leverages useful source code from other
  *     open source projects. We greatly appreciate the effort that was
  *     invested in these projects and we thank the individual contributors
  *     for their work. For provenance information and contributors
@@ -29,8 +29,9 @@
  *******************************************************************************/
  
 'use strict';
+var axios = require('axios');
 
-var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
+var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.gService = globalService;
     $scope.tabNames = $scope.gService.tabs;
     $scope.curLang = 'English';
@@ -47,23 +48,28 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
    
 	var connect = function(){
 
-	    var data = {
-	    	"jsonrpc":"2.0",
-	    	"method":"eth_blockNumber",
-	    	"params":[],
-	    	"id":83};
+        var data = {
+            "jsonrpc":"2.0",
+            "method":"eth_blockNumber",
+            "params":[],
+            "id":83};
 
-		$http.post(window.web3addr, data).then(
-			function (response){
-				console.log("data "+ response.data.result);
-				window.connectStatus = true;
-                $scope.connectStatus= true;
-            },
-			function (response){
-				console.log("error "+response);
-				window.connectStatus = false;
-                $scope.connectStatus= false;
-			});
+        console.log("current current "+window.web3addr);
+
+        axios.post('https://conquest-web3.aion.network', data)
+          .then(function (response) {
+            console.log("data "+response.data);
+            window.connectStatus = true;
+            $scope.connectStatus= true;
+          })
+          .catch(function (error) {
+            console.log("error "+error);
+            window.connectStatus = false;
+            $scope.connectStatus= false;
+        });
+
+
+
 	}
 	connect();
 	setInterval(connect, 4000);
@@ -84,7 +90,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
             $scope.currentNode = "Default";
             protocol ="http://";
         } else if (node == "aion"){
-            $scope.currentIP="web3.aion.network";
+            $scope.currentIP="conquest-web3.aion.network";
             $scope.currentPort="443";
             $scope.currentNode = "Conquest Test Net";
             protocol ="https://";
@@ -96,7 +102,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce, $http) {
         }else {
 
         }
-        window.web3addr=protocol+$scope.currentIP+":"+$scope.currentPort;
+        window.web3addr=protocol+$scope.currentIP+":"+$scope.currentPort; console.log("current node is "+window.web3addr);
     }
 
     $scope.setArrowVisibility = function() {

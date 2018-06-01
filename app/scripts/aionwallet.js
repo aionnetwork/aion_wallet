@@ -1,23 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2017-2018 Aion foundation.
  *
- *     This file is part of the aion network project.
+ *     This file is part of the Aion Network project.
  *
- *     The aion network project is free software: you can redistribute it
+ *     The Aion Network project is free software: you can redistribute it
  *     and/or modify it under the terms of the GNU General Public License
  *     as published by the Free Software Foundation, either version 3 of
  *     the License, or any later version.
  *
- *     The aion network project is distributed in the hope that it will
+ *     The Aion Network project is distributed in the hope that it will
  *     be useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *     See the GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with the aion network project source files.
+ *     along with the Aion Network project source files.
  *     If not, see <https://www.gnu.org/licenses/>.
  *
- *     The aion network project leverages useful source code from other
+ *     The Aion Network project leverages useful source code from other
  *     open source projects. We greatly appreciate the effort that was
  *     invested in these projects and we thank the individual contributors
  *     for their work. For provenance information and contributors
@@ -34,7 +34,7 @@ var blake2b = require('./blake2b');
 var blake2bHex = blake2b.blake2bHex;
 var blake2B = blake2b.blake2b;
 const RLP = require('./RLPlib.js');
-var request = require('request');
+var axios = require('axios');
 
 function bin2string(array){
     var result = "";
@@ -78,7 +78,8 @@ Wallet.generate = function(icapDirect) {
 }
 
 Wallet.prototype.setBalance = function(callback) {
-    var parentObj = this;
+    var parentObj = this; 
+    console.log("this is "+this.balance);
 /*
     try {   
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -97,24 +98,19 @@ Wallet.prototype.setBalance = function(callback) {
         "id":1
     };
 /*
-    var xhr = new XMLHttpRequest();
-    var url = window.web3addr;
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () { 
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText);
-            var json = JSON.parse(xhr.responseText);
-            this.balance= json.result;
-            window.balance = this.balance;
-        }
-    };
-    xhr.send(data);
-*/
-
-    request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
+    request.post({url: window.web3addr, headers:{'Content-Type': 'application/json'}, body: data, json: true}, function(error, response, body){
         this.balance= parseInt(body.result); console.log("body result is "+typeof this.balance);
         window.balance = this.balance;
+    });
+*/
+    axios.post(window.web3addr, data)
+      .then(function (response) {
+        console.log( "the balance is "+typeof parseInt(response.data.result));
+        this.balance=parseInt(response.data.result);
+        window.balance = this.balance;
+      })
+      .catch(function (error) {
+        console.log(error);
     });
 
 }
@@ -133,16 +129,20 @@ Wallet.prototype.getBalance = function() {
     //     window.balance = this.balance;
     //     return this.balance/Math.pow(10,18);
     // }));
-    
-    request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
+    /*
+    request.post({url: window.web3addr, headers:{'Content-Type': 'application/json'}, body: data, json: true}, function(error, response, body){
         Wallet.setter(parseInt(body.result)); 
-       // console.log("the body is " + body.result);
-       // console.log('current balance', this.balance)
        window.balance = parseInt(body.result);
     });
-console.log("right after call window.balance "+window.balance);
-    // this.balance = parseInt(tempp); 
-      // console.log('current balance', this.balance/Math.pow(10,18))
+    */
+    axios.post(window.web3addr, data)
+      .then(function (response) {
+        Wallet.setter(parseInt(response.data.result));
+        window.balance = parseInt(response.data.result);
+      })
+      .catch(function (error) {
+        console.log(error);
+    });
 
     return window.balance/Math.pow(10,18);
 
