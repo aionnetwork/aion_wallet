@@ -11,6 +11,8 @@ deploy/
 json_relay_node/node_modules/
 dist/node_modules/
 _ens/
+id_rsa.pub/
+id_rsa.pub.pub/
 *.zip
 cert.pem
 key.pem
