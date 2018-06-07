@@ -1,4 +1,4 @@
-### https://wallet.aion.network
+### https://testwallet.aion.network/
 
 
 ### Aion Wallet
