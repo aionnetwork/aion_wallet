@@ -31,6 +31,7 @@
 'use strict';
 const RLP = require('../RLPlib.js');
 
+//decrypts the wallet object from keystore or private key
 var decryptWalletCtrl = function($scope, $sce, walletService) {
     $scope.walletType = "";
     $scope.requireFPass = $scope.requirePPass = $scope.showFDecrypt = $scope.showPDecrypt = $scope.showAOnly = $scope.showParityDecrypt = false; 
@@ -76,6 +77,8 @@ var decryptWalletCtrl = function($scope, $sce, walletService) {
         $scope.requireFPass = $scope.requirePPass = $scope.showFDecrypt = $scope.showPDecrypt = $scope.showParityDecrypt = false;
         $scope.showAOnly = $scope.Validator.isValidAddress($scope.addressOnly);
     };
+
+    //this function checks which method is used to decrypt the wallet
     $scope.decryptWallet = function() {
         $scope.kernelKeystore = true;
         setTimeout (function (){

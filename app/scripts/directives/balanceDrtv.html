@@ -35,7 +35,7 @@
   <div class="block">
     <h5 translate="sidebar_AccountAddr">Account Address</h5>
     <ul class="account-info">
-      <div class="addressIdenticon med float" blockie-address="0x{{wallet.getPublicKeyString()}}" watch-var="wallet"></div>
+      <div class="addressIdenticon med float" blockie-address="0x{{wallet.pubToAddress()}}" watch-var="wallet"></div>
       <span class="mono wrap">0x{{wallet.pubToAddress()}}</span>
       <label class="ens-response" ng-show="showEns()">
         ↳ <span class="mono ng-binding"> {{ensAddress}} </span>

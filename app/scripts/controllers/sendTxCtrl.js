@@ -30,6 +30,7 @@
  
 'use strict';
 
+//sends transactions
 var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
 
     $scope.tx = {};
@@ -58,7 +59,7 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
         to: "",
         value: "",
         nonce: null,
-        gasPrice: "1",
+        gasPrice: ""
     }
 
     var applyScope = function() {
@@ -127,6 +128,7 @@ var sendTxCtrl = function($scope, $sce, walletService, $rootScope) {
         });
     }
 
+    //calls send transaction and generates the success message
     $scope.sendTx = function() {
         $scope.sendTxModal.close();
         uiFuncs.sendTx( $scope.signedTx, function(resp) {

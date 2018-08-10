@@ -28,6 +28,7 @@
  *     MyEtherWallet LLC  
  *******************************************************************************/
 
+//this file is the beginnig of the whole project, everything is being included here
 'use strict';
 require('./localStoragePolyfill');
 var angular                  = require('angular');

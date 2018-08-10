@@ -28,6 +28,7 @@
  *     MyEtherWallet LLC  
  *******************************************************************************/
  
+//view wallet info page
 'use strict';
 var viewWalletCtrl = function($scope, walletService) {
 
@@ -49,10 +50,12 @@ var viewWalletCtrl = function($scope, walletService) {
                 kdf: globalFuncs.kdf,
                 n: globalFuncs.scrypt.n
             }));
-            $scope.encFileName = $scope.wallet.getV3Filename();
+            $scope.encFileName = $scope.wallet.getV3Filename(); console.log("name is "+$scope.encFileName);
         }
         $scope.wallet.setBalance();
     });
+
+    //generates QR code associated with the address
     $scope.printQRCode = function() {
         globalFuncs.printPaperWallets(JSON.stringify([{
             address: '0x'+$scope.wallet.pubToAddress(),

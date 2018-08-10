@@ -28,6 +28,7 @@
  *     MyEtherWallet LLC  
  *******************************************************************************/
  
+ //this generates a new wallet
 'use strict';
 var walletGenCtrl = function($scope) {
     $scope.password = "";
@@ -53,6 +54,7 @@ var walletGenCtrl = function($scope) {
             $scope.wallet = Wallet.generate(false);
             $scope.showWallet = true;
 
+            // encode into a keystore file 
             var encodedFile = $scope.wallet.toV3($scope.password);
 
             $scope.blobEnc = globalFuncs.getBlob("application/octet-stream", encodedFile);
@@ -64,6 +66,8 @@ var walletGenCtrl = function($scope) {
             if (!$scope.$$phase) $scope.$apply();
         }
     }
+
+    //generates the content of the print wallet page
     $scope.printQRCode = function() {        
         var pub = $scope.wallet.pubToAddress();
         var priv = $scope.wallet.getPrivateKeyString();

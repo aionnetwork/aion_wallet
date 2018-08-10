@@ -331,11 +331,13 @@ function toHexString(byteArray) {
     }).join('');
 }
 
-var Wallet = function Wallet(priv, pub, path, hwType, hwTransport) {
+// creating a wallet object
+var Wallet = function Wallet(priv, pub, address, path, hwType, hwTransport) {
     if (typeof priv != "undefined") {
         this.privKey = priv.length == 32 ? priv : Buffer(priv, 'hex');
     }
-    this.pubKey = pub;
+    this.pubKey = pub;console.log("creating address " + address);
+    this.address = address;
     this.path = path;
     this.hwType = hwType;
     this.hwTransport = hwTransport;
@@ -354,7 +356,6 @@ Wallet.generate = function (icapDirect) {
 
 Wallet.prototype.setBalance = function (callback) {
     var parentObj = this;
-    console.log("this is " + this.balance);
     /*
         try {   
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -369,7 +370,7 @@ Wallet.prototype.setBalance = function (callback) {
     var data = {
         "jsonrpc": "2.0",
         "method": "eth_getBalance",
-        "params": ['0x' + this.pubKey, "latest"],
+        "params": ['0x' + this.pubToAddress(), "latest"],
         "id": 1
     };
     /*
@@ -391,10 +392,9 @@ Wallet.prototype.getBalance = function () {
     var data = {
         "jsonrpc": "2.0",
         "method": "eth_getBalance",
-        "params": ['0x' + this.pubKey, "latest"],
+        "params": ['0x' + this.pubToAddress(), "latest"],
         "id": 1
     };
-
     // console.log("the logggg is "+request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
     //     this.balance= parseInt(body.result); 
     //     console.log("the body is "+body.result);
@@ -408,7 +408,7 @@ Wallet.prototype.getBalance = function () {
     });
     */
     axios.post(window.web3addr, data).then(function (response) {
-        Wallet.setter(parseInt(response.data.result));
+        //Wallet.setter(parseInt(response.data.result));
         window.balance = parseInt(response.data.result);
     }).catch(function (error) {
         console.log(error);
@@ -455,15 +455,18 @@ Wallet.fromPrivateKey = function (priv) {
     return new Wallet(priv);
 };
 
+// converting from a public key to a public address
 Wallet.prototype.pubToAddress = function () {
-    console.log("hereerer");
+    if (this.address) return this.address;
+
     var Pub = Buffer.from(this.pubKey, 'hex');
     var buf = new Buffer(['0xA0']);
     var buff = Buffer.concat([buf, new Buffer(blake2B(Pub, '', 32).slice(1, 32))]);
-    console.log(new Buffer(blake2B(Pub, '', 32)).toString('hex'));
+
     return buff.toString('hex');
 };
 
+//creating a keystore file
 Wallet.prototype.toV3 = function (password) {
 
     var salt = ethUtil.crypto.randomBytes(32);
@@ -473,7 +476,7 @@ Wallet.prototype.toV3 = function (password) {
     var r = 8;
     var dklen = 32;
 
-    console.log(r + " " + p);
+    console.log("we are here");
 
     var kdfparams = [];
     kdfparams[0] = "";
@@ -507,13 +510,23 @@ Wallet.prototype.toV3 = function (password) {
     var keystore = [];
     keystore[0] = ethUtil.crypto.randomBytes(16).toString('hex');
     keystore[1] = 3;
-    keystore[2] = Buffer(this.pubKey, 'hex').toString('hex');
+    //keystore[2] = Buffer(this.pubKey, 'hex').toString('hex'); 
+    keystore[2] = this.pubToAddress();
     keystore[3] = Crypto;
-    var Keystore = RLP.encode(keystore);
 
+    console.log('---------');
+    console.log(keystore[0]);
+    console.log(keystore[1]);
+    console.log(keystore[2]);
+    console.log(keystore[3]);
+    console.log('---------');
+
+    var Keystore = RLP.encode(keystore);
+    console.log("we are returning");
     return Keystore;
 };
 
+//reading from the keystore file
 Wallet.fromV3 = function ($scope, input, password, nonStrict) {
 
     var KeystoreItem = RLP.decode(input);
@@ -565,7 +578,7 @@ Wallet.fromV3 = function ($scope, input, password, nonStrict) {
         var decipher = ethUtil.crypto.createDecipheriv(Keystore.crypto['cipher'], derivedKey.slice(0, 16), new Buffer(Keystore.crypto.cipherParams['iv'], 'hex'));
         var seed = Wallet.decipherBuffer(decipher, ciphertext, 'hex');
 
-        return new Wallet(seed, Keystore['address']);
+        return new Wallet(seed, '', Keystore['address']);
     } else {
 
         var keyStoreContents = RLP.decode(input);
@@ -594,7 +607,7 @@ Wallet.fromV3 = function ($scope, input, password, nonStrict) {
             seed = Buffer.concat([nullBuff, seed]);
         }
 
-        return new Wallet(seed, keyStoreContent[1]);
+        return new Wallet(seed, '', keyStoreContent[1]);
     }
 };
 
@@ -625,6 +638,8 @@ Wallet.fromAionWalletKey = function (input, password) {
 Wallet.prototype.toV3String = function (password, opts) {
     return JSON.stringify(this.toV3(password, opts));
 };
+
+//creating the name of the keystore file
 Wallet.prototype.getV3Filename = function (timestamp) {
     var ts = timestamp ? new Date(timestamp) : new Date();
 
@@ -932,6 +947,7 @@ module.exports = {
 
 var RLP = require('../RLPlib.js');
 
+//decrypts the wallet object from keystore or private key
 var decryptWalletCtrl = function decryptWalletCtrl($scope, $sce, walletService) {
     $scope.walletType = "";
     $scope.requireFPass = $scope.requirePPass = $scope.showFDecrypt = $scope.showPDecrypt = $scope.showAOnly = $scope.showParityDecrypt = false;
@@ -977,6 +993,8 @@ var decryptWalletCtrl = function decryptWalletCtrl($scope, $sce, walletService) 
         $scope.requireFPass = $scope.requirePPass = $scope.showFDecrypt = $scope.showPDecrypt = $scope.showParityDecrypt = false;
         $scope.showAOnly = $scope.Validator.isValidAddress($scope.addressOnly);
     };
+
+    //this function checks which method is used to decrypt the wallet
     $scope.decryptWallet = function () {
         $scope.kernelKeystore = true;
         setTimeout(function () {
@@ -1072,6 +1090,8 @@ module.exports = decryptWalletCtrl;
 
 'use strict';
 
+//sends transactions
+
 var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
 
     $scope.tx = {};
@@ -1100,7 +1120,7 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         to: "",
         value: "",
         nonce: null,
-        gasPrice: "1"
+        gasPrice: ""
     };
 
     var applyScope = function applyScope() {
@@ -1166,6 +1186,7 @@ var sendTxCtrl = function sendTxCtrl($scope, $sce, walletService, $rootScope) {
         });
     };
 
+    //calls send transaction and generates the success message
     $scope.sendTx = function () {
         $scope.sendTxModal.close();
         uiFuncs.sendTx($scope.signedTx, function (resp) {
@@ -1231,6 +1252,7 @@ module.exports = sendTxCtrl;
 
 var axios = require('axios');
 
+//used to control tabs in the old mew code, this code gets initalized in the beginning 
 var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce) {
     $scope.gService = globalService;
     $scope.tabNames = $scope.gService.tabs;
@@ -1245,6 +1267,7 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce) {
     $scope.notifier.sce = $sce;
     $scope.notifier.scope = $scope;
 
+    // used to signal whether the wallet is currently connected to an existing kernel, it pulls the kernel every 4 seconds 
     var connect = function connect() {
 
         var data = {
@@ -1253,9 +1276,7 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce) {
             "params": [],
             "id": 83 };
 
-        console.log("current current " + window.web3addr);
-
-        axios.post('https://conquest-web3.aion.network', data).then(function (response) {
+        axios.post(window.web3addr, data).then(function (response) {
             console.log("data " + response.data);
             window.connectStatus = true;
             $scope.connectStatus = true;
@@ -1265,7 +1286,7 @@ var tabsCtrl = function tabsCtrl($scope, globalService, $translate, $sce) {
             $scope.connectStatus = false;
         });
     };
-    connect();
+    //connect();
     setInterval(connect, 4000);
 
     $scope.currentNode = window.currentNode;
@@ -1389,6 +1410,7 @@ module.exports = viewCtrl;
  *     MyEtherWallet LLC  
  *******************************************************************************/
 
+//view wallet info page
 'use strict';
 
 var viewWalletCtrl = function viewWalletCtrl($scope, walletService) {
@@ -1411,10 +1433,12 @@ var viewWalletCtrl = function viewWalletCtrl($scope, walletService) {
                 kdf: globalFuncs.kdf,
                 n: globalFuncs.scrypt.n
             }));
-            $scope.encFileName = $scope.wallet.getV3Filename();
+            $scope.encFileName = $scope.wallet.getV3Filename();console.log("name is " + $scope.encFileName);
         }
         $scope.wallet.setBalance();
     });
+
+    //generates QR code associated with the address
     $scope.printQRCode = function () {
         globalFuncs.printPaperWallets(JSON.stringify([{
             address: '0x' + $scope.wallet.pubToAddress(),
@@ -1466,6 +1490,7 @@ module.exports = viewWalletCtrl;
  *     MyEtherWallet LLC  
  *******************************************************************************/
 
+//this generates a new wallet
 'use strict';
 
 var walletGenCtrl = function walletGenCtrl($scope) {
@@ -1491,6 +1516,7 @@ var walletGenCtrl = function walletGenCtrl($scope) {
             $scope.wallet = Wallet.generate(false);
             $scope.showWallet = true;
 
+            // encode into a keystore file 
             var encodedFile = $scope.wallet.toV3($scope.password);
 
             $scope.blobEnc = globalFuncs.getBlob("application/octet-stream", encodedFile);
@@ -1501,6 +1527,8 @@ var walletGenCtrl = function walletGenCtrl($scope) {
             if (!$scope.$$phase) $scope.$apply();
         }
     };
+
+    //generates the content of the print wallet page
     $scope.printQRCode = function () {
         var pub = $scope.wallet.pubToAddress();
         var priv = $scope.wallet.getPrivateKeyString();
@@ -1642,8 +1670,6 @@ var addressFieldDrtv = function addressFieldDrtv($compile) {
                 readOnly: false
             };
 
-            console.log("varName is " + varName);
-
             element.html('<div class=\"col-xs-11\">\n \
                     <label translate=\"' + labelTranslated + '\"></label>\n \
                     <input class=\"form-control\" type=\"text\" placeholder=\"' + placeholder + '\" ng-model=\"addressDrtv.ensAddressField\" ng-disabled=\"addressDrtv.readOnly\" ng-class=\"Validator.isValidAddress(' + varName + ') ? \'is-valid\' : \'is-invalid\'\"/>\n \
@@ -1670,7 +1696,7 @@ var addressFieldDrtv = function addressFieldDrtv($compile) {
 module.exports = addressFieldDrtv;
 
 },{}],12:[function(require,module,exports){
-module.exports = "<!--/*******************************************************************************\n * Copyright (c) 2017-2018 Aion foundation.\n *\n *     This file is part of the Aion Network project.\n *\n *     The Aion Network project is free software: you can redistribute it\n *     and/or modify it under the terms of the GNU General Public License\n *     as published by the Free Software Foundation, either version 3 of\n *     the License, or any later version.\n *\n *     The Aion Network project is distributed in the hope that it will\n *     be useful, but WITHOUT ANY WARRANTY; without even the implied\n *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n *     See the GNU General Public License for more details.\n *\n *     You should have received a copy of the GNU General Public License\n *     along with the Aion Network project source files.\n *     If not, see <https://www.gnu.org/licenses/>.\n *\n *     The Aion Network project leverages useful source code from other\n *     open source projects. We greatly appreciate the effort that was\n *     invested in these projects and we thank the individual contributors\n *     for their work. For provenance information and contributors\n *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.\n *\n * Contributors to the aion source files:\n *     Aion foundation.\n *     MyEtherWallet LLC  \n *******************************************************************************/\n -->\n\n<aside >\n\n  <!-- Account Address -->\n  <div class=\"block\">\n    <h5 translate=\"sidebar_AccountAddr\">Account Address</h5>\n    <ul class=\"account-info\">\n      <div class=\"addressIdenticon med float\" blockie-address=\"0x{{wallet.getPublicKeyString()}}\" watch-var=\"wallet\"></div>\n      <span class=\"mono wrap\">0x{{wallet.pubToAddress()}}</span>\n      <label class=\"ens-response\" ng-show=\"showEns()\">\n        ↳ <span class=\"mono ng-binding\"> {{ensAddress}} </span>\n      </label>\n    </ul>\n    <h5 translate=\"sidebar_AccountBal\">Account Balance</h5>\n    <ul class=\"account-info point\">\n      <li>\n        <span class=\"mono wrap\">{{wallet.getBalance()}} </span> AION\n      </li>\n    </ul>\n    <h5 translate=\"sidebar_TransHistory\"> Transaction History</h5>\n    <ul class=\"account-info\">\n      <li>\n        <a href=\"https://dashboard.aion.network/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <u>Aion Dashboard<u>\n        </a>\n      </li>\n    </ul>\n  </div>\n\n\n</aside>\n";
+module.exports = "<!--/*******************************************************************************\n * Copyright (c) 2017-2018 Aion foundation.\n *\n *     This file is part of the Aion Network project.\n *\n *     The Aion Network project is free software: you can redistribute it\n *     and/or modify it under the terms of the GNU General Public License\n *     as published by the Free Software Foundation, either version 3 of\n *     the License, or any later version.\n *\n *     The Aion Network project is distributed in the hope that it will\n *     be useful, but WITHOUT ANY WARRANTY; without even the implied\n *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n *     See the GNU General Public License for more details.\n *\n *     You should have received a copy of the GNU General Public License\n *     along with the Aion Network project source files.\n *     If not, see <https://www.gnu.org/licenses/>.\n *\n *     The Aion Network project leverages useful source code from other\n *     open source projects. We greatly appreciate the effort that was\n *     invested in these projects and we thank the individual contributors\n *     for their work. For provenance information and contributors\n *     please see <https://github.com/aionnetwork/aion/wiki/Contributors>.\n *\n * Contributors to the aion source files:\n *     Aion foundation.\n *     MyEtherWallet LLC  \n *******************************************************************************/\n -->\n\n<aside >\n\n  <!-- Account Address -->\n  <div class=\"block\">\n    <h5 translate=\"sidebar_AccountAddr\">Account Address</h5>\n    <ul class=\"account-info\">\n      <div class=\"addressIdenticon med float\" blockie-address=\"0x{{wallet.pubToAddress()}}\" watch-var=\"wallet\"></div>\n      <span class=\"mono wrap\">0x{{wallet.pubToAddress()}}</span>\n      <label class=\"ens-response\" ng-show=\"showEns()\">\n        ↳ <span class=\"mono ng-binding\"> {{ensAddress}} </span>\n      </label>\n    </ul>\n    <h5 translate=\"sidebar_AccountBal\">Account Balance</h5>\n    <ul class=\"account-info point\">\n      <li>\n        <span class=\"mono wrap\">{{wallet.getBalance()}} </span> AION\n      </li>\n    </ul>\n    <h5 translate=\"sidebar_TransHistory\"> Transaction History</h5>\n    <ul class=\"account-info\">\n      <li>\n        <a href=\"https://dashboard.aion.network/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <u>Aion Dashboard<u>\n        </a>\n      </li>\n    </ul>\n  </div>\n\n\n</aside>\n";
 },{}],13:[function(require,module,exports){
 /*******************************************************************************
  * Copyright (c) 2017-2018 Aion foundation.
@@ -2000,6 +2026,8 @@ module.exports = ethFuncs;
 
 var globalFuncs = function globalFuncs() {};
 globalFuncs.lightMode = false;
+
+//creates blockie address
 globalFuncs.getBlockie = function (address) {
     return blockies.create({
         seed: address.toLowerCase(),
@@ -2007,6 +2035,8 @@ globalFuncs.getBlockie = function (address) {
         scale: 16
     }).toDataURL();
 };
+
+//creating the page for printing wallet, the entire html is injected here
 globalFuncs.printPaperWallets = function (strJson) {
     var win = window.open("about:blank", "_blank");
     var data = "<html>\r\n\r\n<head>\r\n <link rel=\"stylesheet\" href=\"css\/aionwallet-master.min.css\" \/>\r\n <script type=\"text\/javascript\" src=\"js\/jquery-1.12.3.min.js\"><\/script>\r\n <script type=\"text\/javascript\" src=\"js\/aionwallet-static.min.js\"><\/script>\r\n <script type=\"text\/javascript\">\r\n function getBlockie(address) {\r\n return blockies.create({\r\n seed: address.toLowerCase(),\r\n size: 8,\r\n scale: 16\r\n }).toDataURL();\r\n    }\r\n    function generateWallets() {\r\n var json = JSON.parse($(\"#printwalletjson\").html());\r\n for (var i = 0; i < json.length; i++) {\r\n var walletTemplate = $(\'<div\/>\').append($(\"#print-container\").clone());\r\n new QRCode($(walletTemplate).find(\"#paperwalletaddqr\")[0], {\r\n text: json[i][\'address\'],\r\n colorDark: \"#000000\",\r\n colorLight: \"#ffffff\",\r\n correctLevel: QRCode.CorrectLevel.H\r\n });\r\n new QRCode($(walletTemplate).find(\"#paperwalletprivqr\")[0], {\r\n text: json[i][\'private\'],\r\n colorDark: \"#000000\",\r\n colorLight: \"#ffffff\",\r\n correctLevel: QRCode.CorrectLevel.H\r\n });\r\n $(walletTemplate).find(\"#paperwalletadd\").html(json[i][\'address\']);\r\n $(walletTemplate).find(\"#paperwalletpriv\").html(json[i][\'private\']);\r\n walletTemplate = $(walletTemplate).find(\"#print-container\").show();\r\n $(\"body\").append(walletTemplate);\r\n }\r\n setTimeout(function() {\r\n window.print();\r\n }, 2000);\r\n    }\r\n    <\/script>\r\n<\/head>\r\n\r\n<body><span id=\"printwalletjson\" style=\"display: none;\">{{WALLETJSON}}<\/span>\r\n    <div class=\"print-container\" style=\"display: none; margin-bottom: 50px;\" id=\"print-container\"><img src=\"images\/logo-aion-1.png\" class=\"ether-logo-1\" height=\"100%\" width=\"auto\" \/> <img src=\"images\/print-sidebar.png\" height=\"100%\" width=\"auto\" class=\"print-title\" \/>\r\n <div class=\"print-qr-code-1\">\r\n <div id=\"paperwalletaddqr\"><\/div>\r\n <p class=\"print-text\" style=\"padding-top: 25px;\">YOUR ADDRESS<\/p>\r\n <\/div>\r\n <div class=\"print-notes\"><img src=\"images\/notes-bg.png\" width=\"90%;\" height=\"auto\" class=\"pull-left\" \/>\r\n <p class=\"print-text\">AMOUNT \/ NOTES<\/p>\r\n <\/div>\r\n <div class=\"print-qr-code-2\">\r\n <div id=\"paperwalletprivqr\"><\/div>\r\n <p class=\"print-text\" style=\"padding-top: 30px;\">YOUR PRIVATE KEY<\/p>\r\n <\/div> <div class=\"print-address-container\">\r\n <p><strong>Your Address:<\/strong>\r\n <br \/><span id=\"paperwalletadd\"><\/span><\/p>\r\n <p><strong>Your Private Key:<\/strong>\r\n <br \/><span id=\"paperwalletpriv\"><\/span><\/p>\r\n <\/div>\r\n    <\/div>\r\n<\/body>\r\n\r\n<\/html>\r\n";
@@ -2312,6 +2342,7 @@ module.exports = null;
  *     MyEtherWallet LLC  
  *******************************************************************************/
 
+//this file is the beginnig of the whole project, everything is being included here
 'use strict';
 
 require('./localStoragePolyfill');
@@ -4247,18 +4278,20 @@ uiFuncs.isTxDataValid = function (txData) {
     if (txData.to == "0xCONTRACT") txData.to = '';
 };
 
+//creating the transaction object
 uiFuncs.generateTx = function ($scope, txData, callback) {
 
     try {
         uiFuncs.isTxDataValid(txData);
 
-        txData.gasprice = 1;
+        //the gas price is fixed at 10 billion in hexidecimal
+        txData.gasprice = [0x0, 0x0, 0x0, 0x25, 0x40, 0xBE, 0x40, 0x0];
 
         var genTxWithInfo = function genTxWithInfo(data) {
 
             var tempNonce = "";
 
-            var data = {
+            var data1 = {
                 "jsonrpc": "2.0",
                 "method": "eth_getTransactionCount",
                 "params": ['0x' + $scope.wallet.getPublicKeyString(), 'latest'],
@@ -4270,7 +4303,7 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
                         });
             */
 
-            axios.post(window.web3addr, data).then(function (response) {
+            axios.post(window.web3addr, data1).then(function (response) {
                 tempNonce = response.data;
             }).catch(function (error) {
                 console.log(error);
@@ -4283,19 +4316,23 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
                 RLP_TX_DATA: ethFuncs.sanitizeHex(txData.data),
                 RLP_TX_TIMESTAMP: Date.now() * 1000, //microseconds, big endian byte array
                 RLP_TX_NRG: txData.gasLimit,
-                RLP_TX_NRGPRICE: data.gasprice,
+                RLP_TX_NRGPRICE: txData.gasprice,
                 RLP_TX_TYPE: "0x01"
             };
 
-            txData.gasprice = 1;
+            //fixing gas price and gas limit 
+            txData.gasprice = "0x0002540BE400";
+            txData.gasLimit = "0x5208";
 
-            var rawTxArray = [ethFuncs.sanitizeHex('0x' + tempNonce), ethFuncs.sanitizeHex(txData.to), ethFuncs.sanitizeHex((txData.value * Math.pow(10, 18)).toString(16)), ethFuncs.sanitizeHex('0x' + txData.data), ethFuncs.sanitizeHex('0x' + (Date.now() * 1000).toString(16)), ethFuncs.sanitizeHex('0x' + txData.gasLimit.toString(16)), ethFuncs.sanitizeHex('0x' + txData.gasprice.toString(16)), "0x01"];
+            //creating the array that encapsulates the transaction object
+            var rawTxArray = [ethFuncs.sanitizeHex('0x' + tempNonce), ethFuncs.sanitizeHex(txData.to), txData.gasLimit, ethFuncs.sanitizeHex('0x' + txData.data), ethFuncs.sanitizeHex('0x' + (Date.now() * 1000).toString(16)), txData.gasLimit, txData.gasprice, "0x01"];
 
             var RAWTX = RLP.encode(rawTxArray);
 
             var SIG = Buffer.concat([new Buffer(hexStringToByte($scope.wallet.getPublicKeyString())), new Buffer(nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX, "", 32)), hexStringToByte($scope.wallet.getPrivateKeyString())))]);
 
             rawTx.signedTx = RLP.encode(rawTxArray.concat(SIG)).toString('hex');
+
             rawTx.rawTx = JSON.stringify(rawTx);
             rawTx.isError = false;
             if (callback !== undefined) callback(rawTx);
@@ -4319,6 +4356,8 @@ uiFuncs.generateTx = function ($scope, txData, callback) {
         });
     }
 };
+
+//send the transaction with axios
 uiFuncs.sendTx = function (signedTx, callback) {
 
     var data = {
@@ -4327,29 +4366,10 @@ uiFuncs.sendTx = function (signedTx, callback) {
         "params": ['0x' + signedTx],
         "id": 1
     };
-    /*
-        request.post({url: window.web3addr, headers:{'Content-Type': 'application/json'}, body: data, json: true}, function(error, response, body){
-            var resp = {};
-            if (error){
-                console.log("error "+error);
-                resp = {
-                    isError: true,
-                    error: error
-                };
-            } else {
-                console.log("data "+ body.result);
-                resp = {
-                    isError: false,
-                    data: body.result
-                };
-            }
-            if (callback !== undefined) callback(resp);
-        })
-        */
 
     axios.post(window.web3addr, data).then(function (response) {
         var resp = {};
-        console.log("data " + response.data.result);
+        console.log("data " + JSON.stringify(response));
         resp = {
             isError: false,
             data: response.data.result

@@ -55,12 +55,13 @@ function toHexString(byteArray) {
   }).join('')
 }
 
-
-var Wallet = function(priv, pub, path, hwType, hwTransport) {
+// creating a wallet object
+var Wallet = function(priv, pub, address, path, hwType, hwTransport) {
     if (typeof priv != "undefined") {
         this.privKey = priv.length == 32 ? priv : Buffer(priv, 'hex')
     }
-    this.pubKey = pub;
+    this.pubKey = pub; console.log("creating address "+address);
+    this.address = address;
     this.path = path;
     this.hwType = hwType;
     this.hwTransport = hwTransport;
@@ -79,7 +80,6 @@ Wallet.generate = function(icapDirect) {
 
 Wallet.prototype.setBalance = function(callback) {
     var parentObj = this; 
-    console.log("this is "+this.balance);
 /*
     try {   
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -94,7 +94,7 @@ Wallet.prototype.setBalance = function(callback) {
     var data = {
         "jsonrpc":"2.0",
         "method":"eth_getBalance",
-        "params":['0x'+this.pubKey , "latest"],
+        "params":['0x'+this.pubToAddress() , "latest"],
         "id":1
     };
 /*
@@ -119,10 +119,9 @@ Wallet.prototype.getBalance = function() {
     var data = {
         "jsonrpc":"2.0",
         "method":"eth_getBalance",
-        "params":['0x'+this.pubKey , "latest"],
+        "params":['0x'+this.pubToAddress() , "latest"],
         "id":1
     };
-
     // console.log("the logggg is "+request.post({url: window.web3addr, body: data, json: true}, function(error, response, body){
     //     this.balance= parseInt(body.result); 
     //     console.log("the body is "+body.result);
@@ -137,7 +136,7 @@ Wallet.prototype.getBalance = function() {
     */
     axios.post(window.web3addr, data)
       .then(function (response) {
-        Wallet.setter(parseInt(response.data.result));
+        //Wallet.setter(parseInt(response.data.result));
         window.balance = parseInt(response.data.result);
       })
       .catch(function (error) {
@@ -186,15 +185,18 @@ Wallet.fromPrivateKey = function(priv) {
     return new Wallet(priv)
 }
 
+// converting from a public key to a public address
 Wallet.prototype.pubToAddress= function (){
-    console.log("hereerer");
+    if (this.address) return this.address;
+    
     var Pub = Buffer.from(this.pubKey,'hex');
     var buf = new Buffer (['0xA0']);
     var buff = Buffer.concat([buf,new Buffer(blake2B(Pub,'',32).slice(1,32))]);
-    console.log(new Buffer (blake2B(Pub,'',32)).toString('hex'));
+
     return buff.toString('hex');
 }
 
+//creating a keystore file
 Wallet.prototype.toV3 = function(password) {
 
     var salt = ethUtil.crypto.randomBytes(32);
@@ -204,7 +206,7 @@ Wallet.prototype.toV3 = function(password) {
     var r = 8;
     var dklen = 32;
 
-console.log(r+" "+p);
+console.log("we are here");
 
     var kdfparams=[];
     kdfparams[0] = "";
@@ -238,13 +240,25 @@ console.log(r+" "+p);
     var keystore = [];
     keystore[0] = ethUtil.crypto.randomBytes(16).toString('hex');
     keystore[1] = 3;
-    keystore[2] = Buffer(this.pubKey, 'hex').toString('hex');
+    //keystore[2] = Buffer(this.pubKey, 'hex').toString('hex'); 
+    keystore[2] = this.pubToAddress();
     keystore[3] = Crypto;
-    var Keystore = RLP.encode(keystore);
 
+console.log('---------');
+    console.log(keystore[0]);
+    console.log(keystore[1]);
+    console.log(keystore[2]);
+    console.log(keystore[3]);
+console.log('---------');
+
+
+
+    var Keystore = RLP.encode(keystore);
+console.log("we are returning");
     return Keystore;
 }
 
+//reading from the keystore file
 Wallet.fromV3 = function($scope, input, password, nonStrict) {
 
     var KeystoreItem = RLP.decode(input);
@@ -302,7 +316,7 @@ Wallet.fromV3 = function($scope, input, password, nonStrict) {
         var decipher = ethUtil.crypto.createDecipheriv(Keystore.crypto['cipher'], derivedKey.slice(0, 16), new Buffer(Keystore.crypto.cipherParams['iv'], 'hex'))
         var seed = Wallet.decipherBuffer(decipher, ciphertext, 'hex')
 
-        return new Wallet(seed,Keystore['address']);
+        return new Wallet(seed,'',Keystore['address']);
 
     } else {
 
@@ -333,7 +347,7 @@ Wallet.fromV3 = function($scope, input, password, nonStrict) {
             seed = Buffer.concat([nullBuff, seed]);
         }
 
-        return new Wallet(seed,keyStoreContent[1]);
+        return new Wallet(seed,'',keyStoreContent[1]);
     }
 }
 
@@ -369,6 +383,8 @@ Wallet.fromAionWalletKey = function(input, password) {
 Wallet.prototype.toV3String = function(password, opts) {
     return JSON.stringify(this.toV3(password, opts))
 }
+
+//creating the name of the keystore file
 Wallet.prototype.getV3Filename = function(timestamp) { 
     var ts = timestamp ? new Date(timestamp) : new Date();
 

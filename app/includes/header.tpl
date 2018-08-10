@@ -104,9 +104,9 @@
 <meta property="og:site_name" content="Aion Wallet">
 <meta name="twitter:title" content="Aion Wallet">
 <meta name="apple-mobile-web-app-title" content="Aion Wallet">
-<link href="https://wallet.aion.network" rel="canonical">
-<meta content="https://wallet.aion.network" property="og:url">
-<meta content="https://wallet.aion.network" name="twitter:url">
+<link href="https://testwallet.aion.network" rel="canonical">
+<meta content="https://testwallet.aion.network" property="og:url">
+<meta content="https://testwallet.aion.network" name="twitter:url">
 <link rel="stylesheet" href="css/aionwallet-master.min.css">
 <meta name="description" content="Aion Wallet lets users send AION to each other easily and securily">
 <meta property="og:description"  content="Aion Wallet lets users send AION to each other easily and securily">

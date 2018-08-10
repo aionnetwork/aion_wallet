@@ -46,7 +46,7 @@
               <td style="max-width: 400px">
                 <div class="addressIdenticon med"
                      title="Address Indenticon"
-                     blockie-address="0x{{wallet.getPublicKeyString()}}"
+                     blockie-address="0x{{wallet.pubToAddress()}}"
                      watch-var="wallet.getAddressString()">
                 </div>
                 <p style="word-wrap: break-word; text-align: left;">
@@ -96,7 +96,7 @@
             </tr>
             <tr>
               <td class="small text-right">NRG Price:</td>
-              <td class="small text-left mono">1 Amp</small>
+              <td class="small text-left mono">10 000 000 000 Amp</small>
               </td>
             </tr>
             <tr>

@@ -31,6 +31,7 @@
 'use strict';
 var axios = require('axios');
 
+//used to control tabs in the old mew code, this code gets initalized in the beginning 
 var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.gService = globalService;
     $scope.tabNames = $scope.gService.tabs;
@@ -45,7 +46,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
     $scope.notifier.sce = $sce;
     $scope.notifier.scope = $scope;
 
-   
+   // used to signal whether the wallet is currently connected to an existing kernel, it pulls the kernel every 4 seconds 
 	var connect = function(){
 
         var data = {
@@ -54,9 +55,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
             "params":[],
             "id":83};
 
-        console.log("current current "+window.web3addr);
-
-        axios.post('https://conquest-web3.aion.network', data)
+        axios.post(window.web3addr, data)
           .then(function (response) {
             console.log("data "+response.data);
             window.connectStatus = true;
@@ -71,7 +70,7 @@ var tabsCtrl = function($scope, globalService, $translate, $sce) {
 
 
 	}
-	connect();
+	//connect();
 	setInterval(connect, 4000);
 
 

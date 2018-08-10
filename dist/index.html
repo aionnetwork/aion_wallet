@@ -134,9 +134,9 @@
 <meta property="og:site_name" content="Aion Wallet">
 <meta name="twitter:title" content="Aion Wallet">
 <meta name="apple-mobile-web-app-title" content="Aion Wallet">
-<link href="https://wallet.aion.network" rel="canonical">
-<meta content="https://wallet.aion.network" property="og:url">
-<meta content="https://wallet.aion.network" name="twitter:url">
+<link href="https://testwallet.aion.network" rel="canonical">
+<meta content="https://testwallet.aion.network" property="og:url">
+<meta content="https://testwallet.aion.network" name="twitter:url">
 <link rel="stylesheet" href="css/aionwallet-master.min.css">
 <meta name="description" content="Aion Wallet lets users send AION to each other easily and securily">
 <meta property="og:description"  content="Aion Wallet lets users send AION to each other easily and securily">
@@ -1024,7 +1024,7 @@
               <td style="max-width: 400px">
                 <div class="addressIdenticon med"
                      title="Address Indenticon"
-                     blockie-address="0x{{wallet.getPublicKeyString()}}"
+                     blockie-address="0x{{wallet.pubToAddress()}}"
                      watch-var="wallet.getAddressString()">
                 </div>
                 <p style="word-wrap: break-word; text-align: left;">
@@ -1074,7 +1074,7 @@
             </tr>
             <tr>
               <td class="small text-right">NRG Price:</td>
-              <td class="small text-left mono">1 Amp</small>
+              <td class="small text-left mono">10 000 000 000 Amp</small>
               </td>
             </tr>
             <tr>
@@ -1603,7 +1603,7 @@
               <td style="max-width: 400px">
                 <div class="addressIdenticon med"
                      title="Address Indenticon"
-                     blockie-address="0x{{wallet.getPublicKeyString()}}"
+                     blockie-address="0x{{wallet.pubToAddress()}}"
                      watch-var="wallet.getAddressString()">
                 </div>
                 <p style="word-wrap: break-word; text-align: left;">
@@ -1653,7 +1653,7 @@
             </tr>
             <tr>
               <td class="small text-right">NRG Price:</td>
-              <td class="small text-left mono">1 Amp</small>
+              <td class="small text-left mono">10 000 000 000 Amp</small>
               </td>
             </tr>
             <tr>

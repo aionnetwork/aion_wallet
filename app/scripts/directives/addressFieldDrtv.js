@@ -53,7 +53,6 @@ var addressFieldDrtv = function($compile) {
                 readOnly: false
             }
 
-            console.log("varName is "+varName);
 
             element.html('<div class=\"col-xs-11\">\n \
                     <label translate=\"' + labelTranslated + '\"></label>\n \

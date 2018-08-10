@@ -57,8 +57,9 @@ uiFuncs.getTxData = function($scope) {
         path: $scope.wallet.getPath(),
         hwType: $scope.wallet.getHWType(),
         hwTransport: $scope.wallet.getHWTransport()
-    };
-}
+    }
+};
+
 
 uiFuncs.isTxDataValid = function(txData) { 
     
@@ -69,18 +70,20 @@ uiFuncs.isTxDataValid = function(txData) {
     if (txData.to == "0xCONTRACT") txData.to = '';
 }
 
+//creating the transaction object
 uiFuncs.generateTx = function($scope, txData, callback) {     
 
     try {
         uiFuncs.isTxDataValid(txData);
-        
-        txData.gasprice =1; 
+      
+      //the gas price is fixed at 10 billion in hexidecimal
+        txData.gasprice =[0x0, 0x0,0x0,0x25,0x40, 0xBE, 0x40, 0x0];
         
         var genTxWithInfo = function(data) {
 
             var tempNonce="";
 
-            var data = {
+            var data1 = {
                 "jsonrpc":"2.0",
                 "method":"eth_getTransactionCount",
                 "params":['0x'+$scope.wallet.getPublicKeyString(),'latest'],
@@ -92,7 +95,7 @@ uiFuncs.generateTx = function($scope, txData, callback) {
             });
 */          
 
-            axios.post(window.web3addr, data)
+            axios.post(window.web3addr, data1)
               .then(function (response) {
                 tempNonce= response.data;
               })
@@ -107,20 +110,22 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 RLP_TX_DATA: ethFuncs.sanitizeHex(txData.data),
                 RLP_TX_TIMESTAMP: Date.now()*1000, //microseconds, big endian byte array
                 RLP_TX_NRG: txData.gasLimit,
-                RLP_TX_NRGPRICE: data.gasprice,
+                RLP_TX_NRGPRICE: txData.gasprice,
                 RLP_TX_TYPE: "0x01"               
             };
            
+            //fixing gas price and gas limit 
+            txData.gasprice ="0x0002540BE400";
+            txData.gasLimit="0x5208";
 
-            txData.gasprice =1; 
-
+            //creating the array that encapsulates the transaction object
             var rawTxArray= [ethFuncs.sanitizeHex('0x'+tempNonce), 
                 ethFuncs.sanitizeHex(txData.to), 
-                ethFuncs.sanitizeHex((txData.value*Math.pow(10, 18)).toString(16)), 
+                txData.gasLimit,
                 ethFuncs.sanitizeHex('0x'+txData.data), 
                 ethFuncs.sanitizeHex('0x'+(Date.now()*1000).toString(16)),  
-                ethFuncs.sanitizeHex('0x'+txData.gasLimit.toString(16)), 
-                ethFuncs.sanitizeHex('0x'+txData.gasprice.toString(16)), 
+                txData.gasLimit,
+                txData.gasprice,
                 "0x01"];
 
             var RAWTX = RLP.encode(rawTxArray); 
@@ -129,6 +134,7 @@ uiFuncs.generateTx = function($scope, txData, callback) {
                 new Buffer (nacl.sign.detached(hexStringToByte(blake2bHex(RAWTX,"",32)), hexStringToByte($scope.wallet.getPrivateKeyString())))]);
 
             rawTx.signedTx = RLP.encode(rawTxArray.concat(SIG)).toString('hex'); 
+
             rawTx.rawTx = JSON.stringify(rawTx);
             rawTx.isError = false;
             if (callback !== undefined) callback(rawTx);
@@ -152,7 +158,9 @@ uiFuncs.generateTx = function($scope, txData, callback) {
         });
     }
 }
-uiFuncs.sendTx = function( signedTx, callback) {
+
+//send the transaction with axios
+uiFuncs.sendTx = function( signedTx, callback) { 
 
     var data = {
         "jsonrpc":"2.0",
@@ -160,30 +168,11 @@ uiFuncs.sendTx = function( signedTx, callback) {
         "params":['0x'+signedTx],
         "id":1
     };
-/*
-    request.post({url: window.web3addr, headers:{'Content-Type': 'application/json'}, body: data, json: true}, function(error, response, body){
-        var resp = {};
-        if (error){
-            console.log("error "+error);
-            resp = {
-                isError: true,
-                error: error
-            };
-        } else {
-            console.log("data "+ body.result);
-            resp = {
-                isError: false,
-                data: body.result
-            };
-        }
-        if (callback !== undefined) callback(resp);
-    })
-    */
 
     axios.post(window.web3addr, data)
       .then(function (response) {
         var resp = {};
-        console.log("data "+ response.data.result);
+        console.log("data "+ JSON.stringify(response));
         resp = {
             isError: false,
             data: response.data.result
